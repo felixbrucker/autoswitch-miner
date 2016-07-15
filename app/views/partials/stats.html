@@ -1,0 +1,63 @@
+<div class="col-md-6 col-md-offset-3">
+  <button type="button" class="btn btn-success" ng-show="!statsVm.current.running" ng-click="statsVm.startMiner()">Start Miner</button>
+  <button type="button" class="btn btn-danger" ng-show="statsVm.current.running" ng-click="statsVm.stopMiner()">Stop Miner</button>
+  <br />
+  Miner is <span ng-show="!statsVm.current.running" class="label label-danger">stopped</span>
+  <span ng-show="statsVm.current.running">
+    <span class="label label-success">running</span>
+    <br />
+    <div class="col-md-5">
+      <table class='table table-borderless'>
+        <tr>
+          <td>Hashrate</td>
+          <td><span class="label label-primary">{{statsVm.current.hashrate | hashrate}}</span></td>
+        </tr>
+        <tr>
+          <td>Profitability</td>
+          <td ng-show="statsVm.current.profitability"><span class="label label-primary">{{statsVm.current.profitability}} BTC/Day</span></td>
+        </tr>
+        <tr>
+          <td>Algorithm</td>
+          <td><span class="label label-info">{{statsVm.current.algorithm}}</span></td>
+        </tr>
+        <tr>
+          <td>Cores</td>
+          <td><span class="label label-info">{{statsVm.current.cores}}</span></td>
+        </tr>
+        <tr>
+          <td>Temperature</td>
+          <td><span class="label label-info">{{statsVm.current.temperature}}</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-md-5 col-md-offset-2">
+      <table class='table table-borderless'>
+        <tr>
+          <td>Accepted Shares</td>
+          <td><span class="label label-primary">{{statsVm.current.accepted}}</span></td>
+        </tr>
+        <tr>
+          <td>Rejected Shares</td>
+          <td><span class="label label-primary">{{statsVm.current.rejected}}</span></td>
+        </tr>
+        <tr>
+          <td>Accepted Shares / Min</td>
+          <td><span class="label label-info">{{statsVm.current.acceptedPerMinute}}</span></td>
+        </tr>
+        <tr>
+          <td>Difficulty</td>
+          <td><span class="label label-info">{{statsVm.current.difficulty}}</span></td>
+        </tr>
+        <tr>
+          <td>Uptime</td>
+          <td><span class="label label-info">{{statsVm.current.uptime}}</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-12">
+      Miner {{statsVm.current.miner}} <br />
+      <a href="https://www.nicehash.com/?p=miners&addr={{statsVm.current.btcAddress}}" target="_blank">Nicehash Status Page</a>
+    </div>
+  </span>
+</div>
