@@ -274,6 +274,8 @@ function changeAlgo() {
       }
     });
     if (potentialBestProf > currentProf) {
+      console.log("changing algo: "+bestAlgo+" => "+potentialAlgo);
+      console.log("profitability increased by "+(potentialBestProf-currentProf)+" BTC/day");
       bestAlgo = potentialAlgo;
       if (stats.running) {
         stopMiner();

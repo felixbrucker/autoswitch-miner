@@ -35,7 +35,7 @@
     <div class="col-md-12">
       <table class='table table-borderless'>
         <tr ng-repeat="(key, algo) in configVm.config.benchmarks  track by $index">
-          <td><input type="checkbox" ng-model="algo.enabled"></td>
+          <td><input type="checkbox" ng-model="algo.enabled" ng-click="configVm.setConfig()"></td>
           <td>{{algo.name}}</td>
           <td><input type="text" name="hashrate-{{algo.name}}" ng-model="algo.hashrate"> KH/s</td>
           <td><i ng-show="algo.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span class="sr-only">Loading...</span></td>

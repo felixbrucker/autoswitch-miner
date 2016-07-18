@@ -50,7 +50,7 @@
             angular.element(document).ready(function () {
                 vm.getConfig();
                 vm.checkBenchmark();
-                vm.configInterval = $interval(vm.getConfig, 10000);
+                vm.configInterval = $interval(vm.getConfig, 20000);
             });
         }
 
