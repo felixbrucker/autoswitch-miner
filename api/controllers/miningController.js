@@ -45,9 +45,12 @@ function startMining(req, res, next) {
 function startMiner() {
   if (cpuminer == null) {
     stats.btcAddress = configModule.config.btcAddress;
+    var algo=bestAlgo;
+    if (configModule.algos[bestAlgo].alt)
+      algo=configModule.algos[bestAlgo].alt;
     var url = "stratum+tcp://";
     if (configModule.algos[bestAlgo].dn)
-      url += configModule.algos[bestAlgo].dn
+      url += configModule.algos[bestAlgo].dn;
     else
       url += bestAlgo;
     url += ".";
@@ -64,8 +67,12 @@ function startMiner() {
     }
     url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
     const spawn = require('child_process').spawn;
-    cpuminer = spawn(configModule.config.binPath, ['-a', bestAlgo, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
-    cpuminer.stdout.on('data', function (data) {
+    if (configModule.config.proxy!==null&&configModule.config.proxy!==""){
+      cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x',configModule.config.proxy,'-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
+    }else{
+      cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
+    }
+        cpuminer.stdout.on('data', function (data) {
       miner_log.write(data.toString());
     });
 
@@ -200,7 +207,7 @@ function getProfitability() {
       setRealProfitability("axiom", parseFloat(parsed.result.stats['13'].price));
       setRealProfitability("lyra2rev2", parseFloat(parsed.result.stats['14'].price));
       setRealProfitability("scryptjane", parseFloat(parsed.result.stats['15'].price));
-      setRealProfitability("blake2s", parseFloat(parsed.result.stats['16'].price));
+      setRealProfitability("blake256r8", parseFloat(parsed.result.stats['16'].price));
       setRealProfitability("blake256r14", parseFloat(parsed.result.stats['17'].price));
       setRealProfitability("blake256r8vnl", parseFloat(parsed.result.stats['18'].price));
       setRealProfitability("hodl", parseFloat(parsed.result.stats['19'].price));
