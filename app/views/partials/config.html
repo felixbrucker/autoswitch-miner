@@ -1,2 +1,58 @@
-<i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
-<span class="sr-only">Loading...</span>
+<div class="col-md-6 col-md-offset-3">
+  <form name="config">
+    <div class="row">
+
+      <div class="col-md-6">
+        <table class='table table-borderless'>
+          <tr>
+            <td>Region</td>
+            <td>
+              <select name="regionSelect" id="regionSelect"
+                      ng-options="region.id as region.name for region in configVm.config.regions"
+                      ng-model="configVm.config.region" required></select>
+            </td>
+          </tr>
+          <tr>
+            <td>Proxy</td>
+            <td><input type="text" name="proxy" ng-model="configVm.config.proxy"></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="col-md-6">
+        <table class='table table-borderless'>
+          <tr>
+            <td>BTC Address</td>
+            <td><input type="text" name="btcAddress" ng-model="configVm.config.btcAddress" required></td>
+          </tr>
+          <tr>
+            <td>binPath</td>
+            <td><input type="text" name="binPath" ng-model="configVm.config.binPath"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <table class='table table-borderless'>
+        <tr ng-repeat="(key, algo) in configVm.config.benchmarks  track by $index">
+          <td><input type="checkbox" ng-model="algo.enabled"></td>
+          <td>{{algo.name}}</td>
+          <td><input type="text" name="hashrate-{{algo.name}}" ng-model="algo.hashrate"> KH/s</td>
+          <td><i ng-show="algo.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span class="sr-only">Loading...</span></td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <button type="button" class="btn btn-success" ng-disabled="config.$invalid" ng-click="configVm.setConfig()">Save
+    </button>
+    <i ng-show="configVm.waiting" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </form>
+  <br />
+  <button ng-show="!configVm.waitingBenchmark" type="button" class="btn btn-success" ng-click="configVm.doBenchmark()">Run Benchmark
+  </button>
+  <button ng-show="configVm.waitingBenchmark" type="button" class="btn btn-success" disabled>Benchmark running..
+  </button>
+  <i ng-show="configVm.waitingBenchmark" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+  <span class="sr-only">Loading...</span>
+</div>

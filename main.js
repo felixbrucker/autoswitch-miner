@@ -1,8 +1,16 @@
 'use strict';
 global.__basedir = __dirname + '/';
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 
+app.use(bodyParser.urlencoded({
+  extended: true,
+  limit: '50mb'
+}));
+app.use(bodyParser.json({
+  limit: '50mb'
+}));
 
 app.use(express.static(__dirname + '/app'));
 
@@ -14,6 +22,8 @@ app.route('*').get(function(req, res) {
     root: './'
   });
 });
+
+
 
 var listener = app.listen(8080, "127.0.0.1", function(){
   console.log('server running: http://' + listener.address().address+':'+listener.address().port); //Listening on port 8888

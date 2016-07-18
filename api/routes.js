@@ -12,12 +12,13 @@ module.exports = function(app) {
 
   router.get('/config', configController.getConfig);
   router.post('/config', configController.setConfig);
-  router.post('/config/benchmark', configController.doBenchmark);
+
 
   router.get('/mining/stats', miningController.getStats);
-  router.get('/mining/algos', miningController.getAlgos);
   router.post('/mining/start', miningController.startMining);
   router.post('/mining/stop', miningController.stopMining);
+  router.post('/mining/benchmark', miningController.doBenchmarkWrapper);
+  router.get('/mining/benchmark/current', miningController.checkBenchmark);
 
   app.use('/api', router);
 }

@@ -1,12 +1,14 @@
 <div class="col-md-6 col-md-offset-3">
   <button type="button" class="btn btn-success" ng-show="!statsVm.current.running" ng-click="statsVm.startMiner()">Start Miner</button>
   <button type="button" class="btn btn-danger" ng-show="statsVm.current.running" ng-click="statsVm.stopMiner()">Stop Miner</button>
+  <i ng-show="statsVm.waiting" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+  <span class="sr-only">Loading...</span>
   <br />
   Miner is <span ng-show="!statsVm.current.running" class="label label-danger">stopped</span>
   <span ng-show="statsVm.current.running">
-    <span class="label label-success">running</span>
+    <span class="label label-success">running</span><span ng-show="statsVm.current.benchRunning"> (in Benchmark Mode)</span>
     <br />
-    <div class="col-md-5">
+    <div class="col-md-6">
       <table class='table table-borderless'>
         <tr>
           <td>Hashrate</td>
@@ -14,7 +16,7 @@
         </tr>
         <tr>
           <td>Profitability</td>
-          <td ng-show="statsVm.current.profitability"><span class="label label-primary">{{statsVm.current.profitability}} BTC/Day</span></td>
+          <td ng-show="statsVm.current.profitability"><span class="label label-primary">{{statsVm.current.profitability | number:8}} BTC/Day</span></td>
         </tr>
         <tr>
           <td>Algorithm</td>
@@ -26,12 +28,12 @@
         </tr>
         <tr>
           <td>Temperature</td>
-          <td><span class="label label-info">{{statsVm.current.temperature}}</span></td>
+          <td ng-show="statsVm.current.temperature"><span class="label label-info">{{statsVm.current.temperature}} °C</span></td>
         </tr>
       </table>
     </div>
 
-    <div class="col-md-5 col-md-offset-2">
+    <div class="col-md-6">
       <table class='table table-borderless'>
         <tr>
           <td>Accepted Shares</td>
@@ -51,13 +53,13 @@
         </tr>
         <tr>
           <td>Uptime</td>
-          <td><span class="label label-info">{{statsVm.current.uptime}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.uptime | secondsToTimeString}}</span></td>
         </tr>
       </table>
     </div>
     <div class="col-md-12">
       Miner {{statsVm.current.miner}} <br />
-      <a href="https://www.nicehash.com/?p=miners&addr={{statsVm.current.btcAddress}}" target="_blank">Nicehash Status Page</a>
+      <a ng-href="https://www.nicehash.com/?p=miners&addr={{statsVm.current.btcAddress}}" target="_blank">Nicehash Status Page</a>
     </div>
   </span>
 </div>

@@ -2,6 +2,13 @@
   "name": "autoswitch-miner",
   "version": "0.0.1",
   "dependencies" : {
-    "express" : "^4.14.0"
+    "express" : "^4.14.0",
+    "websocket" : "^1.0.23",
+    "ps-tree":"^1.1.0",
+    "body-parser":"^1.15.2",
+    "wait.for":"^0.6.6"
+  },
+  "scripts": {
+    "start" : "node main.js"
   }
 }

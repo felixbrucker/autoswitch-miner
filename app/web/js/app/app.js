@@ -15,7 +15,7 @@
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', config])
     .config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
       cfpLoadingBarProvider.includeSpinner = false;
-      cfpLoadingBarProvider.latencyThreshold = 1;
+      cfpLoadingBarProvider.latencyThreshold = 100;
     }]);
   app.directive('updateTitle', ['$rootScope', '$timeout',
     function ($rootScope, $timeout) {
@@ -67,10 +67,23 @@
   app.filter('hashrate', function() {
     return function(bytes, precision) {
       if (isNaN(parseFloat(bytes)) || !isFinite(bytes)) return '';
+      if (parseFloat(bytes)===0) return '0 KH/s'
       if (typeof precision === 'undefined') precision = 1;
-      var units = ['H/s', 'KH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s'],
+      var units = ['KH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s'],
         number = Math.floor(Math.log(bytes) / Math.log(1024));
       return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
+    }
+  });
+  app.filter('secondsToTimeString', function() {
+    return function(seconds) {
+      var days = Math.floor(seconds / 86400);
+      var hours = Math.floor((seconds % 86400) / 3600);
+      var minutes = Math.floor(((seconds % 86400) % 3600) / 60);
+      var timeString = '';
+      if(days > 0) timeString += (days > 1) ? (days + " days ") : (days + " day ");
+      if(hours > 0) timeString += (hours > 1) ? (hours + " hours ") : (hours + " hour ");
+      if(minutes >= 0) timeString += (minutes > 1) ? (minutes + " minutes ") : (minutes + " minute ");
+      return timeString;
     }
   });
 
