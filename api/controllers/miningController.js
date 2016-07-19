@@ -44,8 +44,14 @@ function startMining(req, res, next) {
 }
 
 function validateSettings() {
-  if (configModule.config.btcAddress !== null && configModule.config.region !== null && configModule.config.binPath !== null)
-    return true;
+  if (configModule.config.btcAddress !== null && configModule.config.region !== null && configModule.config.binPath !== null) {
+    try {
+      fs.statSync(configModule.config.binPath);
+      return true;
+    } catch(err) {
+      return !(err && err.code === 'ENOENT');
+    }
+  }
   else
     return false;
 }
@@ -94,7 +100,7 @@ function startMiner() {
       console.log(colors.blue("miner already running, not starting"));
     }
   } else {
-    console.log(colors.red("some required settings are not configured \u274C"));
+    console.log(colors.red("some required settings are not properly configured \u274C"));
   }
 }
 
@@ -339,9 +345,11 @@ function checkBenchmark(req, res, next) {
 function init() {
   getProfitability();
   getMinerStats();
-  if (configModule.config.autostart){
+  if (configModule.config.autostart) {
     console.log(colors.blue("autostart enabled, starting miner shortly.."));
-    setTimeout(function (){startMiner();},10000);
+    setTimeout(function () {
+      startMiner();
+    }, 10000);
   }
 
   var minutes = 5, profitabilityInterval = minutes * 60 * 1000;

@@ -3,6 +3,23 @@
 ### Installation
 
 Autoswitch-miner requires [Node.js](https://nodejs.org/) v4+ to run.
+Additionally cpuminer-opt is needed:
+
+Windows: included
+Linux: included, install dependencies with:
+
+```sh
+$ sudo apt-get install build-essential libssl-dev libcurl4-openssl-dev libjansson-dev libgmp-dev automake
+```
+
+or build it yourself:
+
+```sh
+$ sudo apt-get install build-essential libssl-dev libcurl4-openssl-dev libjansson-dev libgmp-dev automake
+$ cd cpuminer-opt-3.3.7
+$ ./build.sh
+$ cp cpuminer ../autoswitch-miner/bin/
+```
 
 ```sh
 $ git clone https://github.com/felixbrucker/autoswitch-miner
@@ -19,8 +36,9 @@ $ npm start
 ### Todos
 
  - Error handling
- - Add Code Comments
  - Properly use async Methods
+ - Properly send responses to indicate the result to frontend
+ - Add Code Comments
  - Write Tests
 
 
