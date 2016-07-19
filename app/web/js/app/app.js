@@ -110,15 +110,6 @@
         data: {
           pageTitle: 'Autoswitch-Miner Config'
         }
-      })
-      .state('setup', {
-        url: '/setup',
-        templateUrl: 'views/partials/setup.html',
-        controller: 'setupCtrl',
-        controllerAs: 'setupVm',
-        data: {
-          pageTitle: 'Autoswitch-Miner Setup'
-        }
       });
     $urlRouterProvider.otherwise('/');
   }

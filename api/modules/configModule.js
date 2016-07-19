@@ -7,6 +7,7 @@ var config = module.exports = {
     btcAddress: null,
     proxy: null,
     binPath: null,
+    autostart:null,
     benchmarks: null
   },
   algos: {
@@ -63,6 +64,7 @@ var config = module.exports = {
         //default conf
         config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}];
         config.config.binPath = __basedir + "bin/cpuminer";
+        config.config.autostart=false;
         config.config.benchmarks = {
           scrypt: {name: "Scrypt", hashrate: null, enabled: true, benchRunning:null},
           sha256d: {name: "SHA256", hashrate: null, enabled: true, benchRunning:null},
@@ -92,4 +94,5 @@ var config = module.exports = {
     });
   }
 };
+console.log("initializing, please wait...");
 config.loadConfig();

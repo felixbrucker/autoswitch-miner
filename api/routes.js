@@ -8,11 +8,8 @@ module.exports = function(app) {
   var configController = require(__basedir + 'api/controllers/configController');
   var miningController = require(__basedir + 'api/controllers/miningController');
 
-  router.get('/setup', configController.setup);
-
   router.get('/config', configController.getConfig);
   router.post('/config', configController.setConfig);
-
 
   router.get('/mining/stats', miningController.getStats);
   router.post('/mining/start', miningController.startMining);

@@ -42,45 +42,58 @@ function startMining(req, res, next) {
   res.send(JSON.stringify({success: true}));
 }
 
-function startMiner() {
-  if (cpuminer == null) {
-    stats.btcAddress = configModule.config.btcAddress;
-    var algo=bestAlgo;
-    if (configModule.algos[bestAlgo].alt)
-      algo=configModule.algos[bestAlgo].alt;
-    var url = "stratum+tcp://";
-    if (configModule.algos[bestAlgo].dn)
-      url += configModule.algos[bestAlgo].dn;
-    else
-      url += bestAlgo;
-    url += ".";
-    switch (configModule.config.region) {
-      case 0:
-        url += "eu";
-        break;
-      case 1:
-        url += "usa";
-        break;
-      default:
-        url += "eu";
-        break;
-    }
-    url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
-    const spawn = require('child_process').spawn;
-    if (configModule.config.proxy!==null&&configModule.config.proxy!==""){
-      cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x',configModule.config.proxy,'-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
-    }else{
-      cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
-    }
-        cpuminer.stdout.on('data', function (data) {
-      miner_log.write(data.toString());
-    });
+function validateSettings() {
+  if (configModule.config.btcAddress !== null && configModule.config.region !== null && configModule.config.binPath !== null)
+    return true;
+  else
+    return false;
+}
 
-    cpuminer.stderr.on('data', function (data) {
-      miner_log.write(data.toString());
-    });
+function startMiner() {
+  if (validateSettings()) {
+    if (cpuminer == null) {
+      changeAlgo();
+      stats.btcAddress = configModule.config.btcAddress;
+      var algo = bestAlgo;
+      if (configModule.algos[bestAlgo].alt)
+        algo = configModule.algos[bestAlgo].alt;
+      var url = "stratum+tcp://";
+      if (configModule.algos[bestAlgo].dn)
+        url += configModule.algos[bestAlgo].dn;
+      else
+        url += bestAlgo;
+      url += ".";
+      switch (configModule.config.region) {
+        case 0:
+          url += "eu";
+          break;
+        case 1:
+          url += "usa";
+          break;
+        default:
+          url += "eu";
+          break;
+      }
+      url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
+      const spawn = require('child_process').spawn;
+      if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
+        cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
+      } else {
+        cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
+      }
+      console.log("[miner started]");
+      cpuminer.stdout.on('data', function (data) {
+        miner_log.write(data.toString());
+      });
+
+      cpuminer.stderr.on('data', function (data) {
+        miner_log.write(data.toString());
+      });
+    } else {
+      console.log("miner already running, not starting");
+    }
   } else {
-    console.log("miner already running, not starting");
+    console.log("some required settings are not configured!");
   }
 }
 
@@ -124,9 +137,10 @@ function stopMiner() {
       callback();
     }
   };
-  if (cpuminer!==null){
+  if (cpuminer !== null) {
     kill(cpuminer.pid);
     cpuminer = null;
+    console.log("[miner stopped]");
   }
 }
 
@@ -181,9 +195,9 @@ function doBenchmark() {
 }
 
 function getProfitability() {
-  https.get({
+  return https.get({
     host: 'www.nicehash.com',
-    path: '/api?method=stats.global.current&location=' + configModule.config.region
+    path: '/api?method=simplemultialgo.info'
   }, function (response) {
     var body = '';
     response.on('data', function (d) {
@@ -191,28 +205,28 @@ function getProfitability() {
     });
     response.on('end', function () {
       var parsed = JSON.parse(body);
-      setRealProfitability("scrypt", parseFloat(parsed.result.stats['0'].price));
-      setRealProfitability("sha256d", parseFloat(parsed.result.stats['1'].price));
-      setRealProfitability("scryptnf", parseFloat(parsed.result.stats['2'].price));
-      setRealProfitability("x11", parseFloat(parsed.result.stats['3'].price));
-      setRealProfitability("x13", parseFloat(parsed.result.stats['4'].price));
-      setRealProfitability("keccak", parseFloat(parsed.result.stats['5'].price));
-      setRealProfitability("x15", parseFloat(parsed.result.stats['6'].price));
-      setRealProfitability("nist5", parseFloat(parsed.result.stats['7'].price));
-      setRealProfitability("neoscrypt", parseFloat(parsed.result.stats['8'].price));
-      setRealProfitability("lyra2re", parseFloat(parsed.result.stats['9'].price));
-      setRealProfitability("whirlpoolx", parseFloat(parsed.result.stats['10'].price));
-      setRealProfitability("qubit", parseFloat(parsed.result.stats['11'].price));
-      setRealProfitability("quark", parseFloat(parsed.result.stats['12'].price));
-      setRealProfitability("axiom", parseFloat(parsed.result.stats['13'].price));
-      setRealProfitability("lyra2rev2", parseFloat(parsed.result.stats['14'].price));
-      setRealProfitability("scryptjane", parseFloat(parsed.result.stats['15'].price));
-      setRealProfitability("blake256r8", parseFloat(parsed.result.stats['16'].price));
-      setRealProfitability("blake256r14", parseFloat(parsed.result.stats['17'].price));
-      setRealProfitability("blake256r8vnl", parseFloat(parsed.result.stats['18'].price));
-      setRealProfitability("hodl", parseFloat(parsed.result.stats['19'].price));
-      setRealProfitability("daggerhashimoto", parseFloat(parsed.result.stats['20'].price));
-      setRealProfitability("decred", parseFloat(parsed.result.stats['21'].price));
+      setRealProfitability("scrypt", parseFloat(parsed.result.simplemultialgo['0'].paying));
+      setRealProfitability("sha256d", parseFloat(parsed.result.simplemultialgo['1'].paying));
+      setRealProfitability("scryptnf", parseFloat(parsed.result.simplemultialgo['2'].paying));
+      setRealProfitability("x11", parseFloat(parsed.result.simplemultialgo['3'].paying));
+      setRealProfitability("x13", parseFloat(parsed.result.simplemultialgo['4'].paying));
+      setRealProfitability("keccak", parseFloat(parsed.result.simplemultialgo['5'].paying));
+      setRealProfitability("x15", parseFloat(parsed.result.simplemultialgo['6'].paying));
+      setRealProfitability("nist5", parseFloat(parsed.result.simplemultialgo['7'].paying));
+      setRealProfitability("neoscrypt", parseFloat(parsed.result.simplemultialgo['8'].paying));
+      setRealProfitability("lyra2re", parseFloat(parsed.result.simplemultialgo['9'].paying));
+      setRealProfitability("whirlpoolx", parseFloat(parsed.result.simplemultialgo['10'].paying));
+      setRealProfitability("qubit", parseFloat(parsed.result.simplemultialgo['11'].paying));
+      setRealProfitability("quark", parseFloat(parsed.result.simplemultialgo['12'].paying));
+      setRealProfitability("axiom", parseFloat(parsed.result.simplemultialgo['13'].paying));
+      setRealProfitability("lyra2rev2", parseFloat(parsed.result.simplemultialgo['14'].paying));
+      setRealProfitability("scryptjane", parseFloat(parsed.result.simplemultialgo['15'].paying));
+      setRealProfitability("blake256r8", parseFloat(parsed.result.simplemultialgo['16'].paying));
+      setRealProfitability("blake256r14", parseFloat(parsed.result.simplemultialgo['17'].paying));
+      setRealProfitability("blake256r8vnl", parseFloat(parsed.result.simplemultialgo['18'].paying));
+      setRealProfitability("hodl", parseFloat(parsed.result.simplemultialgo['19'].paying));
+      setRealProfitability("daggerhashimoto", parseFloat(parsed.result.simplemultialgo['20'].paying));
+      setRealProfitability("decred", parseFloat(parsed.result.simplemultialgo['21'].paying));
       changeAlgo();
     });
   });
@@ -263,7 +277,7 @@ function changeAlgo() {
     if (bestAlgo !== null && configModule.config.benchmarks[bestAlgo].enabled) {
       currentProf = configModule.algos[bestAlgo].profitability * configModule.config.benchmarks[bestAlgo].hashrate;
     } else {
-      bestAlgo = "lyra2rev2";
+      bestAlgo = "";
     }
     var potentialBestProf = 0;
     var potentialAlgo = null;
@@ -274,10 +288,10 @@ function changeAlgo() {
       }
     });
     if (potentialBestProf > currentProf) {
-      console.log("changing algo: "+bestAlgo+" => "+potentialAlgo);
-      console.log("profitability increased by "+(potentialBestProf-currentProf)+" BTC/day");
       bestAlgo = potentialAlgo;
       if (stats.running) {
+        console.log("changing algo: " + bestAlgo + " => " + potentialAlgo);
+        console.log("profitability increased by " + (potentialBestProf - currentProf).toFixed(8) + " BTC/day");
         stopMiner();
         startMiner();
       }
@@ -324,7 +338,11 @@ function checkBenchmark(req, res, next) {
 function init() {
   getProfitability();
   getMinerStats();
-
+  if (configModule.config.autostart){
+    console.log("autostart enabled, starting miner shortly..");
+    setTimeout(function (){startMiner();},10000);
+  }
+  
   var minutes = 5, profitabilityInterval = minutes * 60 * 1000;
   setInterval(function () {
     getProfitability();

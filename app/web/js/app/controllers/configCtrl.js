@@ -24,6 +24,7 @@
             btcAddress: null,
             proxy: null,
             binPath: null,
+            autostart:null,
             benchmarks: null
         };
         vm.waiting = null;
@@ -50,7 +51,6 @@
             angular.element(document).ready(function () {
                 vm.getConfig();
                 vm.checkBenchmark();
-                vm.configInterval = $interval(vm.getConfig, 20000);
             });
         }
 
@@ -69,6 +69,7 @@
                 vm.config.btcAddress = response.data.btcAddress;
                 vm.config.proxy = response.data.proxy;
                 vm.config.binPath = response.data.binPath;
+                vm.config.autostart=response.data.autostart;
                 vm.config.benchmarks = response.data.benchmarks;
             }, function errorCallback(response) {
                 console.log(response);
@@ -110,6 +111,7 @@
                     url: 'api/mining/benchmark'
                 }).then(function successCallback(response) {
                     if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 10000);
+                    if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 20000);
                 }, function errorCallback(response) {
                     console.log(response);
                 });
@@ -132,10 +134,15 @@
                 if (response.data.running===true){
                     vm.waitingBenchmark=true;
                     if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 10000);
+                    if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 20000);
                 }else{
                     if (vm.benchmarkInterval!==null){
                         $interval.cancel(vm.benchmarkInterval);
                         vm.benchmarkInterval=null;
+                    }
+                    if (vm.configInterval!==null) {
+                        $interval.cancel(vm.configInterval);
+                        vm.configInterval=null;
                     }
                     vm.waitingBenchmark = false;
                 }
