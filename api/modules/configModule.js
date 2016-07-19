@@ -1,5 +1,7 @@
 'use strict';
 
+var colors = require('colors/safe');
+
 var config = module.exports = {
   config: {
     region: null,
@@ -41,7 +43,7 @@ var config = module.exports = {
     config.config = newConfig;
   },
   saveConfig: function () {
-    console.log("writing config to file..");
+    console.log(colors.grey("writing config to file.."));
     var fs = require('fs');
     fs.writeFile("settings.json", JSON.stringify(config.config), function (err) {
       if (err) {
@@ -94,5 +96,5 @@ var config = module.exports = {
     });
   }
 };
-console.log("initializing, please wait...");
+console.log(colors.blue("initializing, please wait..."));
 config.loadConfig();

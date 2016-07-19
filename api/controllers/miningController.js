@@ -4,6 +4,7 @@ const https = require('https');
 const http = require('http');
 const wait = require('wait.for');
 var fs = require('fs');
+var colors = require('colors/safe');
 
 var configModule = require(__basedir + 'api/modules/configModule');
 var miner_log = fs.createWriteStream(__basedir + '/miner.log', {flags: 'w'});
@@ -81,7 +82,7 @@ function startMiner() {
       } else {
         cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
       }
-      console.log("[miner started]");
+      console.log(colors.green("[miner started] \u2713"));
       cpuminer.stdout.on('data', function (data) {
         miner_log.write(data.toString());
       });
@@ -90,10 +91,10 @@ function startMiner() {
         miner_log.write(data.toString());
       });
     } else {
-      console.log("miner already running, not starting");
+      console.log(colors.blue("miner already running, not starting"));
     }
   } else {
-    console.log("some required settings are not configured!");
+    console.log(colors.red("some required settings are not configured \u274C"));
   }
 }
 
@@ -140,7 +141,7 @@ function stopMiner() {
   if (cpuminer !== null) {
     kill(cpuminer.pid);
     cpuminer = null;
-    console.log("[miner stopped]");
+    console.log(colors.green("[miner stopped] \u2713"));
   }
 }
 
@@ -171,7 +172,7 @@ function doBenchmark() {
     if (configModule.config.benchmarks[key].enabled) {
       bestAlgo = key;
       configModule.config.benchmarks[key].benchRunning = true;
-      console.log("benchmarking: " + key + " ..");
+      console.log(colors.blue("benchmarking: " + key + " .."));
       startMiner();
       var i = 0;
       var hashrate = 0;
@@ -187,7 +188,7 @@ function doBenchmark() {
       configModule.config.benchmarks[key].benchRunning = false;
       stopMiner();
       configModule.config.benchmarks[key].hashrate = (hashrate) / i;
-      console.log("avg hashrate: " + configModule.config.benchmarks[key].hashrate + " KH/s");
+      console.log(colors.green("avg hashrate: " + configModule.config.benchmarks[key].hashrate + " KH/s"));
     }
   });
   stats.benchRunning = false;
@@ -290,8 +291,8 @@ function changeAlgo() {
     if (potentialBestProf > currentProf) {
       bestAlgo = potentialAlgo;
       if (stats.running) {
-        console.log("changing algo: " + bestAlgo + " => " + potentialAlgo);
-        console.log("profitability increased by " + (potentialBestProf - currentProf).toFixed(8) + " BTC/day");
+        console.log(colors.blue("changing algo: " + bestAlgo + " => " + potentialAlgo));
+        console.log(colors.blue("profitability increased by " + (potentialBestProf - currentProf).toFixed(8) + " BTC/day"));
         stopMiner();
         startMiner();
       }
@@ -339,10 +340,10 @@ function init() {
   getProfitability();
   getMinerStats();
   if (configModule.config.autostart){
-    console.log("autostart enabled, starting miner shortly..");
+    console.log(colors.blue("autostart enabled, starting miner shortly.."));
     setTimeout(function (){startMiner();},10000);
   }
-  
+
   var minutes = 5, profitabilityInterval = minutes * 60 * 1000;
   setInterval(function () {
     getProfitability();

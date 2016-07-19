@@ -2,6 +2,7 @@
 global.__basedir = __dirname + '/';
 var express = require('express');
 var bodyParser = require('body-parser');
+var colors = require('colors/safe');
 var app = express();
 
 app.use(bodyParser.urlencoded({
@@ -26,5 +27,5 @@ app.route('*').get(function(req, res) {
 
 
 var listener = app.listen(8080, "127.0.0.1", function(){
-  console.log('server running: http://' + listener.address().address+':'+listener.address().port); //Listening on port 8888
+  console.log(colors.green('server running: http://' + listener.address().address+':'+listener.address().port)); //Listening on port 8888
 });
