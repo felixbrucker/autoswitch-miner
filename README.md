@@ -3,10 +3,10 @@
 ### Installation
 
 Autoswitch-miner requires [Node.js](https://nodejs.org/) v4+ to run.
-Additionally cpuminer-opt is needed:
+Additionally cpuminer-opt binary is needed:
 
-Windows: included
-Linux: included, install dependencies with:
+ - Windows: included
+ - Linux: included, you might need to install dependencies with:
 
 ```sh
 $ sudo apt-get install build-essential libssl-dev libcurl4-openssl-dev libjansson-dev libgmp-dev automake
