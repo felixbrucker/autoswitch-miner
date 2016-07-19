@@ -1,6 +1,6 @@
 # autoswitch-miner
 
-### Installation
+### Prerequisites
 
 Autoswitch-miner requires [Node.js](https://nodejs.org/) v4+ to run.
 Additionally cpuminer-opt binary is needed:
@@ -20,6 +20,8 @@ $ cd cpuminer-opt-3.3.7
 $ ./build.sh
 $ cp cpuminer ../autoswitch-miner/bin/
 ```
+
+### Installation
 
 ```sh
 $ git clone https://github.com/felixbrucker/autoswitch-miner
