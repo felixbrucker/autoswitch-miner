@@ -82,7 +82,7 @@ function startMiner() {
           break;
       }
       url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
-      const spawn = require('child_process').spawn;
+      const spawn = require('cross-spawn');
       if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
         cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
       } else {
