@@ -7,7 +7,7 @@ var fs = require('fs');
 var colors = require('colors/safe');
 
 var configModule = require(__basedir + 'api/modules/configModule');
-var miner_log = fs.createWriteStream(__basedir + '/miner.log', {flags: 'w'});
+var miner_log = fs.createWriteStream('data/miner.log', {flags: 'w'});
 
 var stats = {
   running: null,
