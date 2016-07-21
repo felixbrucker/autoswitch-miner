@@ -26,6 +26,6 @@ app.route('*').get(function(req, res) {
 
 
 
-var listener = app.listen(8080, function(){
+var listener = app.listen(process.env.PORT || 8080, function(){
   console.log(colors.green('server running: http://' + listener.address().address+':'+listener.address().port)); //Listening on port 8888
 });
