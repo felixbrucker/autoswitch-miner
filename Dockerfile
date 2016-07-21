@@ -11,4 +11,4 @@ WORKDIR /autoswitch-miner
 
 RUN npm install
 
-ENTRYPOINT ["npm start"]
+CMD ["npm", "start"]
