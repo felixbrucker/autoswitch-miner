@@ -71,7 +71,7 @@ var config = module.exports = {
         config.config.benchmarks = {
           scrypt: {name: "Scrypt", hashrate: null, enabled: true, benchRunning:null},
           sha256d: {name: "SHA256", hashrate: null, enabled: true, benchRunning:null},
-          scryptnf: {name: "ScryptNf", hashrate: null, enabled: false},
+          scryptnf: {name: "ScryptNf", hashrate: null, enabled: false, benchRunning:null},
           x11: {name: "X11", hashrate: null, enabled: true, benchRunning:null},
           x13: {name: "X13", hashrate: null, enabled: true, benchRunning:null},
           keccak: {name: "Keccak", hashrate: null, enabled: true, benchRunning:null},
@@ -79,18 +79,18 @@ var config = module.exports = {
           nist5: {name: "Nist5", hashrate: null, enabled: true, benchRunning:null},
           neoscrypt: {name: "NeoScrypt", hashrate: null, enabled: true, benchRunning:null},
           lyra2re: {name: "Lyra2RE", hashrate: null, enabled: true, benchRunning:null},
-          whirlpoolx: {name: "WhirlpoolX", hashrate: null, enabled: false},
+          whirlpoolx: {name: "WhirlpoolX", hashrate: null, enabled: false, benchRunning:null},
           qubit: {name: "Qubit", hashrate: null, enabled: true, benchRunning:null},
           quark: {name: "Quark", hashrate: null, enabled: true, benchRunning:null},
           axiom: {name: "Axiom", hashrate: null, enabled: true, benchRunning:null},
           lyra2rev2: {name: "Lyra2REv2", hashrate: null, enabled: true, benchRunning:null},
           scryptjane: {name: "ScryptJaneNf16", hashrate: null, enabled: true, benchRunning:null},
-          blake256r8: {name: "Blake256r8", hashrate: null, enabled: true, benchRunning:null},
-          blake256r14: {name: "Blake256r14", hashrate: null, enabled: false},
-          blake256r8vnl: {name: "Blake256r8vnl", hashrate: null, enabled: false},
-          hodl: {name: "Hodl", hashrate: null, enabled: true, benchRunning:null},
-          daggerhashimoto: {name: "Daggerhashimoto", hashrate: null, enabled: false},
-          decred: {name: "Decred", hashrate: null, enabled: true, benchRunning:null}
+          blake256r8: {name: "Blake256r8", hashrate: null, enabled: false, benchRunning:null},
+          blake256r14: {name: "Blake256r14", hashrate: null, enabled: false, benchRunning:null},
+          blake256r8vnl: {name: "Blake256r8vnl", hashrate: null, enabled: false, benchRunning:null},
+          hodl: {name: "Hodl", hashrate: null, enabled: false, benchRunning:null},
+          daggerhashimoto: {name: "Daggerhashimoto", hashrate: null, enabled: false, benchRunning:null},
+          decred: {name: "Decred", hashrate: null, enabled: false, benchRunning:null}
         };
         config.saveConfig();
       }
