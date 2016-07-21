@@ -1,6 +1,7 @@
 'use strict';
 
 var colors = require('colors/safe');
+var configPath="data/settings.json";
 
 var config = module.exports = {
   config: {
@@ -45,7 +46,7 @@ var config = module.exports = {
   saveConfig: function () {
     console.log(colors.grey("writing config to file.."));
     var fs = require('fs');
-    fs.writeFile("settings.json", JSON.stringify(config.config), function (err) {
+    fs.writeFile(configPath, JSON.stringify(config.config), function (err) {
       if (err) {
         return console.log(err);
       }
@@ -53,9 +54,9 @@ var config = module.exports = {
   },
   loadConfig: function () {
     var fs = require('fs');
-    fs.stat('settings.json', function (err, stat) {
+    fs.stat(configPath, function (err, stat) {
       if (err == null) {
-        fs.readFile('settings.json', 'utf8', function (err, data) {
+        fs.readFile(configPath, 'utf8', function (err, data) {
           if (err) throw err;
           config.config = JSON.parse(data);
           Object.keys(config.config.benchmarks).forEach(function (key) {
@@ -65,7 +66,7 @@ var config = module.exports = {
       } else if (err.code == 'ENOENT') {
         //default conf
         config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}];
-        config.config.binPath = __basedir + "bin/cpuminer";
+        config.config.binPath = "bin/cpuminer";
         config.config.autostart=false;
         config.config.benchmarks = {
           scrypt: {name: "Scrypt", hashrate: null, enabled: true, benchRunning:null},
