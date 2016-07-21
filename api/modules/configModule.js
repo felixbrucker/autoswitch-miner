@@ -1,7 +1,7 @@
 'use strict';
 
 var colors = require('colors/safe');
-var configPath="settings.json";
+var configPath="data/settings.json";
 
 var config = module.exports = {
   config: {
