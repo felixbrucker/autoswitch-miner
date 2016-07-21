@@ -3,7 +3,7 @@ MAINTAINER Felix Brucker
 
 RUN echo 'APT::Install-Recommends "false";' > /etc/apt/apt.conf.d/zz-local-tame
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y nodejs nodejs-legacy npm
+RUN apt-get update && apt-get upgrade -y && apt-get install -y nodejs nodejs-legacy npm libjansson-dev
 
 ADD . ./autoswitch-miner/
 
