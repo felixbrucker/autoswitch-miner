@@ -60,42 +60,46 @@ function startMiner() {
   if (validateSettings()) {
     if (cpuminer == null) {
       changeAlgo();
-      stats.btcAddress = configModule.config.btcAddress;
-      var algo = bestAlgo;
-      if (configModule.algos[bestAlgo].alt)
-        algo = configModule.algos[bestAlgo].alt;
-      var url = "stratum+tcp://";
-      if (configModule.algos[bestAlgo].dn)
-        url += configModule.algos[bestAlgo].dn;
-      else
-        url += bestAlgo;
-      url += ".";
-      switch (configModule.config.region) {
-        case 0:
-          url += "eu";
-          break;
-        case 1:
-          url += "usa";
-          break;
-        default:
-          url += "eu";
-          break;
-      }
-      url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
-      const spawn = require('cross-spawn');
-      if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-        cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
-      } else {
-        cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
-      }
-      console.log(colors.green("[miner started] \u2713"));
-      cpuminer.stdout.on('data', function (data) {
-        miner_log.write(data.toString());
-      });
+      if ( bestAlgo!== null && bestAlgo!==""){
+        stats.btcAddress = configModule.config.btcAddress;
+        var algo = bestAlgo;
+        if (configModule.algos[bestAlgo].alt)
+          algo = configModule.algos[bestAlgo].alt;
+        var url = "stratum+tcp://";
+        if (configModule.algos[bestAlgo].dn)
+          url += configModule.algos[bestAlgo].dn;
+        else
+          url += bestAlgo;
+        url += ".";
+        switch (configModule.config.region) {
+          case 0:
+            url += "eu";
+            break;
+          case 1:
+            url += "usa";
+            break;
+          default:
+            url += "eu";
+            break;
+        }
+        url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
+        const spawn = require('cross-spawn');
+        if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
+          cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
+        } else {
+          cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
+        }
+        console.log(colors.green("[miner started] \u2713"));
+        cpuminer.stdout.on('data', function (data) {
+          miner_log.write(data.toString());
+        });
 
-      cpuminer.stderr.on('data', function (data) {
-        miner_log.write(data.toString());
-      });
+        cpuminer.stderr.on('data', function (data) {
+          miner_log.write(data.toString());
+        });
+      }else{
+        console.log(colors.red("no benchmark values avilable, please insert at least one value or run benchmark"));
+      }
     } else {
       console.log(colors.blue("miner already running, not starting"));
     }
@@ -281,7 +285,7 @@ function getMinerStats() {
 function changeAlgo() {
   if (stats.benchRunning === false) {
     var currentProf = 0;
-    if (bestAlgo !== null && configModule.config.benchmarks[bestAlgo].enabled) {
+    if (bestAlgo !== null && bestAlgo !== "" && configModule.config.benchmarks[bestAlgo].enabled) {
       currentProf = configModule.algos[bestAlgo].profitability * configModule.config.benchmarks[bestAlgo].hashrate;
     } else {
       bestAlgo = "";
