@@ -9,7 +9,7 @@ Additionally cpuminer-opt binary is needed:
  - Linux: included, you might need to install dependencies with:
 
 ```sh
-$ sudo apt-get install libjansson-dev
+$ sudo apt-get install libjansson-dev libssl-dev libcurl4-openssl-dev
 ```
 
 or build it yourself:
