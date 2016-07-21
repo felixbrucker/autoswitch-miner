@@ -38,7 +38,7 @@ $ npm start
 ### Docker
 
 ```sh
-$ docker run -d -p 127.0.0.1:8080:8080 -v data data felixbrucker/autoswitch-miner:latest
+$ docker run -d -p 127.0.0.1:8080:8080 -v /path/to/some/dir:/autoswitch-miner/data felixbrucker/autoswitch-miner:latest
 ```
 
 ### Todos
