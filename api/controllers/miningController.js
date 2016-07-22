@@ -186,7 +186,7 @@ function doBenchmark() {
       startMiner();
       var i = 0;
       var hashrate = 0;
-      for (; i < 12; i++) {
+      for (; i < 12 && cpuminer!==null; i++) {
         wait.for(asyncSleep, 15000);
         if (stats.hashrate !== null && stats.hashrate !== 0) {
           hashrate += stats.hashrate;
