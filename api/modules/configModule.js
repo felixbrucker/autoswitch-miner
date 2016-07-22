@@ -1,6 +1,8 @@
 'use strict';
 
 var colors = require('colors/safe');
+var fs = require('fs');
+
 var configPath="data/settings.json";
 
 if (!fs.existsSync("data")){
@@ -48,7 +50,6 @@ var config = module.exports = {
   },
   saveConfig: function () {
     console.log(colors.grey("writing config to file.."));
-    var fs = require('fs');
     fs.writeFile(configPath, JSON.stringify(config.config), function (err) {
       if (err) {
         return console.log(err);
@@ -56,7 +57,6 @@ var config = module.exports = {
     });
   },
   loadConfig: function () {
-    var fs = require('fs');
     fs.stat(configPath, function (err, stat) {
       if (err == null) {
         fs.readFile(configPath, 'utf8', function (err, data) {
