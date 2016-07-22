@@ -3,6 +3,9 @@
 var colors = require('colors/safe');
 var configPath="data/settings.json";
 
+if (!fs.existsSync("data")){
+  fs.mkdirSync("data");
+}
 var config = module.exports = {
   config: {
     region: null,
