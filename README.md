@@ -27,7 +27,6 @@ $ cp cpuminer ../autoswitch-miner/bin/
 $ git clone https://github.com/felixbrucker/autoswitch-miner
 $ cd autoswitch-miner
 $ npm install
-$ mkdir data
 ```
 
 ### Run
