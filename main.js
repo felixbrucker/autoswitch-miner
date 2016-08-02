@@ -28,4 +28,6 @@ app.route('*').get(function(req, res) {
 
 var listener = app.listen(process.env.PORT || 8080, function(){
   console.log(colors.green('server running on port '+listener.address().port));
+  const opn = require('opn');
+  opn('http://localhost:'+listener.address().port);
 });

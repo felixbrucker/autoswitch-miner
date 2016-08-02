@@ -16,7 +16,9 @@ var config = module.exports = {
     proxy: null,
     binPath: null,
     autostart:null,
-    benchmarks: null
+    benchmarks: null,
+    benchTime: null,
+    rigName: null
   },
   algos: {
     lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, unit: 2},
@@ -59,6 +61,8 @@ var config = module.exports = {
           scryptjane: {name: "ScryptJaneNf16", hashrate: null, enabled: true, benchRunning:null},
           hodl: {name: "Hodl", hashrate: null, enabled: true, benchRunning:null}
         };
+        config.config.benchTime=60;
+        config.config.rigName='RXX';
         config.saveConfig();
       }
     });

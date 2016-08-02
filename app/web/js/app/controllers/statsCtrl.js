@@ -119,7 +119,6 @@
       }).then(function successCallback(response) {
         setTimeout(function(){vm.waiting = false;}, 1000);
         if (response.data.success === true) {
-          console.log("success");
           vm.getStats();
         }
       }, function errorCallback(response) {

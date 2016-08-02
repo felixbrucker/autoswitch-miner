@@ -44,7 +44,7 @@ function startMining(req, res, next) {
 }
 
 function validateSettings() {
-  if (configModule.config.btcAddress !== null && configModule.config.region !== null && configModule.config.binPath !== null) {
+  if (configModule.config.btcAddress !== null && configModule.config.region !== null && configModule.config.binPath !== null && configModule.config.rigName !== null && configModule.config.rigName !== '') {
     try {
       fs.statSync(configModule.config.binPath);
       return true;
@@ -99,9 +99,9 @@ function startMiner() {
           url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
           const spawn = require('cross-spawn');
           if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-            cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
+            cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress+'.'+configModule.config.rigName, '-p', 'x']);
           } else {
-            cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress, '-p', 'x']);
+            cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress+'.'+configModule.config.rigName, '-p', 'x']);
           }
           console.log(colors.green("[miner started] \u2713"));
           cpuminer.stdout.on('data', function (data) {
@@ -201,14 +201,13 @@ function doBenchmark() {
       startMiner();
       var i = 0;
       var hashrate = 0;
-      for (; i < 12 && cpuminer!==null; i++) {
-        wait.for(asyncSleep, 10000);
-        if (stats.hashrate !== null && stats.hashrate !== 0) {
-          hashrate += stats.hashrate;
-        } else {
-          i--;
-        }
-        console.log("hashrate: " + stats.hashrate + " KH/s");
+      while (stats.hashrate === null || stats.hashrate === 0) {
+        wait.for(asyncSleep, 1000);
+      }
+      wait.for(asyncSleep, 10000);
+      for (; i < configModule.config.benchTime && cpuminer!==null; i++) {
+        wait.for(asyncSleep, 1000);
+        hashrate += stats.hashrate;
       }
       configModule.config.benchmarks[key].benchRunning = false;
       stopMiner();

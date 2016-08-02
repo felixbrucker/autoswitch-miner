@@ -25,7 +25,9 @@
             proxy: null,
             binPath: null,
             autostart:null,
-            benchmarks: null
+            benchmarks: null,
+            benchTime: null,
+            rigName: null
         };
         vm.waiting = null;
         vm.waitingBenchmark = null;
@@ -71,6 +73,8 @@
                 vm.config.binPath = response.data.binPath;
                 vm.config.autostart=response.data.autostart;
                 vm.config.benchmarks = response.data.benchmarks;
+                vm.config.benchTime = response.data.benchTime;
+                vm.config.rigName = response.data.rigName;
             }, function errorCallback(response) {
                 console.log(response);
             });
