@@ -65,7 +65,10 @@ function startMiner() {
         if (configModule.algos[bestAlgo].alt)
           algo = configModule.algos[bestAlgo].alt;
         const spawn = require('cross-spawn');
-        cpuminer = spawn(configModule.config.binPath, ['-a', algo, '--benchmark']);
+        if (configModule.config.cores !== null && configModule.config.cores !== "")
+          cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-t',configModule.config.cores,'--benchmark']);
+        else
+          cpuminer = spawn(configModule.config.binPath, ['-a', algo, '--benchmark']);
         console.log(colors.green("[benchmark miner started] \u2713"));
         if (configModule.config.writeMinerLog) {
           cpuminer.stdout.on('data', function (data) {
@@ -101,7 +104,7 @@ function startMiner() {
           url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
           const spawn = require('cross-spawn');
           if (configModule.config.cores !== null && configModule.config.cores !== "") {
-            if (configModule.config.proxy !== null && configModule.config.proxy !== 0 && configModule.config.proxy !== "") {
+            if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
               cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-t', configModule.config.cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             } else {
               cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-t', configModule.config.cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
