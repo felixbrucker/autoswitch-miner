@@ -18,7 +18,9 @@ var config = module.exports = {
     autostart:null,
     benchmarks: null,
     benchTime: null,
-    rigName: null
+    rigName: null,
+    cores: null,
+    writeMinerLog: null
   },
   algos: {
     lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, unit: 2},
@@ -67,6 +69,7 @@ var config = module.exports = {
         };
         config.config.benchTime=60;
         config.config.rigName='RXX';
+        config.config.writeMinerLog=false;
         config.saveConfig();
       }
     });

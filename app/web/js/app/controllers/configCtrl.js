@@ -27,7 +27,9 @@
             autostart:null,
             benchmarks: null,
             benchTime: null,
-            rigName: null
+            rigName: null,
+            cores: null,
+            writeMinerLog: null
         };
         vm.waiting = null;
         vm.waitingBenchmark = null;
@@ -75,6 +77,8 @@
                 vm.config.benchmarks = response.data.benchmarks;
                 vm.config.benchTime = response.data.benchTime;
                 vm.config.rigName = response.data.rigName;
+                vm.config.cores=response.data.cores;
+                vm.config.writeMinerLog=response.data.writeMinerLog;
             }, function errorCallback(response) {
                 console.log(response);
             });

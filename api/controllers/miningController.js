@@ -48,7 +48,7 @@ function validateSettings() {
     try {
       fs.statSync(configModule.config.binPath);
       return true;
-    } catch(err) {
+    } catch (err) {
       return !(err && err.code === 'ENOENT');
     }
   }
@@ -60,21 +60,23 @@ function startMiner() {
   if (validateSettings()) {
     if (cpuminer == null) {
       changeAlgo();
-      if (stats.benchRunning===true){
+      if (stats.benchRunning === true) {
         var algo = bestAlgo;
         if (configModule.algos[bestAlgo].alt)
           algo = configModule.algos[bestAlgo].alt;
         const spawn = require('cross-spawn');
         cpuminer = spawn(configModule.config.binPath, ['-a', algo, '--benchmark']);
         console.log(colors.green("[benchmark miner started] \u2713"));
-        cpuminer.stdout.on('data', function (data) {
-          miner_log.write(data.toString());
-        });
-        cpuminer.stderr.on('data', function (data) {
-          miner_log.write(data.toString());
-        });
-      }else{
-        if ( bestAlgo!== null && bestAlgo!==""){
+        if (configModule.config.writeMinerLog) {
+          cpuminer.stdout.on('data', function (data) {
+            miner_log.write(data.toString());
+          });
+          cpuminer.stderr.on('data', function (data) {
+            miner_log.write(data.toString());
+          });
+        }
+      } else {
+        if (bestAlgo !== null && bestAlgo !== "") {
           stats.btcAddress = configModule.config.btcAddress;
           var algo = bestAlgo;
           if (configModule.algos[bestAlgo].alt)
@@ -98,20 +100,30 @@ function startMiner() {
           }
           url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
           const spawn = require('cross-spawn');
-          if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-            cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress+'.'+configModule.config.rigName, '-p', 'x']);
+          if (configModule.config.cores !== null && configModule.config.cores !== "") {
+            if (configModule.config.proxy !== null && configModule.config.proxy !== 0 && configModule.config.proxy !== "") {
+              cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-t', configModule.config.cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+            } else {
+              cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-t', configModule.config.cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+            }
           } else {
-            cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress+'.'+configModule.config.rigName, '-p', 'x']);
+            if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
+              cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+            } else {
+              cpuminer = spawn(configModule.config.binPath, ['-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+            }
           }
           console.log(colors.green("[miner started] \u2713"));
-          cpuminer.stdout.on('data', function (data) {
-            miner_log.write(data.toString());
-          });
+          if (configModule.config.writeMinerLog) {
+            cpuminer.stdout.on('data', function (data) {
+              miner_log.write(data.toString());
+            });
 
-          cpuminer.stderr.on('data', function (data) {
-            miner_log.write(data.toString());
-          });
-        }else{
+            cpuminer.stderr.on('data', function (data) {
+              miner_log.write(data.toString());
+            });
+          }
+        } else {
           console.log(colors.red("no benchmark values avilable, please insert at least one value or run benchmark"));
         }
       }
@@ -205,7 +217,7 @@ function doBenchmark() {
         wait.for(asyncSleep, 1000);
       }
       wait.for(asyncSleep, 10000);
-      for (; i < configModule.config.benchTime && cpuminer!==null; i++) {
+      for (; i < configModule.config.benchTime && cpuminer !== null; i++) {
         wait.for(asyncSleep, 1000);
         hashrate += stats.hashrate;
       }

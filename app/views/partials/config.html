@@ -18,6 +18,10 @@
             <td>Proxy</td>
             <td><input type="text" name="proxy" ng-model="configVm.config.proxy" placeholder="optional"></td>
           </tr>
+          <tr>
+            <td>Rig Name</td>
+            <td><input type="text" name="rigName" ng-model="configVm.config.rigName" placeholder="required" required></td>
+          </tr>
         </table>
       </div>
 
@@ -29,17 +33,22 @@
           </tr>
           <tr>
             <td>binPath</td>
-            <td><input type="text" name="binPath" ng-model="configVm.config.binPath"></td>
+            <td><input type="text" name="binPath" ng-model="configVm.config.binPath" placeholder="path to miner bin" required></td>
+          </tr>
+          <tr>
+            <td>Cores</td>
+            <td><input type="number" name="cores" ng-model="configVm.config.cores" placeholder="empty for all cores"></td>
           </tr>
         </table>
       </div>
     </div>
-    <br />
-    Rig Name: <input type="text" name="rigName" ng-model="configVm.config.rigName" placeholder="required" required>
+    <div>
+      <input type="checkbox" ng-model="configVm.config.writeMinerLog" ng-click="configVm.setConfig()">write Miner Log to file
+    </div>
     <br />
     <b>Benchmarks:</b>
     <div class="col-md-12">
-      benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.benchTime" placeholder="in seconds" required>
+      Benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.benchTime" placeholder="in seconds" required>
       <table class='table table-borderless'>
         <tr ng-repeat="(key, algo) in configVm.config.benchmarks  track by $index">
           <td><input type="checkbox" ng-model="algo.enabled" ng-click="configVm.setConfig()"></td>
