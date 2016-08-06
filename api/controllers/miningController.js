@@ -360,7 +360,6 @@ function checkBenchmark(req, res, next) {
 
 function init() {
   getProfitability();
-  getMinerStats();
   if (configModule.config.autostart) {
     console.log(colors.blue("autostart enabled, starting miner shortly.."));
     setTimeout(function () {
