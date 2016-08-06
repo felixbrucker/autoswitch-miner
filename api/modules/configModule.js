@@ -55,7 +55,7 @@ var config = module.exports = {
         var isWin = /^win/.test(process.platform);
         config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}];
         if (isWin)
-          config.config.binPath = "bin\cpuminer.exe";
+          config.config.binPath = "bin\\cpuminer.exe";
         else
           config.config.binPath = "bin/cpuminer";
         config.config.autostart=false;
