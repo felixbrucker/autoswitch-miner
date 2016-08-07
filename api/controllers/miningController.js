@@ -253,8 +253,7 @@ function getProfitability() {
       changeAlgo();
     });
   }).on("error", function(error) {
-    console.log("Error: Unable to get " + url, "#ff0000");
-    console.log(error, "#ff0000");
+    console.log("Error: Unable to get profitability data");
   });
 }
 function getMinerStats() {
