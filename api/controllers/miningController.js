@@ -254,6 +254,7 @@ function getProfitability() {
     });
   }).on("error", function(error) {
     console.log("Error: Unable to get profitability data");
+    console.log(error);
   });
 }
 function getMinerStats() {
@@ -330,19 +331,19 @@ function setRealProfitability(key, price) {
       configModule.algos[key].profitability = price;
       break;
     case 1:
-      configModule.algos[key].profitability = price / 1024;
+      configModule.algos[key].profitability = price / 1000;
       break;
     case 2:
-      configModule.algos[key].profitability = price / (1024 * 1024);
+      configModule.algos[key].profitability = price / (1000 * 1000);
       break;
     case 3:
-      configModule.algos[key].profitability = price / (1024 * 1024 * 1024);
+      configModule.algos[key].profitability = price / (1000 * 1000 * 1000);
       break;
     case 4:
-      configModule.algos[key].profitability = price / (1024 * 1024 * 1024 * 1024);
+      configModule.algos[key].profitability = price / (1000 * 1000 * 1000 * 1000);
       break;
     case 5:
-      configModule.algos[key].profitability = price / (1024 * 1024 * 1024 * 1024 * 1024);
+      configModule.algos[key].profitability = price / (1000 * 1000 * 1000 * 1000 * 1000);
       break;
     default:
       configModule.algos[key].profitability = null;
