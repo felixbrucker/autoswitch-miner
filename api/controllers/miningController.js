@@ -313,14 +313,15 @@ function changeAlgo() {
         potentialAlgo = key;
       }
     });
-    if (potentialBestProf > currentProf) {
-      bestAlgo = potentialAlgo;
+    if (potentialBestProf > currentProf && bestAlgo!==potentialAlgo) {
       if (stats.running) {
         console.log(colors.blue("changing algo: " + bestAlgo + " => " + potentialAlgo));
         console.log(colors.blue("profitability increased by " + (potentialBestProf - currentProf).toFixed(8) + " BTC/day"));
         stopMiner();
+        bestAlgo = potentialAlgo;
         startMiner();
-      }
+      }else
+        bestAlgo = potentialAlgo;
     }
   }
 }
