@@ -247,18 +247,18 @@ function getProfitability() {
     response.on('end', function () {
       var parsed = null;
       try{
-        parsed=JSON.parse(response);
+        parsed=JSON.parse(response.result);
       }catch(error){
         console.log("Error: Unable to get profitability data");
         console.log(error);
-        console.log(response);
+        console.log(response.result);
       }
       if (parsed != null){
-        setRealProfitability("lyra2re", parseFloat(parsed.result.simplemultialgo['9'].paying));
-        setRealProfitability("axiom", parseFloat(parsed.result.simplemultialgo['13'].paying));
-        setRealProfitability("scryptjane", parseFloat(parsed.result.simplemultialgo['15'].paying));
-        setRealProfitability("hodl", parseFloat(parsed.result.simplemultialgo['19'].paying));
-        setRealProfitability("cryptonight", parseFloat(parsed.result.simplemultialgo['22'].paying));
+        setRealProfitability("lyra2re", parseFloat(parsed.simplemultialgo['9'].paying));
+        setRealProfitability("axiom", parseFloat(parsed.simplemultialgo['13'].paying));
+        setRealProfitability("scryptjane", parseFloat(parsed.simplemultialgo['15'].paying));
+        setRealProfitability("hodl", parseFloat(parsed.simplemultialgo['19'].paying));
+        setRealProfitability("cryptonight", parseFloat(parsed.simplemultialgo['22'].paying));
         changeAlgo();
       }
     });
