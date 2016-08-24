@@ -318,10 +318,12 @@ function changeAlgo() {
     if (Object.keys(configModule.algos).length!==Object.keys(configModule.config.benchmarks).length){
       Object.keys(configModule.algos).forEach(function (key) {
         if(!(configModule.config.benchmarks.hasOwnProperty(key))){
-          configModule.config.benchmarks[key].name=configModule.algos[key].name;
-          configModule.config.benchmarks[key].hashrate=null;
-          configModule.config.benchmarks[key].enabled=true;
-          configModule.config.benchmarks[key].benchRunning=null;
+          var newAlgo = {};
+          newAlgo.name=configModule.algos[key].name;
+          newAlgo.hashrate=null;
+          newAlgo.enabled=true;
+          newAlgo.benchRunning=null;
+          configModule.config.benchmarks[key]=newAlgo;
         }
       });
     }
