@@ -10,4 +10,5 @@ if [ "$prevVersion" != "$currVersion" ]; then
   mkdir -p ../bin
   cp cpuminer ../bin/
 fi
+npm update
 npm start
