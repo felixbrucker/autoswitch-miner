@@ -279,7 +279,7 @@ function getMinerStats() {
     });
     connection.on('close', function () {
     });
-    connection.on('message', function (message) {Hodl
+    connection.on('message', function (message) {
       if (message.type === 'utf8') {
         var properties = message.utf8Data.split(';');
         var obj = {};
