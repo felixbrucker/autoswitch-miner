@@ -249,7 +249,13 @@ function getProfitability() {
       try{
         parsed=JSON.parse(response);
       }catch(error){
-        parsed=response;
+        console.log("Error: Unable to get profitability data");
+        console.log(error);
+        console.log("=== === === ===");
+        console.log(response);
+        console.log("=== === === ===");
+        console.log(parsed);
+        console.log("=== === === ===");
       }
       if (parsed != null){
         setRealProfitability("lyra2re", parseFloat(parsed.result.simplemultialgo['9'].paying));
