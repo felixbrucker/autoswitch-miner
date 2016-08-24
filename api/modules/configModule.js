@@ -27,7 +27,7 @@ var config = module.exports = {
     axiom: {id: 13, name: "Axiom", port: 3346, profitability: null, unit: 0},
     scryptjane: {id: 15, name: "ScryptJaneNf16", dn: "scryptjanenf16", port: 3348, profitability: null, unit: 1},
     hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, unit: 2},
-    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, unit: 1}
+    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, unit: 2}
   },
   getConfig: function () {
     return config.config;
