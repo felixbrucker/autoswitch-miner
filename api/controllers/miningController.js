@@ -245,13 +245,20 @@ function getProfitability() {
       body += d;
     });
     response.on('end', function () {
-      var parsed = JSON.parse(body);
-      setRealProfitability("lyra2re", parseFloat(parsed.result.simplemultialgo['9'].paying));
-      setRealProfitability("axiom", parseFloat(parsed.result.simplemultialgo['13'].paying));
-      setRealProfitability("scryptjane", parseFloat(parsed.result.simplemultialgo['15'].paying));
-      setRealProfitability("hodl", parseFloat(parsed.result.simplemultialgo['19'].paying));
-      setRealProfitability("cryptonight", parseFloat(parsed.result.simplemultialgo['22'].paying));
-      changeAlgo();
+      var parsed = null;
+      try{
+        parsed=JSON.parse(response);
+      }catch(e){
+        console.log("Error: "+e);
+      }
+      if (parsed != null){
+        setRealProfitability("lyra2re", parseFloat(parsed.result.simplemultialgo['9'].paying));
+        setRealProfitability("axiom", parseFloat(parsed.result.simplemultialgo['13'].paying));
+        setRealProfitability("scryptjane", parseFloat(parsed.result.simplemultialgo['15'].paying));
+        setRealProfitability("hodl", parseFloat(parsed.result.simplemultialgo['19'].paying));
+        setRealProfitability("cryptonight", parseFloat(parsed.result.simplemultialgo['22'].paying));
+        changeAlgo();
+      }
     });
   }).on("error", function(error) {
     console.log("Error: Unable to get profitability data");
@@ -272,7 +279,7 @@ function getMinerStats() {
     });
     connection.on('close', function () {
     });
-    connection.on('message', function (message) {
+    connection.on('message', function (message) {Hodl
       if (message.type === 'utf8') {
         var properties = message.utf8Data.split(';');
         var obj = {};
