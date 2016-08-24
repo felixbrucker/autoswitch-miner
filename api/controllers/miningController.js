@@ -315,7 +315,7 @@ function changeAlgo() {
     }
     var potentialBestProf = 0;
     var potentialAlgo = null;
-    if (configModule.algos.size()!==configModule.config.benchmarks.size()){
+    if (Object.keys(configModule.algos).length!==Object.keys(configModule.config.benchmarks).length){
       Object.keys(configModule.algos).forEach(function (key) {
         if(!(configModule.config.benchmarks.hasOwnProperty(key))){
           configModule.config.benchmarks[key].name=configModule.algos[key].name;
