@@ -9,6 +9,7 @@ if [ "$prevVersion" != "$currVersion" ]; then
   ./build.sh
   mkdir -p ../bin
   cp cpuminer ../bin/
+  git reset --hard
 fi
 npm update
 npm start
