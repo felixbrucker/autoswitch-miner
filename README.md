@@ -13,9 +13,9 @@ https://bitcointalk.org/index.php?topic=1326803.0
 ```sh
 $ git clone https://github.com/felixbrucker/autoswitch-miner
 $ cd autoswitch-miner
+$ git submodule init
 $ npm install
-$ mkdir bin
-$ cp ../cpuminer-opt-X.X.X/cpuminer bin/
+$ ./start.sh
 ```
 
 ### Run
