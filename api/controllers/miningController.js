@@ -250,6 +250,7 @@ function getProfitability() {
       setRealProfitability("axiom", parseFloat(parsed.result.simplemultialgo['13'].paying));
       setRealProfitability("scryptjane", parseFloat(parsed.result.simplemultialgo['15'].paying));
       setRealProfitability("hodl", parseFloat(parsed.result.simplemultialgo['19'].paying));
+      setRealProfitability("cryptonight", parseFloat(parsed.result.simplemultialgo['22'].paying));
       changeAlgo();
     });
   }).on("error", function(error) {
