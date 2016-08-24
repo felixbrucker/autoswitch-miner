@@ -315,6 +315,16 @@ function changeAlgo() {
     }
     var potentialBestProf = 0;
     var potentialAlgo = null;
+    if (configModule.algos.size()!==configModule.config.benchmarks.size()){
+      Object.keys(configModule.algos).forEach(function (key) {
+        if(!(configModule.config.benchmarks.hasOwnProperty(key))){
+          configModule.config.benchmarks[key].name=configModule.algos[key].name;
+          configModule.config.benchmarks[key].hashrate=null;
+          configModule.config.benchmarks[key].enabled=true;
+          configModule.config.benchmarks[key].benchRunning=null;
+        }
+      });
+    }
     Object.keys(configModule.algos).forEach(function (key) {
       if (configModule.config.benchmarks[key].enabled && configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate > potentialBestProf) {
         potentialBestProf = configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate;
