@@ -2,3 +2,7 @@
 	path = cpuminer-opt
 	url = https://github.com/felixbrucker/cpuminer-opt.git
 	branch = master
+[submodule "cpuminer-multi"]
+	path = cpuminer-multi
+	url = https://github.com/nicehash/cpuminer-multi
+	branch = windows
