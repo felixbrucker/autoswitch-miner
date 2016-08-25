@@ -3,6 +3,7 @@ global.__basedir = __dirname + '/';
 var express = require('express');
 var bodyParser = require('body-parser');
 var colors = require('colors/safe');
+require('console-stamp')(console, {pattern:'[dd-mm-yyyy HH:MM:ss]',label:false});
 var app = express();
 
 app.use(bodyParser.urlencoded({
