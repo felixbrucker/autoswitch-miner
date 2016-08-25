@@ -22,6 +22,7 @@ if [ "$1" == "run" ]; then
     sed -i -- 's/lyra2.h/Lyra2.h/g' lyra2/Sponge.c
     sed -i -- 's/sponge.h/Sponge.h/g' lyra2/Lyra2.c
     sed -i -- 's/sponge.h/Sponge.h/g' lyra2/Sponge.c
+    sed -i -- 's/ -flto//g' build.sh
     ./build.sh
     mkdir -p ../bin
     cp cpuminer ../bin/cpuminer-multi
