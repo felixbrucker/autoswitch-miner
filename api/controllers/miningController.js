@@ -60,15 +60,25 @@ function startMiner() {
   if (validateSettings()) {
     if (cpuminer == null) {
       changeAlgo();
+      var binPath = configModule.config.binPath;
       if (stats.benchRunning === true) {
         var algo = bestAlgo;
         if (configModule.algos[bestAlgo].alt)
           algo = configModule.algos[bestAlgo].alt;
+        if(algo==='cryptonight'){
+          binPath+='-multi';
+          try {
+            fs.statSync(binPath);
+          } catch (err) {
+            console.log(colors.red('Error: cryptonight miner for nicehash missing ('+binPath+')'));
+            return !(err && err.code === 'ENOENT');
+          }
+        }
         const spawn = require('cross-spawn');
         if (configModule.config.cores !== null && configModule.config.cores !== "")
-          cpuminer = spawn(configModule.config.binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',configModule.config.cores,'--benchmark']);
+          cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',configModule.config.cores,'--benchmark']);
         else
-          cpuminer = spawn(configModule.config.binPath, ['-b','127.0.0.1:4096','-a', algo, '--benchmark']);
+          cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '--benchmark']);
         console.log(colors.green("[benchmark miner started] \u2713"));
         if (configModule.config.writeMinerLog) {
           cpuminer.stdout.on('data', function (data) {
@@ -84,6 +94,15 @@ function startMiner() {
           var algo = bestAlgo;
           if (configModule.algos[bestAlgo].alt)
             algo = configModule.algos[bestAlgo].alt;
+          if(algo==='cryptonight'){
+            binPath+='-multi';
+            try {
+              fs.statSync(binPath);
+            } catch (err) {
+              console.log(colors.red('Error: cryptonight miner for nicehash missing ('+binPath+')'));
+              return !(err && err.code === 'ENOENT');
+            }
+          }
           var url = "stratum+tcp://";
           if (configModule.algos[bestAlgo].dn)
             url += configModule.algos[bestAlgo].dn;
@@ -102,18 +121,19 @@ function startMiner() {
               break;
           }
           url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
+
           const spawn = require('cross-spawn');
           if (configModule.config.cores !== undefined && configModule.config.cores !== null && configModule.config.cores !== "") {
             if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-              cpuminer = spawn(configModule.config.binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', configModule.config.cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', configModule.config.cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             } else {
-              cpuminer = spawn(configModule.config.binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', configModule.config.cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', configModule.config.cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             }
           } else {
             if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-              cpuminer = spawn(configModule.config.binPath, ['-b','127.0.0.1:4096','-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             } else {
-              cpuminer = spawn(configModule.config.binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             }
           }
           console.log(colors.green("[miner started] \u2713"));
