@@ -361,11 +361,11 @@ function changeAlgo() {
       });
     }
     Object.keys(configModule.algos).forEach(function (key) {
+      console.log(key);
+      console.log(configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate);
       if (configModule.config.benchmarks[key].enabled && configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate > potentialBestProf) {
         potentialBestProf = configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate;
         potentialAlgo = key;
-        console.log(potentialAlgo);
-        console.log(potentialBestProf);
       }
     });
     if (potentialBestProf > currentProf && bestAlgo!==potentialAlgo) {
