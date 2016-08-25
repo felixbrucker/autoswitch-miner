@@ -364,12 +364,14 @@ function changeAlgo() {
       if (configModule.config.benchmarks[key].enabled && configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate > potentialBestProf) {
         potentialBestProf = configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate;
         potentialAlgo = key;
+        console.log(potentialAlgo);
+        console.log(potentialBestProf);
       }
     });
     if (potentialBestProf > currentProf && bestAlgo!==potentialAlgo) {
       if (stats.running) {
         console.log(colors.blue("changing algo: " + bestAlgo + " => " + potentialAlgo));
-        console.log(colors.blue("profitability increased by " + (potentialBestProf - currentProf).toFixed(8) + " BTC/day"));
+        console.log(colors.blue("profitability increased to " + potentialBestProf.toFixed(8) + " BTC/day"));
         stopMiner();
         bestAlgo = potentialAlgo;
         startMiner();
