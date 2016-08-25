@@ -33,5 +33,5 @@ if [ "$1" == "run" ]; then
   npm start
 else
   git pull
-  ./start.sh run &
+  ./start.sh run
 fi
