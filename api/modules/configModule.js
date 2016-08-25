@@ -55,8 +55,8 @@ var config = module.exports = {
         });
       } else if (err.code == 'ENOENT') {
         //default conf
-        var isWin = /^win/.test(process.platform);
         config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}];
+        var isWin = /^win/.test(process.platform);
         if (isWin)
           config.config.binPath = "bin\\cpuminer.exe";
         else

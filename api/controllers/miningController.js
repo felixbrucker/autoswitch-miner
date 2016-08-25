@@ -66,7 +66,13 @@ function startMiner() {
         if (configModule.algos[bestAlgo].alt)
           algo = configModule.algos[bestAlgo].alt;
         if(algo==='cryptonight'){
-          binPath+='-multi';
+          var isWin = /^win/.test(process.platform);
+          if (isWin){
+            binPath= binPath.substring(0, binPath.length - 4);
+            binPath+='-multi.exe';
+          }else{
+            binPath+='-multi';
+          }
           try {
             fs.statSync(binPath);
           } catch (err) {
@@ -95,7 +101,13 @@ function startMiner() {
           if (configModule.algos[bestAlgo].alt)
             algo = configModule.algos[bestAlgo].alt;
           if(algo==='cryptonight'){
-            binPath+='-multi';
+            var isWin = /^win/.test(process.platform);
+            if (isWin){
+              binPath= binPath.substring(0, binPath.length - 4);
+              binPath+='-multi.exe';
+            }else{
+              binPath+='-multi';
+            }
             try {
               fs.statSync(binPath);
             } catch (err) {
