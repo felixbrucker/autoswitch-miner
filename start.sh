@@ -12,9 +12,10 @@ if [ "$prevVersion1" != "$currVersion1" ]; then
   mkdir -p ../bin
   cp cpuminer ../bin/
   git reset --hard
+  cd ..
 fi
 if [ "$prevVersion2" != "$currVersion2" ]; then
-  cd cpuminer-multi
+  cd 'cpuminer-multi'
   # ugly fix
   sed -i -- 's/lyra2.h/Lyra2.h/g' lyra2/Lyra2.c
   sed -i -- 's/lyra2.h/Lyra2.h/g' lyra2/Sponge.c
@@ -24,6 +25,7 @@ if [ "$prevVersion2" != "$currVersion2" ]; then
   mkdir -p ../bin
   cp cpuminer ../bin/cpuminer-multi
   git reset --hard
+  cd ..
 fi
 npm update
 npm start
