@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-exec > >(tee -i output.log)
-exec 2>&1
-
-
 
 if [ "$1" == "run" ]; then
   echo 'checking submodules, please wait ...'
@@ -43,5 +39,5 @@ if [ "$1" == "run" ]; then
 else
   echo 'getting latest updates ...'
   git pull
-  ./start.sh run
+  ./start.sh run 2>&1 | tee -a output.log
 fi
