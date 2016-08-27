@@ -122,7 +122,7 @@ function startMiner() {
 
             cpuminer.stdout.on('data', function (data) {
               if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1){
-                console.log(data.toString().trim().slice(29));
+                console.log(data.toString().trim().slice(30));
               }
               if (configModule.config.writeMinerLog) {
                 miner_log.write(data.toString());
