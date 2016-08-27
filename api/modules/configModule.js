@@ -77,5 +77,5 @@ var config = module.exports = {
     });
   }
 };
-console.log(colors.blue("initializing, please wait..."));
+console.log("initializing, please wait...");
 config.loadConfig();

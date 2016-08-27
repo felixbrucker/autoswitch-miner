@@ -70,7 +70,7 @@ function startMiner() {
           cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',configModule.config.cores,'--benchmark']);
         else
           cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '--benchmark']);
-        console.log(colors.green("[benchmark miner started] \u2713"));
+        console.log(colors.green("[benchmark miner started] :: ["+algo+"]"));
         if (configModule.config.writeMinerLog) {
           cpuminer.stdout.on('data', function (data) {
             miner_log.write(data.toString());
@@ -118,22 +118,28 @@ function startMiner() {
               cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             }
           }
-          console.log(colors.green("[miner started] \u2713"));
-          if (configModule.config.writeMinerLog) {
+          console.log(colors.green("[miner started] :: ["+algo+"]"));
+
             cpuminer.stdout.on('data', function (data) {
-              miner_log.write(data.toString());
+              if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1)
+                console.log(data.toString());
+              if (configModule.config.writeMinerLog) {
+                miner_log.write(data.toString());
+              }
             });
 
             cpuminer.stderr.on('data', function (data) {
-              miner_log.write(data.toString());
+              if (configModule.config.writeMinerLog) {
+                miner_log.write(data.toString());
+              }
             });
-          }
+
         } else {
           console.log(colors.red("no benchmark values avilable, please insert at least one value or run benchmark"));
         }
       }
     } else {
-      console.log(colors.blue("miner already running, not starting"));
+      console.log(colors.red("miner already running, not starting"));
     }
   } else {
     console.log(colors.red("some required settings are not properly configured \u274C"));
@@ -183,7 +189,7 @@ function stopMiner() {
   if (cpuminer !== null) {
     kill(cpuminer.pid);
     cpuminer = null;
-    console.log(colors.green("[miner stopped] \u2713"));
+    console.log(colors.green("[miner stopped]"));
   }
 }
 
@@ -214,7 +220,7 @@ function doBenchmark() {
     if (configModule.config.benchmarks[key].enabled) {
       bestAlgo = key;
       configModule.config.benchmarks[key].benchRunning = true;
-      console.log(colors.blue("benchmarking: " + key + " .."));
+      console.log("benchmarking: " + key + " ..");
       startMiner();
       var i = 0;
       var hashrate = 0;
@@ -338,7 +344,7 @@ function changeAlgo() {
     });
     if (potentialBestProf > currentProf && bestAlgo!==potentialAlgo) {
       if (stats.running) {
-        console.log(colors.blue("changing algo: " + bestAlgo + " => " + potentialAlgo));
+        console.log("changing algo: " + bestAlgo + " => " + potentialAlgo);
         stopMiner();
         bestAlgo = potentialAlgo;
         startMiner();
@@ -388,7 +394,7 @@ function init() {
   getProfitability();
   getMinerStats();
   if (configModule.config.autostart) {
-    console.log(colors.blue("autostart enabled, starting miner shortly.."));
+    console.log("autostart enabled, starting miner shortly..");
     setTimeout(function () {
       startMiner();
     }, 10000);
