@@ -15,14 +15,16 @@ $ git clone https://github.com/felixbrucker/autoswitch-miner
 $ cd autoswitch-miner
 $ git submodule init
 $ npm install
-$ ./start.sh
 ```
+
+On Windows you will need to get the miner binaries manually and place them in "bin", Linux users get the required binaries with the "start.sh" script
 
 ### Run
 
-```sh
-$ npm start
-```
+on Linux run "start.sh"
+
+on Windows run "npm start"
+
 
 ### Todos
 

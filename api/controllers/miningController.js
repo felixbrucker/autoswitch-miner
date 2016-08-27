@@ -65,21 +65,6 @@ function startMiner() {
         var algo = bestAlgo;
         if (configModule.algos[bestAlgo].alt)
           algo = configModule.algos[bestAlgo].alt;
-        if(algo==='cryptonight'){
-          var isWin = /^win/.test(process.platform);
-          if (isWin){
-            binPath= binPath.substring(0, binPath.length - 4);
-            binPath+='-multi.exe';
-          }else{
-            binPath+='-multi';
-          }
-          try {
-            fs.statSync(binPath);
-          } catch (err) {
-            console.log(colors.red('Error: cryptonight miner for nicehash missing ('+binPath+')'));
-            return !(err && err.code === 'ENOENT');
-          }
-        }
         const spawn = require('cross-spawn');
         if (configModule.config.cores !== null && configModule.config.cores !== "")
           cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',configModule.config.cores,'--benchmark']);
@@ -100,21 +85,6 @@ function startMiner() {
           var algo = bestAlgo;
           if (configModule.algos[bestAlgo].alt)
             algo = configModule.algos[bestAlgo].alt;
-          if(algo==='cryptonight'){
-            var isWin = /^win/.test(process.platform);
-            if (isWin){
-              binPath= binPath.substring(0, binPath.length - 4);
-              binPath+='-multi.exe';
-            }else{
-              binPath+='-multi';
-            }
-            try {
-              fs.statSync(binPath);
-            } catch (err) {
-              console.log(colors.red('Error: cryptonight miner for nicehash missing ('+binPath+')'));
-              return !(err && err.code === 'ENOENT');
-            }
-          }
           var url = "stratum+tcp://";
           if (configModule.algos[bestAlgo].dn)
             url += configModule.algos[bestAlgo].dn;
