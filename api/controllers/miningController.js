@@ -70,7 +70,7 @@ function startMiner() {
           cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',configModule.config.cores,'--benchmark']);
         else
           cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '--benchmark']);
-        console.log(colors.green("[benchmark miner started] - ["+algo+"]"));
+        console.log(colors.green("benchmark miner started, using "+algo));
         if (configModule.config.writeMinerLog) {
           cpuminer.stdout.on('data', function (data) {
             miner_log.write(data.toString());
@@ -118,22 +118,22 @@ function startMiner() {
               cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             }
           }
-          console.log(colors.green("[miner started] - ["+algo+"]"));
+          console.log(colors.green("miner started, using "+algo));
 
-            cpuminer.stdout.on('data', function (data) {
-              if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1){
-                console.log(data.toString().trim().slice(30));
-              }
-              if (configModule.config.writeMinerLog) {
-                miner_log.write(data.toString());
-              }
-            });
+          cpuminer.stdout.on('data', function (data) {
+            if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1){
+              console.log(data.toString().trim().slice(30));
+            }
+            if (configModule.config.writeMinerLog) {
+              miner_log.write(data.toString());
+            }
+          });
 
-            cpuminer.stderr.on('data', function (data) {
-              if (configModule.config.writeMinerLog) {
-                miner_log.write(data.toString());
-              }
-            });
+          cpuminer.stderr.on('data', function (data) {
+            if (configModule.config.writeMinerLog) {
+              miner_log.write(data.toString());
+            }
+          });
 
         } else {
           console.log(colors.red("no benchmark values avilable, please insert at least one value or run benchmark"));
@@ -190,7 +190,7 @@ function stopMiner() {
   if (cpuminer !== null) {
     kill(cpuminer.pid);
     cpuminer = null;
-    console.log(colors.green("[miner stopped]"));
+    console.log(colors.green("miner stopped"));
   }
 }
 
