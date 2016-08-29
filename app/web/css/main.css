@@ -8,8 +8,6 @@ body {
     margin-bottom: 2em;
 }
 
-form + div {margin-top:10px;}
-
 .container {
     text-align: center;
     word-wrap: break-word;
@@ -18,6 +16,7 @@ form + div {margin-top:10px;}
 
 .table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
     border: none;
+    text-align: center;
 }
 
 ul {
