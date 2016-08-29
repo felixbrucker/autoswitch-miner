@@ -45,9 +45,9 @@
     <div>
       <input type="checkbox" ng-model="configVm.config.writeMinerLog" ng-click="configVm.setConfig()">write Miner Log to file
     </div>
-    <br />
-    <b>Benchmarks:</b>
     <div class="col-md-10 col-md-offset-1">
+      <br />
+      <b>Benchmarks:</b>
       Benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.benchTime" placeholder="in seconds" required>
       <table class='table table-borderless'>
         <tr>
@@ -73,11 +73,13 @@
       <span class="sr-only">Loading...</span>
     </div>
   </form>
-  <br />
-  <button ng-show="!configVm.waitingBenchmark" type="button" class="btn btn-success" ng-click="configVm.doBenchmark()">Run Benchmark
-  </button>
-  <button ng-show="configVm.waitingBenchmark" type="button" class="btn btn-success" disabled>Benchmark running..
-  </button>
-  <i ng-show="configVm.waitingBenchmark" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
-  <span class="sr-only">Loading...</span>
+  <div>
+    <br />
+    <button ng-show="!configVm.waitingBenchmark" type="button" class="btn btn-success" ng-click="configVm.doBenchmark()">Run Benchmark
+    </button>
+    <button ng-show="configVm.waitingBenchmark" type="button" class="btn btn-success" disabled>Benchmark running..
+    </button>
+    <i ng-show="configVm.waitingBenchmark" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
 </div>
