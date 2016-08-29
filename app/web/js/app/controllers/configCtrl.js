@@ -118,8 +118,8 @@
                     method: 'POST',
                     url: 'api/mining/benchmark'
                 }).then(function successCallback(response) {
-                    if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 10000);
-                    if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 20000);
+                    if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 5000);
+                    if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 10000);
                 }, function errorCallback(response) {
                     console.log(response);
                 });
@@ -141,8 +141,8 @@
             }).then(function successCallback(response) {
                 if (response.data.running===true){
                     vm.waitingBenchmark=true;
-                    if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 10000);
-                    if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 20000);
+                    if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 5000);
+                    if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 10000);
                 }else{
                     if (vm.benchmarkInterval!==null){
                         $interval.cancel(vm.benchmarkInterval);
