@@ -52,6 +52,19 @@ var config = module.exports = {
           Object.keys(config.config.benchmarks).forEach(function (key) {
             config.config.benchmarks[key].benchRunning=false;
           });
+          if (Object.keys(config.algos).length!==Object.keys(config.config.benchmarks).length){
+            Object.keys(config.algos).forEach(function (key) {
+              if(!(config.config.benchmarks.hasOwnProperty(key))){
+                var newAlgo = {};
+                newAlgo.name=config.algos[key].name;
+                newAlgo.hashrate=null;
+                newAlgo.enabled=true;
+                newAlgo.benchRunning=null;
+                newAlgo.binPath=null;
+                config.config.benchmarks[key]=newAlgo;
+              }
+            });
+          }
         });
       } else if (err.code == 'ENOENT') {
         //default conf
@@ -63,11 +76,11 @@ var config = module.exports = {
           config.config.binPath = "bin/cpuminer";
         config.config.autostart=false;
         config.config.benchmarks = {
-          lyra2re: {name: "Lyra2RE", hashrate: null, enabled: true, benchRunning:null},
-          axiom: {name: "Axiom", hashrate: null, enabled: true, benchRunning:null},
-          scryptjane: {name: "ScryptJaneNf16", hashrate: null, enabled: true, benchRunning:null},
-          hodl: {name: "Hodl", hashrate: null, enabled: true, benchRunning:null},
-          cryptonight: {name: "CryptoNight", hashrate: null, enabled: true, benchRunning:null}
+          lyra2re: {name: "Lyra2RE", hashrate: null, enabled: true, benchRunning:null, binPath: null},
+          axiom: {name: "Axiom", hashrate: null, enabled: true, benchRunning:null, binPath: null},
+          scryptjane: {name: "ScryptJaneNf16", hashrate: null, enabled: true, benchRunning:null, binPath: null},
+          hodl: {name: "Hodl", hashrate: null, enabled: true, benchRunning:null, binPath: null},
+          cryptonight: {name: "CryptoNight", hashrate: null, enabled: true, benchRunning:null, binPath: null}
         };
         config.config.benchTime=60;
         config.config.rigName='RXX';

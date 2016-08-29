@@ -55,6 +55,7 @@
           <td>{{algo.name}}</td>
           <td><input type="number" name="hashrate-{{algo.name}}" ng-model="algo.hashrate" placeholder="hashrate"> KH/s</td>
           <td><i ng-show="algo.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span class="sr-only">Loading...</span></td>
+          <td><input type="text" name="binPath-{{algo.name}}" ng-model="algo.binPath" placeholder="path to custom miner bin"></td>
         </tr>
       </table>
     </div>

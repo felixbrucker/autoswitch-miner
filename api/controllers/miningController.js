@@ -47,10 +47,19 @@ function validateSettings() {
   if (configModule.config.btcAddress !== null && configModule.config.region !== null && configModule.config.binPath !== null && configModule.config.rigName !== null && configModule.config.rigName !== '') {
     try {
       fs.statSync(configModule.config.binPath);
-      return true;
     } catch (err) {
       return !(err && err.code === 'ENOENT');
     }
+    Object.keys(configModule.config.benchmarks).forEach(function (key) {
+      if(configModule.config.benchmarks[key].binPath!==null && configModule.config.benchmarks[key].binPath!==""){
+        try {
+          fs.statSync(configModule.config.benchmarks[key].binPath);
+        } catch (err) {
+          return !(err && err.code === 'ENOENT');
+        }
+      }
+    });
+    return true;
   }
   else
     return false;
@@ -61,6 +70,8 @@ function startMiner() {
     if (cpuminer == null) {
       changeAlgo();
       var binPath = configModule.config.binPath;
+      if (configModule.config.benchmarks[bestAlgo].binPath!==null && configModule.config.benchmarks[bestAlgo].binPath!=="")
+        binPath=configModule.config.benchmarks[bestAlgo].binPath;
       if (stats.benchRunning === true) {
         var algo = bestAlgo;
         if (configModule.algos[bestAlgo].alt)
@@ -143,7 +154,7 @@ function startMiner() {
       console.log(colors.red("miner already running, not starting"));
     }
   } else {
-    console.log(colors.red("some required settings are not properly configured \u274C"));
+    console.log(colors.red("some required settings are not properly configured"));
   }
 }
 
@@ -325,18 +336,6 @@ function changeAlgo() {
     }
     var potentialBestProf = 0;
     var potentialAlgo = null;
-    if (Object.keys(configModule.algos).length!==Object.keys(configModule.config.benchmarks).length){
-      Object.keys(configModule.algos).forEach(function (key) {
-        if(!(configModule.config.benchmarks.hasOwnProperty(key))){
-          var newAlgo = {};
-          newAlgo.name=configModule.algos[key].name;
-          newAlgo.hashrate=null;
-          newAlgo.enabled=true;
-          newAlgo.benchRunning=null;
-          configModule.config.benchmarks[key]=newAlgo;
-        }
-      });
-    }
     Object.keys(configModule.algos).forEach(function (key) {
       if (configModule.config.benchmarks[key].enabled && configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate > potentialBestProf) {
         potentialBestProf = configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate;
