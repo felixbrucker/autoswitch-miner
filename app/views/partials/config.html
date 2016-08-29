@@ -16,11 +16,11 @@
           </tr>
           <tr>
             <td>Proxy</td>
-            <td><input type="text" name="proxy" ng-model="configVm.config.proxy" placeholder="optional"></td>
+            <td><input type="text" name="proxy" ng-model="configVm.config.proxy" size="32" placeholder="optional"></td>
           </tr>
           <tr>
             <td>Rig Name</td>
-            <td><input type="text" name="rigName" ng-model="configVm.config.rigName" placeholder="required" required></td>
+            <td><input type="text" name="rigName" ng-model="configVm.config.rigName" size="8" placeholder="required" required></td>
           </tr>
         </table>
       </div>
@@ -29,15 +29,15 @@
         <table class='table table-borderless'>
           <tr>
             <td>BTC Address</td>
-            <td><input type="text" name="btcAddress" ng-model="configVm.config.btcAddress" placeholder="required" required></td>
+            <td><input type="text" name="btcAddress" ng-model="configVm.config.btcAddress" size="36" placeholder="required" required></td>
           </tr>
           <tr>
             <td>binPath</td>
-            <td><input type="text" name="binPath" ng-model="configVm.config.binPath" placeholder="path to miner bin" required></td>
+            <td><input type="text" name="binPath" ng-model="configVm.config.binPath" size="26" placeholder="path to miner bin" required></td>
           </tr>
           <tr>
             <td>Cores</td>
-            <td><input type="number" name="cores" ng-model="configVm.config.cores" placeholder="empty for all cores"></td>
+            <td><input type="number" name="cores" ng-model="configVm.config.cores" size="3" placeholder="empty for all cores"></td>
           </tr>
         </table>
       </div>
@@ -61,8 +61,8 @@
         <tr ng-repeat="(key, algo) in configVm.config.benchmarks  track by $index">
           <td><input type="checkbox" ng-model="algo.enabled" ng-click="configVm.setConfig()"></td>
           <td>{{algo.name}}</td>
-          <td><input type="number" name="hashrate-{{algo.name}}" ng-model="algo.hashrate" placeholder="hashrate"> KH/s</td>
-          <td><input type="text" name="binPath-{{algo.name}}" ng-model="algo.binPath" placeholder="path to custom miner bin" size="24"></td>
+          <td><input type="number" name="hashrate-{{algo.name}}" ng-model="algo.hashrate" size="10" placeholder="hashrate"> KH/s</td>
+          <td><input type="text" name="binPath-{{algo.name}}" ng-model="algo.binPath" placeholder="path to custom miner bin" size="26"></td>
           <td><i ng-show="algo.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.benchRunning">no</span></td>
         </tr>
       </table>
