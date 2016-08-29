@@ -46,6 +46,7 @@
       <input type="checkbox" ng-model="configVm.config.writeMinerLog" ng-click="configVm.setConfig()">write Miner Log to file
     </div>
     <div class="col-md-10 col-md-offset-1">
+      <br />
       <b>Benchmarks:</b>
       <br />
       Benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.benchTime" placeholder="in seconds" required>
@@ -61,7 +62,7 @@
           <td><input type="checkbox" ng-model="algo.enabled" ng-click="configVm.setConfig()"></td>
           <td>{{algo.name}}</td>
           <td><input type="number" name="hashrate-{{algo.name}}" ng-model="algo.hashrate" placeholder="hashrate"> KH/s</td>
-          <td><input type="text" name="binPath-{{algo.name}}" ng-model="algo.binPath" placeholder="path to custom miner bin"></td>
+          <td><input type="text" name="binPath-{{algo.name}}" ng-model="algo.binPath" placeholder="path to custom miner bin" size="24"></td>
           <td><i ng-show="algo.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.benchRunning">no</span></td>
         </tr>
       </table>
@@ -74,6 +75,7 @@
     </div>
   </form>
   <div>
+    <br />
     <br />
     <button ng-show="!configVm.waitingBenchmark" type="button" class="btn btn-success" ng-click="configVm.doBenchmark()">Run Benchmark
     </button>
