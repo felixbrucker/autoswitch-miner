@@ -8,6 +8,8 @@ body {
     margin-bottom: 2em;
 }
 
+form + div {margin-top:10px;}
+
 .container {
     text-align: center;
     word-wrap: break-word;
