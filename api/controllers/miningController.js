@@ -51,7 +51,7 @@ function validateSettings() {
       return !(err && err.code === 'ENOENT');
     }
     Object.keys(configModule.config.benchmarks).forEach(function (key) {
-      if(configModule.config.benchmarks[key].binPath!==null && configModule.config.benchmarks[key].binPath!==""){
+      if(configModule.config.benchmarks[bestAlgo].binPath!==undefined && configModule.config.benchmarks[key].binPath!==null && configModule.config.benchmarks[key].binPath!==""){
         try {
           fs.statSync(configModule.config.benchmarks[key].binPath);
         } catch (err) {
@@ -70,7 +70,7 @@ function startMiner() {
     if (cpuminer == null) {
       changeAlgo();
       var binPath = configModule.config.binPath;
-      if (configModule.config.benchmarks[bestAlgo].binPath!==null && configModule.config.benchmarks[bestAlgo].binPath!=="")
+      if (configModule.config.benchmarks[bestAlgo].binPath!==undefined && configModule.config.benchmarks[bestAlgo].binPath!==null && configModule.config.benchmarks[bestAlgo].binPath!=="")
         binPath=configModule.config.benchmarks[bestAlgo].binPath;
       if (stats.benchRunning === true) {
         var algo = bestAlgo;
