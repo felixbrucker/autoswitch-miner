@@ -66,11 +66,12 @@
         </tr>
       </table>
     </div>
-    <br />
-    <button type="button" class="btn btn-success" ng-disabled="config.$invalid" ng-click="configVm.setConfig()">Save
-    </button>
-    <i ng-show="configVm.waiting" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
-    <span class="sr-only">Loading...</span>
+    <div class="col-md-12">
+      <button type="button" class="btn btn-success" ng-disabled="config.$invalid" ng-click="configVm.setConfig()">Save
+      </button>
+      <i ng-show="configVm.waiting" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+      <span class="sr-only">Loading...</span>
+    </div>
   </form>
   <br />
   <button ng-show="!configVm.waitingBenchmark" type="button" class="btn btn-success" ng-click="configVm.doBenchmark()">Run Benchmark
