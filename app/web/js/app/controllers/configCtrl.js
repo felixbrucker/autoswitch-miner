@@ -153,6 +153,7 @@
                         vm.configInterval=null;
                     }
                     vm.waitingBenchmark = false;
+                    vm.getConfig();
                 }
             }, function errorCallback(response) {
                 console.log(response);
