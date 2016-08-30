@@ -120,6 +120,7 @@
                 }).then(function successCallback(response) {
                     if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 5000);
                     if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 10000);
+                    vm.getConfig();
                 }, function errorCallback(response) {
                     console.log(response);
                 });
