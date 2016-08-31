@@ -37,6 +37,7 @@ if [ "$1" == "run" ]; then
     git reset --hard
     cd ..
   fi
+  ulimit -s 1048576
   npm update
   npm start
 else
