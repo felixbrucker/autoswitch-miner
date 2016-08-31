@@ -25,9 +25,6 @@ var config = module.exports = {
   },
   algos: {
     lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, submitUnit: 2, profUnit: 2},
-    axiom: {id: 13, name: "Axiom", port: 3346, profitability: null, submitUnit: 1, profUnit: 0},
-    scryptjane: {id: 15, name: "ScryptJaneNf16", dn: "scryptjanenf16", port: 3348, profitability: null, submitUnit: 1, profUnit: 1},
-    hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 2},
     cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 2}
   },
   cpuModel: os.cpus()[0].model.trim(),
@@ -80,6 +77,9 @@ var config = module.exports = {
       } else if (err.code == 'ENOENT') {
         //default conf
         config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}];
+        config.config.region = 1;
+        config.config.btcAddress = '12gotm1HbU1zv9FMnuNfPakpn7rsRjB1no';
+        config.config.cores = 2;
         var isWin = /^win/.test(process.platform);
         if (isWin)
           config.config.binPath = "bin\\cpuminer.exe";
@@ -89,8 +89,8 @@ var config = module.exports = {
         config.config.benchmarks = {
         };
         config.config.benchTime=60;
-        config.config.rigName='RXX';
-        config.config.writeMinerLog=false;
+        config.config.rigName=process.env.WNAME;
+        config.config.writeMinerLog=true;
         config.saveConfig();
         config.loadConfig();
       }

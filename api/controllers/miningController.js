@@ -227,6 +227,12 @@ function doBenchmarkWrapper(req, res, next) {
   }
 }
 
+function doBenchmarkWrapper2() {
+  if (stats.benchRunning === false) {
+    wait.launchFiber(doBenchmark);
+  }
+}
+
 function asyncSleep(param, callback) {
   setTimeout(function () {
     callback(null);
@@ -406,7 +412,14 @@ function init() {
       startMiner();
     }, 10000);
   }
-
+  changeAlgo();
+  if (bestAlgo === null || bestAlgo === ""){
+    doBenchmarkWrapper2();
+    setTimeout(function(){
+      configModule.config.autostart=true;
+      startMiner();
+    },160*1000);
+  }
   var minutes = 3, profitabilityInterval = minutes * 60 * 1000;
   setInterval(function () {
     getProfitability();
