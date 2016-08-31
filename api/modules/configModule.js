@@ -30,7 +30,7 @@ var config = module.exports = {
     hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 2},
     cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 2}
   },
-  cpuModel: os.cpus()[0].model.trim().replace(/\s+/g, ' '),
+  cpuModel: os.cpus()[0].model.trim(),
   getConfig: function () {
     return config.config;
   },
