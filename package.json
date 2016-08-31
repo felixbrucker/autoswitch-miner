@@ -12,6 +12,6 @@
     "console-stamp": "^0.2.2"
   },
   "scripts": {
-    "start": "./start.sh"
+    "start": "node main.js"
   }
 }
