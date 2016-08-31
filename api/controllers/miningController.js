@@ -320,7 +320,7 @@ function getMinerStats() {
         stats.hashrate = parseFloat(obj.KHS);
         if (configModule.algos[stats.algorithm].unit===0)
           stats.hashrate*=1000;
-        for (i = 1; i < configModule.algos[stats.algorithm].unit; i++) {
+        for (var i = 1; i < configModule.algos[stats.algorithm].unit; i++) {
           stats.hashrate/=1000;
         }
         stats.speedSuffix=configModule.config.benchmarks[stats.algorithm].speedSuffix;
