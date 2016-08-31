@@ -46,6 +46,7 @@ var config = module.exports = {
     });
   },
   loadConfig: function () {
+    console.log(os.cpus()[0]);
     fs.stat(configPath, function (err, stat) {
       if (err == null) {
         fs.readFile(configPath, 'utf8', function (err, data) {
