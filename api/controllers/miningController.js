@@ -291,9 +291,6 @@ function getProfitability() {
       }
       if (parsed != null){
         setRealProfitability("lyra2re",parseFloat(parsed.result.simplemultialgo['9'].paying));
-        setRealProfitability("axiom",parseFloat(parsed.result.simplemultialgo['13'].paying));
-        setRealProfitability("scryptjane",parseFloat(parsed.result.simplemultialgo['15'].paying));
-        setRealProfitability("hodl",parseFloat(parsed.result.simplemultialgo['19'].paying));
         setRealProfitability("cryptonight",parseFloat(parsed.result.simplemultialgo['22'].paying));
         changeAlgo();
       }
@@ -413,7 +410,6 @@ function keepalive(){
 }
 
 function init() {
-  configModule = require(__basedir + 'api/modules/configModule');
   getProfitability();
   getMinerStats();
   if (configModule.config.autostart) {
@@ -443,7 +439,7 @@ function init() {
   },1000*60*7);
 }
 
-setTimeout(init, 5000);
+setTimeout(init, 1000);
 
 exports.getStats = getStats;
 exports.startMining = startMining;
