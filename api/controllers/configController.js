@@ -16,7 +16,7 @@ function setConfig(req, res, next) {
 
 function getCPUModel(req, res, next) {
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify(configModule.cpuModel));
+  res.send(JSON.stringify({cpuModel: configModule.cpuModel}));
 }
 
 function init() {

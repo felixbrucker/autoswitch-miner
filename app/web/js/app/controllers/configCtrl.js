@@ -36,7 +36,7 @@
         vm.configInterval=null;
         vm.benchmarkInterval=null;
         vm.profitabilityString=null;
-        vm.CPUModel=null;
+        vm.cpuModel=null;
 
 
         // controller API
@@ -83,7 +83,7 @@
                 vm.config.rigName = response.data.rigName;
                 vm.config.cores=response.data.cores;
                 vm.config.writeMinerLog=response.data.writeMinerLog;
-                vm.profitabilityString="&name="+vm.CPUModel;
+                vm.profitabilityString="&name="+vm.cpuModel;
                 Object.keys(vm.config.benchmarks).forEach(function (key) {
                     var submitHashrate=vm.config.benchmarks[key].hashrate;
                     if (vm.config.benchmarks[key].submitUnit===0)
@@ -109,7 +109,7 @@
                 method: 'GET',
                 url: 'api/config/cpumodel'
             }).then(function successCallback(response) {
-                vm.CPUModel=response.data.CPUModel;
+                vm.cpuModel=response.data.cpuModel;
             }, function errorCallback(response) {
                 console.log(response);
             });
