@@ -249,7 +249,7 @@ function doBenchmark() {
       configModule.config.benchmarks[key].benchRunning = false;
       stopMiner();
       configModule.config.benchmarks[key].hashrate = (hashrate) / i;
-      console.log(colors.green("avg hashrate: " + configModule.config.benchmarks[key].hashrate + " KH/s"));
+      console.log(colors.green("avg hashrate: " + configModule.config.benchmarks[key].hashrate + " "+configModule.config.benchmarks[key].speedSuffix));
       configModule.saveConfig();
     }
   });
@@ -275,11 +275,11 @@ function getProfitability() {
         console.log(error);
       }
       if (parsed != null){
-        setRealProfitability("lyra2re", parseFloat(parsed.result.simplemultialgo['9'].paying));
-        setRealProfitability("axiom", parseFloat(parsed.result.simplemultialgo['13'].paying));
-        setRealProfitability("scryptjane", parseFloat(parsed.result.simplemultialgo['15'].paying));
-        setRealProfitability("hodl", parseFloat(parsed.result.simplemultialgo['19'].paying));
-        setRealProfitability("cryptonight", parseFloat(parsed.result.simplemultialgo['22'].paying));
+        configModule.algos["lyra2re"].profitability=parseFloat(parsed.result.simplemultialgo['9'].paying;
+        configModule.algos["axiom"].profitability=parseFloat(parsed.result.simplemultialgo['13'].paying;
+        configModule.algos["scryptjane"].profitability=parseFloat(parsed.result.simplemultialgo['15'].paying;
+        configModule.algos["hodl"].profitability=parseFloat(parsed.result.simplemultialgo['19'].paying;
+        configModule.algos["cryptonight"].profitability=parseFloat(parsed.result.simplemultialgo['22'].paying;
         changeAlgo();
       }
     });
@@ -317,6 +317,11 @@ function getMinerStats() {
         stats.cores = parseFloat(obj.CPUS);
         stats.difficulty = parseFloat(obj.DIFF);
         stats.hashrate = parseFloat(obj.KHS);
+        if (configModule.config.algo[stats.algorithm].unit===0)
+          stats.hashrate*=1000;
+        for (i = 1; i < configModule.config.algo[stats.algorithm].unit; i++) {
+          stats.hashrate/=1000;
+        }
         stats.miner = obj.NAME + " " + obj.VER;
         stats.rejected = parseFloat(obj.REJ);
         stats.temperature = parseFloat(obj.TEMP);
@@ -356,32 +361,6 @@ function changeAlgo() {
   }
 }
 
-function setRealProfitability(key, price) {
-  switch (configModule.algos[key].unit) {
-    case 0:
-      configModule.algos[key].profitability = price;
-      break;
-    case 1:
-      configModule.algos[key].profitability = price / 1000;
-      break;
-    case 2:
-      configModule.algos[key].profitability = price / (1000 * 1000);
-      break;
-    case 3:
-      configModule.algos[key].profitability = price / (1000 * 1000 * 1000);
-      break;
-    case 4:
-      configModule.algos[key].profitability = price / (1000 * 1000 * 1000 * 1000);
-      break;
-    case 5:
-      configModule.algos[key].profitability = price / (1000 * 1000 * 1000 * 1000 * 1000);
-      break;
-    default:
-      configModule.algos[key].profitability = null;
-      break;
-  }
-}
-
 function checkBenchmark(req, res, next) {
   if (stats.benchRunning) {
     res.setHeader('Content-Type', 'application/json');
@@ -408,7 +387,7 @@ function init() {
   }, profitabilityInterval);
   setInterval(function () {
     getMinerStats();
-  }, 2000);
+  }, 3000);
 }
 
 setTimeout(init, 1000);
