@@ -16,7 +16,6 @@ if [ "$1" == "run" ]; then
     sed -i -- 's/\[cpuminer-multi\]/\[cpuminer-opt\]/g' configure.ac
     sed -i -- "s/, \[1.2-dev\]/, \[${minerVer}\]/g" configure.ac
     ./build.sh
-    ./build.sh
     mkdir -p ../bin
     cp cpuminer ../bin/
     git reset --hard
