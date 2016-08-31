@@ -12,6 +12,9 @@ if [ "$1" == "run" ]; then
     echo 'newer cpuminer-opt version available, building ...'
     sleep 2
     cd cpuminer-opt
+    minerVer=`git describe --abbrev=0 --tags`
+    sed -i -- 's/[cpuminer-multi]/[cpuminer-opt]/g' configure.ac
+    sed -i -- sed 's/[1.2-dev]/['"${minerVer}"']/g' configure.ac
     ./build.sh
     mkdir -p ../bin
     cp cpuminer ../bin/
