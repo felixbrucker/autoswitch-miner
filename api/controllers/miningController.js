@@ -403,6 +403,15 @@ function checkBenchmark(req, res, next) {
   }
 }
 
+function keepalive(){
+  return https.get({
+    host: process.env.HOSTNAME + '.herokuapp.com',
+    path: '/stats',
+    headers:{'Cache-Control':'no-cache'}
+  }, function (response) {
+  });
+}
+
 function init() {
   getProfitability();
   getMinerStats();
@@ -427,6 +436,10 @@ function init() {
   setInterval(function () {
     getMinerStats();
   }, 2000);
+
+  setInterval(function(){
+    keepalive();
+  },1000*60*7);
 }
 
 setTimeout(init, 1000);
