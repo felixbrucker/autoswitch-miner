@@ -276,11 +276,11 @@ function getProfitability() {
         console.log(error);
       }
       if (parsed != null){
-        configModule.algos["lyra2re"].profitability=parseFloat(parsed.result.simplemultialgo['9'].paying;
-        configModule.algos["axiom"].profitability=parseFloat(parsed.result.simplemultialgo['13'].paying;
-        configModule.algos["scryptjane"].profitability=parseFloat(parsed.result.simplemultialgo['15'].paying;
-        configModule.algos["hodl"].profitability=parseFloat(parsed.result.simplemultialgo['19'].paying;
-        configModule.algos["cryptonight"].profitability=parseFloat(parsed.result.simplemultialgo['22'].paying;
+        configModule.algos["lyra2re"].profitability=parseFloat(parsed.result.simplemultialgo['9'].paying);
+        configModule.algos["axiom"].profitability=parseFloat(parsed.result.simplemultialgo['13'].paying);
+        configModule.algos["scryptjane"].profitability=parseFloat(parsed.result.simplemultialgo['15'].paying);
+        configModule.algos["hodl"].profitability=parseFloat(parsed.result.simplemultialgo['19'].paying);
+        configModule.algos["cryptonight"].profitability=parseFloat(parsed.result.simplemultialgo['22'].paying);
         changeAlgo();
       }
     });
