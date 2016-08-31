@@ -357,7 +357,6 @@ function changeAlgo() {
     var potentialBestProf = 0;
     var potentialAlgo = null;
     Object.keys(configModule.algos).forEach(function (key) {
-      console.log("prof of "+key+": "+configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate);
       if (configModule.config.benchmarks[key].enabled && configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate > potentialBestProf) {
         potentialBestProf = configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate;
         potentialAlgo = key;
