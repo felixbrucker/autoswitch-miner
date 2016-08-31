@@ -64,17 +64,6 @@
       return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
     }
   });
-  app.filter('hashrate', function() {
-    return function(hashrate, precision) {
-      if (isNaN(parseFloat(hashrate)) || !isFinite(hashrate)) return '';
-      if (parseFloat(hashrate)===0) return '0 H/s'
-      if (typeof precision === 'undefined') precision = 1;
-      hashrate=hashrate*1000;
-      var units = ['H/s','KH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s'],
-        number = Math.floor(Math.log(hashrate) / Math.log(1024));
-      return (hashrate / Math.pow(1024, Math.floor(number))).toFixed(precision) +  ' ' + units[number];
-    }
-  });
   app.filter('secondsToTimeString', function() {
     return function(seconds) {
       var days = Math.floor(seconds / 86400);
