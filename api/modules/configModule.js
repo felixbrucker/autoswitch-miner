@@ -57,6 +57,8 @@ var config = module.exports = {
               if(!(config.config.benchmarks.hasOwnProperty(key))){
                 var newAlgo = {};
                 newAlgo.name=config.algos[key].name;
+                newAlgo.id=config.algos[key].id;
+                newAlgo.unit=config.algos[key].unit;
                 newAlgo.hashrate=null;
                 newAlgo.enabled=true;
                 newAlgo.benchRunning=null;
