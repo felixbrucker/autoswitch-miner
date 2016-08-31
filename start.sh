@@ -3,6 +3,7 @@ cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ "$1" == "run" ]; then
   echo 'checking submodules, please wait ...'
+  find cpuminer-opt -maxdepth 0 -empty -exec git submodule init \;
   prevVersion1=`git submodule status cpuminer-opt`
   git submodule update --recursive --remote
   currVersion1=`git submodule status cpuminer-opt`
