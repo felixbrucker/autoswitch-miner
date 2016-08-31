@@ -90,7 +90,7 @@
                     }
                     vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+submitHashrate.toFixed(2);
                 });
-                vm.profitabilityString+="&cost=1&power=1";
+                vm.profitabilityString+="&cost=0&power=0";
             }, function errorCallback(response) {
                 console.log(response);
             });
