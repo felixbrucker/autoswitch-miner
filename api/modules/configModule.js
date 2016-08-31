@@ -58,6 +58,22 @@ var config = module.exports = {
                 var newAlgo = {};
                 newAlgo.name=config.algos[key].name;
                 newAlgo.id=config.algos[key].id;
+                var speedSuffix="";
+                switch(config.algos[key].unit){
+                  case 0: speedSuffix="H/s";
+                  break;
+                  case 1: speedSuffix="KH/s";
+                  break;
+                  case 2: speedSuffix="MH/s";
+                  break;
+                  case 3: speedSuffix="GH/s";
+                  break;
+                  case 4: speedSuffix="TH/s";
+                  break;
+                  case 5: speedSuffix="PH/s";
+                  break;
+                }
+                newAlgo.speedSuffix=speedSuffix;
                 newAlgo.hashrate=null;
                 newAlgo.enabled=true;
                 newAlgo.benchRunning=null;
