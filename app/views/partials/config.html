@@ -74,12 +74,15 @@
       <span class="sr-only">Loading...</span>
     </div>
   </form>
-  <div>
+  <div style="margin-bottom: 10px;">
     <button ng-show="!configVm.waitingBenchmark" type="button" class="btn btn-success" ng-click="configVm.doBenchmark()">Run Benchmark
     </button>
     <button ng-show="configVm.waitingBenchmark" type="button" class="btn btn-success" disabled>Benchmark running..
     </button>
     <i ng-show="configVm.waitingBenchmark" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
     <span class="sr-only">Loading...</span>
+  </div>
+  <div>
+    <a href="https://www.nicehash.com/?p=calc&{{configVm.profitabilityString}}" target="_blank">Check Profitability</a>
   </div>
 </div>
