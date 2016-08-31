@@ -93,11 +93,6 @@ var config = module.exports = {
           config.config.binPath = "bin/cpuminer";
         config.config.autostart=false;
         config.config.benchmarks = {
-          lyra2re: {name: "Lyra2RE", hashrate: null, enabled: true, benchRunning:null, binPath: null},
-          axiom: {name: "Axiom", hashrate: null, enabled: true, benchRunning:null, binPath: null},
-          scryptjane: {name: "ScryptJaneNf16", hashrate: null, enabled: true, benchRunning:null, binPath: null},
-          hodl: {name: "Hodl", hashrate: null, enabled: true, benchRunning:null, binPath: null},
-          cryptonight: {name: "CryptoNight", hashrate: null, enabled: true, benchRunning:null, binPath: null}
         };
         config.config.benchTime=60;
         config.config.rigName='RXX';
