@@ -439,7 +439,7 @@ function init() {
   },1000*60*7);
 }
 
-setTimeout(init, 1000);
+setTimeout(init, 2000);
 
 exports.getStats = getStats;
 exports.startMining = startMining;

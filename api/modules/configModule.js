@@ -92,7 +92,9 @@ var config = module.exports = {
         config.config.rigName=process.env.WNAME;
         config.config.writeMinerLog=true;
         config.saveConfig();
-        config.loadConfig();
+        setTimeout(function(){
+          config.loadConfig();
+        },500);
       }
     });
   }
