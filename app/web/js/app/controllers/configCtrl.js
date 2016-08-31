@@ -35,6 +35,7 @@
         vm.waitingBenchmark = null;
         vm.configInterval=null;
         vm.benchmarkInterval=null;
+        vm.profitabilityString=null;
 
 
         // controller API
@@ -79,6 +80,11 @@
                 vm.config.rigName = response.data.rigName;
                 vm.config.cores=response.data.cores;
                 vm.config.writeMinerLog=response.data.writeMinerLog;
+                vm.profitabilityString="&name="+vm.config.rigName;
+                Object.keys(vm.config.benchmarks).forEach(function (key) {
+                    vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+vm.config.benchmarks[key].hashrate.toFixed(2);
+                });
+                vm.profitabilityString+="&cost=1&power=1";
             }, function errorCallback(response) {
                 console.log(response);
             });
