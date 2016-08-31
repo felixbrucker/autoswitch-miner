@@ -12,6 +12,7 @@ var miner_log = fs.createWriteStream('data/miner.log', {flags: 'w'});
 var stats = {
   running: null,
   hashrate: null,
+  speedSuffix: null,
   algorithm: null,
   cores: null,
   miner: null,
@@ -322,6 +323,7 @@ function getMinerStats() {
         for (i = 1; i < configModule.config.algo[stats.algorithm].unit; i++) {
           stats.hashrate/=1000;
         }
+        stats.speedSuffix=configModule.config.benchmarks[stats.algorithm].speedSuffix;
         stats.miner = obj.NAME + " " + obj.VER;
         stats.rejected = parseFloat(obj.REJ);
         stats.temperature = parseFloat(obj.TEMP);
