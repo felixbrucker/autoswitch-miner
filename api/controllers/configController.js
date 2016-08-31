@@ -14,6 +14,11 @@ function setConfig(req, res, next) {
   res.send(JSON.stringify({success: true}));
 }
 
+function getCPUModel(req, res, next) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(configModule.cpuModel));
+}
+
 function init() {
 
 }
@@ -22,3 +27,4 @@ init();
 
 exports.getConfig = getConfig;
 exports.setConfig = setConfig;
+exports.getCPUModel = getCPUModel;

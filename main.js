@@ -25,9 +25,6 @@ app.route('*').get(function(req, res) {
   });
 });
 
-var os = require('os');
-console.log(os.cpus());
-
 var listener = app.listen(process.env.PORT || 8080, function(){
   console.log(colors.green('server running on port '+listener.address().port));
 });

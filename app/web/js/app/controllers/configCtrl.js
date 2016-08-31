@@ -36,12 +36,14 @@
         vm.configInterval=null;
         vm.benchmarkInterval=null;
         vm.profitabilityString=null;
+        vm.CPUModel=null;
 
 
         // controller API
         vm.init = init;
         vm.getConfig=getConfig;
         vm.setConfig=setConfig;
+        vm.getCPUModel=getCPUModel;
         vm.doBenchmark=doBenchmark;
         vm.checkBenchmark=checkBenchmark;
 
@@ -55,6 +57,7 @@
         function init() {
             angular.element(document).ready(function () {
                 vm.getConfig();
+                vm.getCPUModel();
                 vm.checkBenchmark();
             });
         }
@@ -91,6 +94,22 @@
                     vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+submitHashrate.toFixed(2);
                 });
                 vm.profitabilityString+="&cost=0&power=0";
+            }, function errorCallback(response) {
+                console.log(response);
+            });
+        }
+
+        /**
+         * @name getCPUModel
+         * @desc get the CPU Model
+         * @memberOf configCtrl
+         */
+        function getCPUModel() {
+            return $http({
+                method: 'GET',
+                url: 'api/config/cpumodel'
+            }).then(function successCallback(response) {
+                vm.CPUModel=response.data.CPUModel;
             }, function errorCallback(response) {
                 console.log(response);
             });
@@ -173,8 +192,6 @@
             });
 
         }
-
-
 
         // call init function on firstload
         vm.init();
