@@ -66,6 +66,13 @@ var config = module.exports = {
                 config.config.benchmarks[key]=newAlgo;
               }
             });
+          }else{
+            Object.keys(config.config.benchmarks).forEach(function (key) {
+              if(config.config.benchmarks[key].id===undefined)
+                config.config.benchmarks[key].id=config.algos[key].id;
+              if(config.config.benchmarks[key].submitUnit===undefined)
+                config.config.benchmarks[key].submitUnit=config.algos[key].submitUnit;
+            });
           }
         });
       } else if (err.code == 'ENOENT') {
