@@ -318,9 +318,9 @@ function getMinerStats() {
         stats.cores = parseFloat(obj.CPUS);
         stats.difficulty = parseFloat(obj.DIFF);
         stats.hashrate = parseFloat(obj.KHS);
-        if (configModule.config.algos[stats.algorithm].unit===0)
+        if (configModule.algos[stats.algorithm].unit===0)
           stats.hashrate*=1000;
-        for (i = 1; i < configModule.config.algos[stats.algorithm].unit; i++) {
+        for (i = 1; i < configModule.algos[stats.algorithm].unit; i++) {
           stats.hashrate/=1000;
         }
         stats.speedSuffix=configModule.config.benchmarks[stats.algorithm].speedSuffix;
