@@ -24,10 +24,10 @@ var config = module.exports = {
   },
   algos: {
     lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, unit: 2},
-    axiom: {id: 13, name: "Axiom", port: 3346, profitability: null, unit: 0},
+    axiom: {id: 13, name: "Axiom", port: 3346, profitability: null, unit: 1},
     scryptjane: {id: 15, name: "ScryptJaneNf16", dn: "scryptjanenf16", port: 3348, profitability: null, unit: 1},
-    hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, unit: 2},
-    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, unit: 2}
+    hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, unit: 1},
+    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, unit: 1}
   },
   getConfig: function () {
     return config.config;
