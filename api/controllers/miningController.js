@@ -413,6 +413,7 @@ function keepalive(){
 }
 
 function init() {
+  configModule = require(__basedir + 'api/modules/configModule');
   getProfitability();
   getMinerStats();
   if (configModule.config.autostart) {
