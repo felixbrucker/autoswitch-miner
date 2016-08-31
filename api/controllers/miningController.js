@@ -28,6 +28,7 @@ var stats = {
 
 var cpuminer = null;
 var bestAlgo = null;
+var justStarted = null;
 
 
 function getStats(req, res, next) {
@@ -83,6 +84,10 @@ function startMiner() {
           cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',configModule.config.cores,'--benchmark']);
         else
           cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '--benchmark']);
+        justStarted=1;
+        setTimeout(function (){
+          justStarted=null;
+        },5000);
         console.log(colors.green("benchmark miner started, using "+algo));
         if (configModule.config.writeMinerLog) {
           cpuminer.stdout.on('data', function (data) {
@@ -131,6 +136,10 @@ function startMiner() {
               cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             }
           }
+          justStarted=1;
+          setTimeout(function (){
+            justStarted=null;
+          },5000);
           console.log(colors.green("miner started, using "+algo));
 
           cpuminer.stdout.on('data', function (data) {
@@ -311,7 +320,11 @@ function getMinerStats() {
   var client = new WebSocketClient();
 
   client.on('connectFailed', function (error) {
-    stats.running = false;
+    if (cpuminer!==null&&justStarted===null){
+      stopMiner();
+      startMiner();
+    }else
+      stats.running = false;
   });
 
   client.on('connect', function (connection) {
