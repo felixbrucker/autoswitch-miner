@@ -82,7 +82,13 @@
                 vm.config.writeMinerLog=response.data.writeMinerLog;
                 vm.profitabilityString="&name="+vm.config.rigName;
                 Object.keys(vm.config.benchmarks).forEach(function (key) {
-                    vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+vm.config.benchmarks[key].hashrate.toFixed(2);
+                    var submitHashrate=vm.config.benchmarks[key].hashrate;
+                    if (vm.config.benchmarks[key].submitUnit===0)
+                        submitHashrate*=1000;
+                    for (var i = 1; i < vm.config.benchmarks[key].submitUnit; i++) {
+                        submitHashrate/=1000;
+                    }
+                    vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+submitHashrate.toFixed(2);
                 });
                 vm.profitabilityString+="&cost=1&power=1";
             }, function errorCallback(response) {

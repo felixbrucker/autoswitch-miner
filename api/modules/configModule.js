@@ -23,11 +23,11 @@ var config = module.exports = {
     writeMinerLog: null
   },
   algos: {
-    lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, unit: 2},
-    axiom: {id: 13, name: "Axiom", port: 3346, profitability: null, unit: 1},
-    scryptjane: {id: 15, name: "ScryptJaneNf16", dn: "scryptjanenf16", port: 3348, profitability: null, unit: 1},
-    hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, unit: 1},
-    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, unit: 1}
+    lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, submitUnit: 2, profUnit: 3},
+    axiom: {id: 13, name: "Axiom", port: 3346, profitability: null, submitUnit: 1, profUnit: 1},
+    scryptjane: {id: 15, name: "ScryptJaneNf16", dn: "scryptjanenf16", port: 3348, profitability: null, submitUnit: 1, profUnit: 2},
+    hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 1},
+    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 3}
   },
   getConfig: function () {
     return config.config;
@@ -58,22 +58,7 @@ var config = module.exports = {
                 var newAlgo = {};
                 newAlgo.name=config.algos[key].name;
                 newAlgo.id=config.algos[key].id;
-                var speedSuffix="";
-                switch(config.algos[key].unit){
-                  case 0: speedSuffix="H/s";
-                  break;
-                  case 1: speedSuffix="KH/s";
-                  break;
-                  case 2: speedSuffix="MH/s";
-                  break;
-                  case 3: speedSuffix="GH/s";
-                  break;
-                  case 4: speedSuffix="TH/s";
-                  break;
-                  case 5: speedSuffix="PH/s";
-                  break;
-                }
-                newAlgo.speedSuffix=speedSuffix;
+                newAlgo.submitUnit=config.algos[key].submitUnit;
                 newAlgo.hashrate=null;
                 newAlgo.enabled=true;
                 newAlgo.benchRunning=null;
@@ -98,6 +83,7 @@ var config = module.exports = {
         config.config.rigName='RXX';
         config.config.writeMinerLog=false;
         config.saveConfig();
+        config.loadConfig();
       }
     });
   }

@@ -12,7 +12,6 @@ var miner_log = fs.createWriteStream('data/miner.log', {flags: 'w'});
 var stats = {
   running: null,
   hashrate: null,
-  speedSuffix: null,
   algorithm: null,
   cores: null,
   miner: null,
@@ -250,7 +249,7 @@ function doBenchmark() {
       configModule.config.benchmarks[key].benchRunning = false;
       stopMiner();
       configModule.config.benchmarks[key].hashrate = (hashrate) / i;
-      console.log(colors.green("avg hashrate: " + configModule.config.benchmarks[key].hashrate + " "+configModule.config.benchmarks[key].speedSuffix));
+      console.log(colors.green("avg hashrate: " + configModule.config.benchmarks[key].hashrate.toFixed(6) + " KH/s"));
       configModule.saveConfig();
     }
   });
@@ -276,11 +275,11 @@ function getProfitability() {
         console.log(error);
       }
       if (parsed != null){
-        configModule.algos["lyra2re"].profitability=parseFloat(parsed.result.simplemultialgo['9'].paying);
-        configModule.algos["axiom"].profitability=parseFloat(parsed.result.simplemultialgo['13'].paying);
-        configModule.algos["scryptjane"].profitability=parseFloat(parsed.result.simplemultialgo['15'].paying);
-        configModule.algos["hodl"].profitability=parseFloat(parsed.result.simplemultialgo['19'].paying);
-        configModule.algos["cryptonight"].profitability=parseFloat(parsed.result.simplemultialgo['22'].paying);
+        setRealProfitability("lyra2re",parseFloat(parsed.result.simplemultialgo['9'].paying));
+        setRealProfitability("axiom",parseFloat(parsed.result.simplemultialgo['13'].paying));
+        setRealProfitability("scryptjane",parseFloat(parsed.result.simplemultialgo['15'].paying));
+        setRealProfitability("hodl",parseFloat(parsed.result.simplemultialgo['19'].paying));
+        setRealProfitability("cryptonight",parseFloat(parsed.result.simplemultialgo['22'].paying));
         changeAlgo();
       }
     });
@@ -289,6 +288,24 @@ function getProfitability() {
     console.log(error);
   });
 }
+
+function setRealProfitability(key,profitability){
+  switch(configModule.algos[key].profUnit){
+    case 0: configModule.algos[key].profitability=profitability;
+      break;
+    case 1: configModule.algos[key].profitability=profitability/1000;
+      break;
+    case 2: configModule.algos[key].profitability=profitability/1000000;
+      break;
+    case 3: configModule.algos[key].profitability=profitability/1000000000;
+      break;
+    case 4: configModule.algos[key].profitability=profitability/1000000000000;
+      break;
+    case 5: configModule.algos[key].profitability=profitability/1000000000000000;
+      break;
+  }
+}
+
 function getMinerStats() {
   var WebSocketClient = require('websocket').client;
   var client = new WebSocketClient();
@@ -318,12 +335,6 @@ function getMinerStats() {
         stats.cores = parseFloat(obj.CPUS);
         stats.difficulty = parseFloat(obj.DIFF);
         stats.hashrate = parseFloat(obj.KHS);
-        if (configModule.algos[stats.algorithm].unit===0)
-          stats.hashrate*=1000;
-        for (var i = 1; i < configModule.algos[stats.algorithm].unit; i++) {
-          stats.hashrate/=1000;
-        }
-        stats.speedSuffix=configModule.config.benchmarks[stats.algorithm].speedSuffix;
         stats.miner = obj.NAME + " " + obj.VER;
         stats.rejected = parseFloat(obj.REJ);
         stats.temperature = parseFloat(obj.TEMP);
@@ -346,6 +357,7 @@ function changeAlgo() {
     var potentialBestProf = 0;
     var potentialAlgo = null;
     Object.keys(configModule.algos).forEach(function (key) {
+      console.log("prof of "+key+": "+configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate);
       if (configModule.config.benchmarks[key].enabled && configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate > potentialBestProf) {
         potentialBestProf = configModule.algos[key].profitability * configModule.config.benchmarks[key].hashrate;
         potentialAlgo = key;
@@ -389,7 +401,7 @@ function init() {
   }, profitabilityInterval);
   setInterval(function () {
     getMinerStats();
-  }, 3000);
+  }, 2000);
 }
 
 setTimeout(init, 1000);

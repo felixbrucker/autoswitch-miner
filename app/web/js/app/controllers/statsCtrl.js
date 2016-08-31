@@ -22,7 +22,6 @@
     vm.current = {
       running: null,
       hashrate: null,
-      speedSuffix: null,
       algorithm: null,
       cores: null,
       miner: null,
@@ -73,7 +72,6 @@
         vm.current.cores = response.data.cores;
         vm.current.difficulty = response.data.difficulty;
         vm.current.hashrate = response.data.hashrate;
-        vm.current.speedSuffix = response.data.speedSuffix;
         vm.current.miner = response.data.miner;
         vm.current.profitability = response.data.profitability;
         vm.current.rejected = response.data.rejected;
