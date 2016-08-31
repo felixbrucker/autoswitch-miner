@@ -23,7 +23,7 @@ var config = module.exports = {
     writeMinerLog: null
   },
   algos: {
-    lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, submitUnit: 2, profUnit: 3},
+    lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, submitUnit: 2, profUnit: 2},
     axiom: {id: 13, name: "Axiom", port: 3346, profitability: null, submitUnit: 1, profUnit: 1},
     scryptjane: {id: 15, name: "ScryptJaneNf16", dn: "scryptjanenf16", port: 3348, profitability: null, submitUnit: 1, profUnit: 2},
     hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 1},
