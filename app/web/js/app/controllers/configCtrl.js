@@ -56,8 +56,8 @@
          */
         function init() {
             angular.element(document).ready(function () {
-                vm.getConfig();
                 vm.getCPUModel();
+                vm.getConfig();
                 vm.checkBenchmark();
             });
         }
@@ -83,7 +83,7 @@
                 vm.config.rigName = response.data.rigName;
                 vm.config.cores=response.data.cores;
                 vm.config.writeMinerLog=response.data.writeMinerLog;
-                vm.profitabilityString="&name="+vm.config.rigName;
+                vm.profitabilityString="&name="+vm.CPUModel;
                 Object.keys(vm.config.benchmarks).forEach(function (key) {
                     var submitHashrate=vm.config.benchmarks[key].hashrate;
                     if (vm.config.benchmarks[key].submitUnit===0)
