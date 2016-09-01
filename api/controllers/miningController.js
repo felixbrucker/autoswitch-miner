@@ -51,8 +51,6 @@ function validateSettings() {
     } catch (err) {
       return !(err && err.code === 'ENOENT');
     }
-    console.log(bestAlgo);
-    console.log(configModule.config.benchmarks);
     Object.keys(configModule.config.benchmarks).forEach(function (key) {
       if(configModule.config.benchmarks[bestAlgo].binPath!==undefined){
         if (configModule.config.benchmarks[key].binPath!==null && configModule.config.benchmarks[key].binPath!==""){
