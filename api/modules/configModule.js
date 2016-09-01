@@ -52,6 +52,7 @@ var config = module.exports = {
             config.config.benchmarks[key].benchRunning=false;
           });
           if (Object.keys(config.algos).length!==Object.keys(config.config.benchmarks).length){
+            console.log("test");
             Object.keys(config.algos).forEach(function (key) {
               if(!(config.config.benchmarks.hasOwnProperty(key))){
                 var newAlgo = {};
