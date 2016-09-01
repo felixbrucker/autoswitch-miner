@@ -370,7 +370,7 @@ function changeAlgo() {
     if (bestAlgo !== null && bestAlgo !== "" && configModule.config.benchmarks[bestAlgo].enabled) {
       currentProf = configModule.algos[bestAlgo].profitability * configModule.config.benchmarks[bestAlgo].hashrate;
     } else {
-      bestAlgo = "";
+      bestAlgo = "cryptonight";
     }
     var potentialBestProf = 0;
     var potentialAlgo = null;
