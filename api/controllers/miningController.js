@@ -405,7 +405,7 @@ function checkBenchmark(req, res, next) {
 function keepalive(){
   return https.get({
     host: process.env.HOSTNAME + '.herokuapp.com',
-    path: '/stats',
+    path: '/api/mining/stats',
     headers:{'Cache-Control':'no-cache'}
   }, function (response) {
   });
@@ -441,7 +441,7 @@ function init() {
   },1000*60*7);
 }
 
-setTimeout(init, 70*1000);
+setTimeout(init, 90*1000);
 
 exports.getStats = getStats;
 exports.startMining = startMining;
