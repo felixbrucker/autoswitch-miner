@@ -2,6 +2,8 @@
 cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ "$1" == "run" ]; then
+  npm update
+  npm start &
   echo 'checking submodules, please wait ...'
   find cpuminer-opt -maxdepth 0 -empty -exec git submodule init \;
   prevVersion1=`git submodule status cpuminer-opt`
@@ -21,8 +23,6 @@ if [ "$1" == "run" ]; then
     git reset --hard
     cd ..
   fi
-  npm update
-  npm start
 else
   echo 'getting latest updates ...'
   git pull

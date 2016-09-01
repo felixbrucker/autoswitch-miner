@@ -51,6 +51,8 @@ function validateSettings() {
     } catch (err) {
       return !(err && err.code === 'ENOENT');
     }
+    console.log(bestAlgo);
+    console.log(configModule.config.benchmarks);
     Object.keys(configModule.config.benchmarks).forEach(function (key) {
       if(configModule.config.benchmarks[bestAlgo].binPath!==undefined){
         if (configModule.config.benchmarks[key].binPath!==null && configModule.config.benchmarks[key].binPath!==""){
@@ -439,7 +441,7 @@ function init() {
   },1000*60*7);
 }
 
-setTimeout(init, 2000);
+setTimeout(init, 70*1000);
 
 exports.getStats = getStats;
 exports.startMining = startMining;
