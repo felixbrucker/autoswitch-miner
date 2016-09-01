@@ -440,7 +440,7 @@ function init() {
   },1000*60*7);
 }
 
-setTimeout(init, 90*1000);
+setTimeout(init, 100*1000);
 
 exports.getStats = getStats;
 exports.startMining = startMining;
