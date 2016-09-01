@@ -420,7 +420,6 @@ function init() {
       startMiner();
     }, 10000);
   }
-  changeAlgo();
   if (bestAlgo === null || bestAlgo === ""){
     doBenchmarkWrapper2();
     setTimeout(function(){
