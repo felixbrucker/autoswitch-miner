@@ -52,15 +52,13 @@ function validateSettings() {
       return !(err && err.code === 'ENOENT');
     }
     Object.keys(configModule.config.benchmarks).forEach(function (key) {
-      if(configModule.config.benchmarks[bestAlgo].binPath!==undefined){
-        if (configModule.config.benchmarks[key].binPath!==null && configModule.config.benchmarks[key].binPath!==""){
+      if(configModule.config.benchmarks[key].binPath!==undefined && configModule.config.benchmarks[key].binPath!==null && configModule.config.benchmarks[key].binPath!==""){
           try {
             fs.statSync(configModule.config.benchmarks[key].binPath);
           } catch (err) {
             return !(err && err.code === 'ENOENT');
           }
         }
-      }
     });
     return true;
   }
