@@ -31,6 +31,12 @@ function update(req, res, next) {
 }
 
 function updateMiner(req, res, next) {
+  runUpdateScript();
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({success:true}));
+}
+
+function runUpdateScript(){
   var miningController = require(__basedir + 'api/controllers/miningController');
   if (cpuminer!==null&&cpuminer!==""){
     miningController.stopMiner();
@@ -41,12 +47,9 @@ function updateMiner(req, res, next) {
     stdio: 'ignore',
     shell:true
   });
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({success:true}));
 }
 
 function init() {
-
 }
 
 init();
