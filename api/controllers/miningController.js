@@ -71,6 +71,9 @@ function startMiner() {
     if (cpuminer == null) {
       changeAlgo();
       var binPath = configModule.config.binPath;
+      var cores = configModule.config.cores;
+      if (configModule.config.benchmarks[bestAlgo].cores!==undefined && configModule.config.benchmarks[bestAlgo].cores!==null && configModule.config.benchmarks[bestAlgo].cores!=="")
+        cores=configModule.config.benchmarks[bestAlgo].cores;
       if (configModule.config.benchmarks[bestAlgo].binPath!==undefined && configModule.config.benchmarks[bestAlgo].binPath!==null && configModule.config.benchmarks[bestAlgo].binPath!=="")
         binPath=configModule.config.benchmarks[bestAlgo].binPath;
       if (stats.benchRunning === true) {
@@ -78,8 +81,8 @@ function startMiner() {
         if (configModule.algos[bestAlgo].alt)
           algo = configModule.algos[bestAlgo].alt;
         const spawn = require('cross-spawn');
-        if (configModule.config.cores !== null && configModule.config.cores !== "")
-          cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',configModule.config.cores,'--benchmark']);
+        if (cores !== null && cores !== "")
+          cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',cores,'--benchmark']);
         else
           cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '--benchmark']);
         justStarted=1;
@@ -123,9 +126,9 @@ function startMiner() {
           const spawn = require('cross-spawn');
           if (configModule.config.cores !== undefined && configModule.config.cores !== null && configModule.config.cores !== "") {
             if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', configModule.config.cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             } else {
-              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', configModule.config.cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
             }
           } else {
             if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
