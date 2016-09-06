@@ -25,5 +25,5 @@ if [ "$1" == "run" ]; then
 else
   echo 'getting latest updates ...'
   git pull
-  ./start.sh run 2>&1 | tee -a output.log
+  ./start.sh run
 fi
