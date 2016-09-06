@@ -24,11 +24,12 @@ function reload(req, res, next) {
     root: './'
   });
   const spawn = require('cross-spawn');
-  const child = spawn("sleep 1 && npm stop && git pull && npm start", {
+  const child = spawn("sleep 2 && git pull && npm start", {
     detached: true,
     stdio: 'ignore'
   });
   child.unref();
+  app.close();
 }
 
 function init() {

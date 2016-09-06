@@ -12,7 +12,6 @@
     "console-stamp": "^0.2.2"
   },
   "scripts": {
-    "start": "node main.js",
-    "stop": "pkill --signal SIGINT autoswitch-miner"
+    "start": "node main.js"
   }
 }
