@@ -27,7 +27,7 @@ function reload(req, res, next) {
   var child = null;
   var isWin = /^win/.test(process.platform);
   if (isWin)
-    child = spawn('timeout.exe /t 2',{
+    child = spawn('timeout.exe',['/t','2'],{
       detached: true,
       stdio: 'ignore',
       shell: true
