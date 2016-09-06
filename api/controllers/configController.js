@@ -36,7 +36,7 @@ function updateMiner(req, res, next) {
     miningController.stopMiner();
   }
   const spawn = require('cross-spawn');
-  const child = spawn('update.sh',{
+  const child = spawn('bash',['update.sh'],{
     detached: true,
     stdio: 'ignore',
     shell:true
