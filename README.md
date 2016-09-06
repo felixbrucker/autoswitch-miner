@@ -18,7 +18,7 @@ npm install
 npm install pm2 -g
 ```
 
-On Windows you will need to get the miner binaries manually and place them in "bin", Linux users get the required binaries with the "start.sh" script
+On Windows you will need to get the miner binaries manually and place them in "bin", Linux users get the required binaries with the "update.sh" script
 
 ### Run
 
@@ -46,9 +46,9 @@ pm2 save
 
 ### Update software (and miners on linux)
 
-on Linux run ```sh update.sh ```
+on Linux run ``` update.sh ```
 
-on Windows run ```sh git pull ```
+on Windows run ``` git pull ```
 
 
 ### Todos
