@@ -154,7 +154,7 @@
                     'Content-Type': 'application/json;charset=UTF-8'
                 }
             }).then(function successCallback(response) {
-                setTimeout(function(){vm.updating = false;},2000);
+                setTimeout(function(){vm.updating = false;},500);
             }, function errorCallback(response) {
                 console.log(response);
             });
@@ -174,7 +174,7 @@
                     'Content-Type': 'application/json;charset=UTF-8'
                 }
             }).then(function successCallback(response) {
-                setTimeout(function(){vm.updatingMiner = false;},90000);
+                setTimeout(function(){vm.updatingMiner = false;},500);
             }, function errorCallback(response) {
                 console.log(response);
             });
