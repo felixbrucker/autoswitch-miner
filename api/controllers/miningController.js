@@ -428,3 +428,4 @@ exports.startMining = startMining;
 exports.stopMining = stopMining;
 exports.doBenchmarkWrapper = doBenchmarkWrapper;
 exports.checkBenchmark = checkBenchmark;
+exports.stopMiner = stopMiner;
