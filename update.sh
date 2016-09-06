@@ -21,7 +21,10 @@ if [ "$1" == "run" ]; then
     cd ..
   fi
   npm update
+  pm2 start process.json
+  pm2 save
 else
+  pm2 stop autoswitch-miner --watch autoswitch-miner
   echo 'getting latest updates ...'
   git pull
   ./update.sh run
