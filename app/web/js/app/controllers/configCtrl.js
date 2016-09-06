@@ -166,7 +166,7 @@
          * @memberOf configCtrl
          */
         function updateMiner() {
-            vm.updating=true;
+            vm.updatingMiner=true;
             return $http({
                 method: 'POST',
                 url: 'api/config/updateMiner',
