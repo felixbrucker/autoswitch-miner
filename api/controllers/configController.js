@@ -27,7 +27,8 @@ function update(req, res, next) {
   res.send(JSON.stringify({success:true}));
   const child = spawn('git',['pull'],{
       detached: true,
-      stdio: 'ignore'
+      stdio: 'ignore',
+      shell:true
     });
 
 }
