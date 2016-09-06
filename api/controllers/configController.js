@@ -27,14 +27,16 @@ function reload(req, res, next) {
   var child = null;
   var isWin = /^win/.test(process.platform);
   if (isWin)
-    child = spawn("cmd.exe",['timeout /t 2 && git pull && npm start'], {
+    child = spawn('timeout /t 2 && git pull && npm start',{
       detached: true,
-      stdio: 'ignore'
+      stdio: 'ignore',
+      shell: true
     });
   else
     child = spawn('sleep 2 && git pull && npm start', {
       detached: true,
-      stdio: 'ignore'
+      stdio: 'ignore',
+      shell: true
     });
 
   child.unref();
