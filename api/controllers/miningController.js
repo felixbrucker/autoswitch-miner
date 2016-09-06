@@ -125,7 +125,7 @@ function startMiner() {
             url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
 
             const spawn = require('cross-spawn');
-            if (configModule.config.cores !== undefined && configModule.config.cores !== null && configModule.config.cores !== "") {
+            if (cores !== null && cores !== "") {
               if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
                 cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
               } else {
