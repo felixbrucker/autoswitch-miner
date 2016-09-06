@@ -2,7 +2,7 @@
 
 ### Prerequisites
 
-Autoswitch-miner requires [Node.js](https://nodejs.org/) v4+ to run.
+Autoswitch-miner requires [Node.js](https://nodejs.org/) v4+, npm and pm2 to run.
 Additionally cpuminer-opt binary is needed:
 
 https://bitcointalk.org/index.php?topic=1326803.0
@@ -11,10 +11,11 @@ https://bitcointalk.org/index.php?topic=1326803.0
 ### Installation
 
 ```sh
-$ git clone https://github.com/felixbrucker/autoswitch-miner
-$ cd autoswitch-miner
-$ git submodule init
-$ npm install
+git clone https://github.com/felixbrucker/autoswitch-miner
+cd autoswitch-miner
+git submodule init
+npm install
+npm install pm2 -g
 ```
 
 On Windows you will need to get the miner binaries manually and place them in "bin", Linux users get the required binaries with the "start.sh" script
