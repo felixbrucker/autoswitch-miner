@@ -20,4 +20,4 @@ module.exports = function(app) {
   router.get('/mining/benchmark/current', miningController.checkBenchmark);
 
   app.use('/api', router);
-}
+};
