@@ -38,6 +38,7 @@
         vm.profitabilityString=null;
         vm.cpuModel=null;
         vm.updating=null;
+        vm.updatingMiner=null;
 
 
         // controller API
@@ -48,6 +49,7 @@
         vm.doBenchmark=doBenchmark;
         vm.checkBenchmark=checkBenchmark;
         vm.update=update;
+        vm.updateMiner=updateMiner;
 
 
 
@@ -152,7 +154,27 @@
                     'Content-Type': 'application/json;charset=UTF-8'
                 }
             }).then(function successCallback(response) {
-                setTimeout(function(){vm.updating = false;},500);
+                setTimeout(function(){vm.updating = false;},2000);
+            }, function errorCallback(response) {
+                console.log(response);
+            });
+        }
+
+        /**
+         * @name updateMiner
+         * @desc updates the miner from git
+         * @memberOf configCtrl
+         */
+        function updateMiner() {
+            vm.updating=true;
+            return $http({
+                method: 'POST',
+                url: 'api/config/updateMiner',
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8'
+                }
+            }).then(function successCallback(response) {
+                setTimeout(function(){vm.updatingMiner = false;},90000);
             }, function errorCallback(response) {
                 console.log(response);
             });

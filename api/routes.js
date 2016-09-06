@@ -12,6 +12,7 @@ module.exports = function(app) {
   router.post('/config', configController.setConfig);
   router.get('/config/cpumodel', configController.getCPUModel);
   router.post('/config/update', configController.update);
+  router.post('/config/updateMiner', configController.updateMiner);
 
   router.get('/mining/stats', miningController.getStats);
   router.post('/mining/start', miningController.startMining);

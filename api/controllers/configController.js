@@ -30,7 +30,7 @@ function update(req, res, next) {
   res.send(JSON.stringify({success:true}));
 }
 
-function minerUpdate(req, res, next) {
+function updateMiner(req, res, next) {
   var miningController = require(__basedir + 'api/controllers/miningController');
   if (cpuminer!==null&&cpuminer!==""){
     miningController.stopMiner();
@@ -55,4 +55,4 @@ exports.getConfig = getConfig;
 exports.setConfig = setConfig;
 exports.getCPUModel = getCPUModel;
 exports.update = update;
-exports.minerUpdate = minerUpdate;
+exports.updateMiner = updateMiner;
