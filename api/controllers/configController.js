@@ -21,13 +21,13 @@ function getCPUModel(req, res, next) {
 
 function update(req, res, next) {
   const spawn = require('cross-spawn');
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({success:true}));
   const child = spawn('git',['pull'],{
       detached: true,
       stdio: 'ignore',
       shell:true
     });
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({success:true}));
 }
 
 function init() {
