@@ -1,5 +1,6 @@
 'use strict';
 global.__basedir = __dirname + '/';
+process.title = "autoswitch-miner";
 var express = require('express');
 var bodyParser = require('body-parser');
 var colors = require('colors/safe');

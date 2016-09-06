@@ -19,6 +19,18 @@ function getCPUModel(req, res, next) {
   res.send(JSON.stringify({cpuModel: configModule.cpuModel}));
 }
 
+function reload(req, res, next) {
+  res.sendFile('reload.html', {
+    root: './'
+  });
+  const spawn = require('cross-spawn');
+  const child = spawn("sleep 1 && npm stop && git pull && npm start", {
+    detached: true,
+    stdio: 'ignore'
+  });
+  child.unref();
+}
+
 function init() {
 
 }
@@ -28,3 +40,4 @@ init();
 exports.getConfig = getConfig;
 exports.setConfig = setConfig;
 exports.getCPUModel = getCPUModel;
+exports.reload = reload;
