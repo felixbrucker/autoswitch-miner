@@ -19,32 +19,6 @@ function getCPUModel(req, res, next) {
   res.send(JSON.stringify({cpuModel: configModule.cpuModel}));
 }
 
-function reload(req, res, next) {
-  res.sendFile('reload.html', {
-    root: './'
-  });
-  const spawn = require('cross-spawn');
-  var child = null;
-  var isWin = /^win/.test(process.platform);
-  if (isWin)
-    child = spawn('timeout.exe',['/t','2','&&','git','pull','&&','npm','start'],{
-      detached: true,
-      stdio: 'ignore',
-      shell: true
-    });
-  else
-    child = spawn('sleep 2 && git pull && npm start', {
-      detached: true,
-      stdio: 'ignore',
-      shell: true
-    });
-
-  child.unref();
-  var miningController = require(__basedir + 'api/controllers/miningController');
-  miningController.stopMiner();
-  listener.close();
-}
-
 function init() {
 
 }
@@ -54,4 +28,3 @@ init();
 exports.getConfig = getConfig;
 exports.setConfig = setConfig;
 exports.getCPUModel = getCPUModel;
-exports.reload = reload;
