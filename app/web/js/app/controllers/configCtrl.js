@@ -47,6 +47,7 @@
         vm.getCPUModel=getCPUModel;
         vm.doBenchmark=doBenchmark;
         vm.checkBenchmark=checkBenchmark;
+        vm.update=update;
 
 
 
