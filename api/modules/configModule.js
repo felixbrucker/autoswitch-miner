@@ -65,6 +65,7 @@ var config = module.exports = {
                 newAlgo.enabled=true;
                 newAlgo.benchRunning=null;
                 newAlgo.binPath=null;
+                newAlgo.cores=null;
                 config.config.benchmarks[key]=newAlgo;
               }
             });
@@ -74,6 +75,8 @@ var config = module.exports = {
                 config.config.benchmarks[key].id=config.algos[key].id;
               if(config.config.benchmarks[key].submitUnit===undefined)
                 config.config.benchmarks[key].submitUnit=config.algos[key].submitUnit;
+              if(config.config.benchmarks[key].cores===undefined)
+                config.config.benchmarks[key].cores=null;
             });
           }
         });

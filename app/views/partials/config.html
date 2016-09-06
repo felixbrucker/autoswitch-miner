@@ -56,6 +56,7 @@
           <th>algorithm</th>
           <th>benchmarked speed</th>
           <th>custom miner path</th>
+          <th>override core count</th>
           <th>benchmark running</th>
         </tr>
         <tr ng-repeat="(key, algo) in configVm.config.benchmarks  track by $index">
@@ -63,6 +64,7 @@
           <td>{{algo.name}}</td>
           <td><input type="number" name="hashrate-{{algo.name}}" ng-model="algo.hashrate" placeholder="hashrate"> KH/s</td>
           <td><input type="text" name="binPath-{{algo.name}}" ng-model="algo.binPath" placeholder="path to custom miner bin" size="26"></td>
+          <td><input type="number" name="cores-{{algo.name}}" ng-model="algo.cores" placeholder="custom core count"></td>
           <td><i ng-show="algo.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.benchRunning">no</span></td>
         </tr>
       </table>
