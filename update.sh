@@ -21,9 +21,8 @@ if [ "$1" == "run" ]; then
     cd ..
   fi
   npm update
-  pm2 start process.json
 else
   echo 'getting latest updates ...'
   git pull
-  ./start.sh run
+  ./update.sh run
 fi

@@ -26,7 +26,7 @@ var stats = {
   benchRunning: false
 };
 
-var cpuminer = null;
+global.cpuminer = null;
 var bestAlgo = null;
 var justStarted = null;
 
@@ -428,3 +428,5 @@ exports.startMining = startMining;
 exports.stopMining = stopMining;
 exports.doBenchmarkWrapper = doBenchmarkWrapper;
 exports.checkBenchmark = checkBenchmark;
+exports.stopMiner = stopMiner;
+exports.startMiner = startMiner;

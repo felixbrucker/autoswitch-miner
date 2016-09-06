@@ -22,9 +22,33 @@ On Windows you will need to get the miner binaries manually and place them in "b
 
 ### Run
 
-on Linux run "start.sh"
+```sh
+pm2 start process.json
+```
 
-on Windows run "npm start"
+
+
+
+to startup on boot:
+
+```sh
+pm2 save
+pm2 startup
+```
+
+note: windows users need the following instead:
+
+```sh
+npm install pm2-windows-startup -g
+pm2-startup install
+pm2 save
+```
+
+### Update software (and miners on linux)
+
+on Linux run ```sh update.sh ```
+
+on Windows run ```sh git pull ```
 
 
 ### Todos

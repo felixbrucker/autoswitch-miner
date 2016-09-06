@@ -30,6 +30,21 @@ function update(req, res, next) {
   res.send(JSON.stringify({success:true}));
 }
 
+function minerUpdate(req, res, next) {
+  var miningController = require(__basedir + 'api/controllers/miningController');
+  if (cpuminer!==null&&cpuminer!==""){
+    miningController.stopMiner();
+  }
+  const spawn = require('cross-spawn');
+  const child = spawn('update.sh',{
+    detached: true,
+    stdio: 'ignore',
+    shell:true
+  });
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({success:true}));
+}
+
 function init() {
 
 }
@@ -40,3 +55,4 @@ exports.getConfig = getConfig;
 exports.setConfig = setConfig;
 exports.getCPUModel = getCPUModel;
 exports.update = update;
+exports.minerUpdate = minerUpdate;

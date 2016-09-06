@@ -3,7 +3,7 @@
     name : "autoswitch-miner",
     script : "main.js",
     watch : true,
-    "ignore_watch" : ["node_modules", "app", "data",".git"]
+    "ignore_watch" : ["node_modules*", "app*", "data*",".git*","cpuminer-opt*","bin*"]
   }
 }
 
