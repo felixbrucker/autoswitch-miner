@@ -20,8 +20,6 @@ function getCPUModel(req, res, next) {
 }
 
 function update(req, res, next) {
-  var miningController = require(__basedir + 'api/controllers/miningController');
-  miningController.stopMiner();
   const spawn = require('cross-spawn');
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({success:true}));
@@ -30,7 +28,6 @@ function update(req, res, next) {
       stdio: 'ignore',
       shell:true
     });
-
 }
 
 function init() {
