@@ -8,7 +8,6 @@ if [ ! -d "autoswitch-miner" ]; then
   npm install pm2 -g
   pm2 start process.json
   pm2 save
-  pm2 startup
   echo 'checking submodules, please wait ...'
   find cpuminer-opt -maxdepth 0 -empty -exec git submodule init \;
   prevVersion1=`git submodule status cpuminer-opt`
@@ -28,4 +27,5 @@ if [ ! -d "autoswitch-miner" ]; then
     git reset --hard
     cd ..
   fi
+  sleep infinity
 fi
