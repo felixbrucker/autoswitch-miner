@@ -26,7 +26,7 @@ var stats = {
   benchRunning: false
 };
 
-var cpuminer = null;
+global.cpuminer = null;
 var bestAlgo = null;
 var justStarted = null;
 
@@ -70,97 +70,101 @@ function startMiner() {
   if (validateSettings()) {
     if (cpuminer == null) {
       changeAlgo();
-      var binPath = configModule.config.binPath;
-      var cores = configModule.config.cores;
-      if (configModule.config.benchmarks[bestAlgo].cores!==undefined && configModule.config.benchmarks[bestAlgo].cores!==null && configModule.config.benchmarks[bestAlgo].cores!=="")
-        cores=configModule.config.benchmarks[bestAlgo].cores;
-      if (configModule.config.benchmarks[bestAlgo].binPath!==undefined && configModule.config.benchmarks[bestAlgo].binPath!==null && configModule.config.benchmarks[bestAlgo].binPath!=="")
-        binPath=configModule.config.benchmarks[bestAlgo].binPath;
-      if (stats.benchRunning === true) {
-        var algo = bestAlgo;
-        if (configModule.algos[bestAlgo].alt)
-          algo = configModule.algos[bestAlgo].alt;
-        const spawn = require('cross-spawn');
-        if (cores !== null && cores !== "")
-          cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',cores,'--benchmark']);
-        else
-          cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '--benchmark']);
-        justStarted=1;
-        setTimeout(function (){
-          justStarted=null;
-        },5000);
-        console.log(colors.green("benchmark miner started, using "+algo));
-        if (configModule.config.writeMinerLog) {
-          cpuminer.stdout.on('data', function (data) {
-            miner_log.write(data.toString());
-          });
-          cpuminer.stderr.on('data', function (data) {
-            miner_log.write(data.toString());
-          });
-        }
-      } else {
-        if (bestAlgo !== null && bestAlgo !== "") {
-          stats.btcAddress = configModule.config.btcAddress;
+      if (bestAlgo!==null && bestAlgo!==""){
+        var binPath = configModule.config.binPath;
+        var cores = configModule.config.cores;
+        if (configModule.config.benchmarks[bestAlgo].cores!==undefined && configModule.config.benchmarks[bestAlgo].cores!==null && configModule.config.benchmarks[bestAlgo].cores!=="")
+          cores=configModule.config.benchmarks[bestAlgo].cores;
+        if (configModule.config.benchmarks[bestAlgo].binPath!==undefined && configModule.config.benchmarks[bestAlgo].binPath!==null && configModule.config.benchmarks[bestAlgo].binPath!=="")
+          binPath=configModule.config.benchmarks[bestAlgo].binPath;
+        if (stats.benchRunning === true) {
           var algo = bestAlgo;
           if (configModule.algos[bestAlgo].alt)
             algo = configModule.algos[bestAlgo].alt;
-          var url = "stratum+tcp://";
-          if (configModule.algos[bestAlgo].dn)
-            url += configModule.algos[bestAlgo].dn;
-          else
-            url += bestAlgo;
-          url += ".";
-          switch (configModule.config.region) {
-            case 0:
-              url += "eu";
-              break;
-            case 1:
-              url += "usa";
-              break;
-            default:
-              url += "eu";
-              break;
-          }
-          url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
-
           const spawn = require('cross-spawn');
-          if (configModule.config.cores !== undefined && configModule.config.cores !== null && configModule.config.cores !== "") {
-            if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
-            } else {
-              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
-            }
-          } else {
-            if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
-            } else {
-              cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
-            }
-          }
+          if (cores !== null && cores !== "")
+            cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t',cores,'--benchmark']);
+          else
+            cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '--benchmark']);
           justStarted=1;
           setTimeout(function (){
             justStarted=null;
           },5000);
-          console.log(colors.green("miner started, using "+algo));
-
-          cpuminer.stdout.on('data', function (data) {
-            if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1){
-              console.log(data.toString().trim().slice(30));
-            }
-            if (configModule.config.writeMinerLog) {
+          console.log(colors.green("benchmark miner started, using "+algo));
+          if (configModule.config.writeMinerLog) {
+            cpuminer.stdout.on('data', function (data) {
               miner_log.write(data.toString());
-            }
-          });
-
-          cpuminer.stderr.on('data', function (data) {
-            if (configModule.config.writeMinerLog) {
+            });
+            cpuminer.stderr.on('data', function (data) {
               miner_log.write(data.toString());
-            }
-          });
-
+            });
+          }
         } else {
-          console.log(colors.red("no benchmark values avilable, please insert at least one value or run benchmark"));
+          if (bestAlgo !== null && bestAlgo !== "") {
+            stats.btcAddress = configModule.config.btcAddress;
+            var algo = bestAlgo;
+            if (configModule.algos[bestAlgo].alt)
+              algo = configModule.algos[bestAlgo].alt;
+            var url = "stratum+tcp://";
+            if (configModule.algos[bestAlgo].dn)
+              url += configModule.algos[bestAlgo].dn;
+            else
+              url += bestAlgo;
+            url += ".";
+            switch (configModule.config.region) {
+              case 0:
+                url += "eu";
+                break;
+              case 1:
+                url += "usa";
+                break;
+              default:
+                url += "eu";
+                break;
+            }
+            url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
+
+            const spawn = require('cross-spawn');
+            if (cores !== null && cores !== "") {
+              if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              } else {
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              }
+            } else {
+              if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              } else {
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+              }
+            }
+            justStarted=1;
+            setTimeout(function (){
+              justStarted=null;
+            },5000);
+            console.log(colors.green("miner started, using "+algo));
+
+            cpuminer.stdout.on('data', function (data) {
+              if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1){
+                console.log(data.toString().trim().slice(30));
+              }
+              if (configModule.config.writeMinerLog) {
+                miner_log.write(data.toString());
+              }
+            });
+
+            cpuminer.stderr.on('data', function (data) {
+              if (configModule.config.writeMinerLog) {
+                miner_log.write(data.toString());
+              }
+            });
+
+          } else {
+            console.log(colors.red("no benchmark values avilable, please insert at least one value or run benchmark"));
+          }
         }
+      }else{
+        console.log(colors.red("no profitability data available"));
       }
     } else {
       console.log(colors.red("miner already running, not starting"));
@@ -446,3 +450,5 @@ exports.startMining = startMining;
 exports.stopMining = stopMining;
 exports.doBenchmarkWrapper = doBenchmarkWrapper;
 exports.checkBenchmark = checkBenchmark;
+exports.stopMiner = stopMiner;
+exports.startMiner = startMiner;

@@ -84,7 +84,23 @@
     <i ng-show="configVm.waitingBenchmark" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
     <span class="sr-only">Loading...</span>
   </div>
-  <div>
+  <div style="margin-bottom: 10px;">
     <a href="https://www.nicehash.com/?p=calc{{configVm.profitabilityString}}" target="_blank">Check Profitability</a>
+  </div>
+  <div style="margin-bottom: 10px;">
+    <button ng-show="!configVm.updating" type="button" class="btn btn-success" ng-click="configVm.update()"><i class="fa fa-refresh" aria-hidden="true"></i> Git Pull
+    </button>
+    <button ng-show="configVm.updating" type="button" class="btn btn-success" disabled><i class="fa fa-refresh" aria-hidden="true"></i> update running..
+    </button>
+    <i ng-show="configVm.updating" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div style="margin-bottom: 10px;">
+    <button ng-show="!configVm.updatingMiner" type="button" class="btn btn-success" ng-click="configVm.updateMiner()"><i class="fa fa-refresh" aria-hidden="true"></i> Update Miner (only Linux)
+    </button>
+    <button ng-show="configVm.updatingMiner" type="button" class="btn btn-success" disabled><i class="fa fa-refresh" aria-hidden="true"></i> update running..
+    </button>
+    <i ng-show="configVm.updatingMiner" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+    <span class="sr-only">Loading...</span>
   </div>
 </div>

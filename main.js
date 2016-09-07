@@ -1,5 +1,6 @@
 'use strict';
 global.__basedir = __dirname + '/';
+process.title = "autoswitch-miner";
 var express = require('express');
 var bodyParser = require('body-parser');
 var colors = require('colors/safe');
@@ -25,6 +26,6 @@ app.route('*').get(function(req, res) {
   });
 });
 
-var listener = app.listen(process.env.PORT || 8080, function(){
+global.listener = app.listen(process.env.PORT || 8080, function(){
   console.log(colors.green('server running on port '+listener.address().port));
 });

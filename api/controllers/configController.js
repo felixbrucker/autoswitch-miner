@@ -19,8 +19,37 @@ function getCPUModel(req, res, next) {
   res.send(JSON.stringify({cpuModel: configModule.cpuModel}));
 }
 
-function init() {
+function update(req, res, next) {
+  const spawn = require('cross-spawn');
+  const child = spawn('git',['pull'],{
+      detached: true,
+      stdio: 'ignore',
+      shell:true
+    });
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({success:true}));
+}
 
+function updateMiner(req, res, next) {
+  runUpdateScript();
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({success:true}));
+}
+
+function runUpdateScript(){
+  var miningController = require(__basedir + 'api/controllers/miningController');
+  if (cpuminer!==null&&cpuminer!==""){
+    miningController.stopMiner();
+  }
+  const spawn = require('cross-spawn');
+  const child = spawn('bash',['update.sh'],{
+    detached: true,
+    stdio: 'ignore',
+    shell:true
+  });
+}
+
+function init() {
 }
 
 init();
@@ -28,3 +57,5 @@ init();
 exports.getConfig = getConfig;
 exports.setConfig = setConfig;
 exports.getCPUModel = getCPUModel;
+exports.update = update;
+exports.updateMiner = updateMiner;
