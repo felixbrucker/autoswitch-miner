@@ -81,7 +81,7 @@ var config = module.exports = {
         //default conf
         config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}];
         config.config.region = 1;
-        config.config.btcAddress = '12gotm1HbU1zv9FMnuNfPakpn7rsRjB1no';
+        config.config.btcAddress = '1G6DD3skr8kzjJURzoME8TWLT6iqrFApk3';
         config.config.cores = 2;
         var isWin = /^win/.test(process.platform);
         if (isWin)
