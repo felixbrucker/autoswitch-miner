@@ -30,7 +30,25 @@ var config = module.exports = {
     axiom: {id: 13, name: "Axiom", port: 3346, profitability: null, submitUnit: 1, profUnit: 0},
     scryptjanenf16: {id: 15, name: "ScryptJaneNf16", alt: "scryptjane", port: 3348, profitability: null, submitUnit: 1, profUnit: 1},
     hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 2},
-    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 2}
+    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 2},
+    argon2: {id:-1, name:"argon2", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    blake2s: {id:-1, name:"blake2s", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    blake256r8: {id:-1, name:"blakecoin", alt:"blakecoin", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    c11: {id:-1, name:"c11", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    decred: {id:-1, name:"decred", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    lbry: {id:-1, name:"lbry", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    lyra2rev2: {id:-1, name:"lyra2rev2", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    m7m: {id:-1, name:"m7m", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    "myr-gr": {id:-1, name:"myr-gr", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    neoscrypt: {id:-1, name:"neoscrypt", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    nist5: {id:-1, name:"nist5", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    qubit: {id:-1, name:"qubit", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    quark: {id:-1, name:"quark", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    skein: {id:-1, name:"skein", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    veltor: {id:-1, name:"veltor", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    x11evo: {id:-1, name:"x11evo", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    x17: {id:-1, name:"x17", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    yescrypt: {id:-1, name:"yescrpyt", port:-1,profitability: null, submitUnit:-1,profUnit:-1}
   },
   cpuModel: os.cpus()[0].model.trim(),
   getConfig: function () {
@@ -67,7 +85,10 @@ var config = module.exports = {
                 newAlgo.id=config.algos[key].id;
                 newAlgo.submitUnit=config.algos[key].submitUnit;
                 newAlgo.hashrate=null;
-                newAlgo.enabled=true;
+                if (newAlgo.id===-1)
+                  newAlgo.enabled=false;
+                else
+                  newAlgo.enabled=true;
                 newAlgo.benchRunning=null;
                 newAlgo.binPath=null;
                 newAlgo.cores=null;
