@@ -430,7 +430,7 @@ function getMinerStats() {
         stats.rejected = parseFloat(obj.REJ);
         stats.temperature = parseFloat(obj.TEMP);
         stats.uptime = obj.UPTIME;
-        stats.profitability = stats.hashrate * configModule.algos[stats.algorithm].profitability;
+        stats.profitability = stats.hashrate * configModule.algos[bestAlgo].profitability;
       }
     });
   });
