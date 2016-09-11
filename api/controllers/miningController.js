@@ -329,9 +329,10 @@ function getProfitability() {
         query.algos[key].hashrate=configModule.config.benchmarks[key].hashrate*1000;
       }
     });
-    return http.post({
+    return http.request({
       host: configModule.config.profitabilityServiceUrl,
       path: '/api/query',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       },
