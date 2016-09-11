@@ -29,7 +29,9 @@
             benchTime: null,
             rigName: null,
             cores: null,
-            writeMinerLog: null
+            writeMinerLog: null,
+            useProfitabilityService: false,
+            profitabilityServiceUrl: null
         };
         vm.waiting = null;
         vm.waitingBenchmark = null;
@@ -87,6 +89,8 @@
                 vm.config.rigName = response.data.rigName;
                 vm.config.cores=response.data.cores;
                 vm.config.writeMinerLog=response.data.writeMinerLog;
+                vm.config.useProfitabilityService=response.data.useProfitabilityService;
+                vm.config.profitabilityServiceUrl=response.data.profitabilityServiceUrl;
                 vm.profitabilityString="&name="+vm.cpuModel;
                 Object.keys(vm.config.benchmarks).forEach(function (key) {
                     var submitHashrate=vm.config.benchmarks[key].hashrate;

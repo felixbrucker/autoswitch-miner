@@ -21,7 +21,9 @@ var config = module.exports = {
     benchTime: null,
     rigName: null,
     cores: null,
-    writeMinerLog: null
+    writeMinerLog: null,
+    useProfitabilityService: false,
+    profitabilityServiceUrl: null
   },
   algos: {
     lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, submitUnit: 2, profUnit: 2},
