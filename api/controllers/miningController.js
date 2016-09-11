@@ -354,16 +354,19 @@ function getProfitability() {
           console.log(error);
         }
         if (parsed != null){
-          if (stats.url!==parsed.result.url){
-            stats.url=parsed.result.url;
-            Object.keys(configModule.algos).forEach(function (key) {
-              if (key===parsed.result.algo)
-                configModule.algos[key].profitability=parsed.result.profitability*1000;
-              else
-                configModule.algos[key].profitability=0;
-            });
-            changeAlgo();
-          }
+          if (parsed.result!==false){
+            if (stats.url!==parsed.result.url){
+              stats.url=parsed.result.url;
+              Object.keys(configModule.algos).forEach(function (key) {
+                if (key===parsed.result.algo)
+                  configModule.algos[key].profitability=parsed.result.profitability*1000;
+                else
+                  configModule.algos[key].profitability=0;
+              });
+              changeAlgo();
+            }
+          }else
+            console.log("Error: malformed profitability request");
         }
       });
     }).on("error", function(error) {
