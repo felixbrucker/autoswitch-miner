@@ -329,10 +329,12 @@ function getProfitability() {
         query.algos[key].hashrate=configModule.config.benchmarks[key].hashrate*1000;
       }
     });
+    var arr = configModule.config.profitabilityServiceUrl.split(":");
     return http.request({
-      host: configModule.config.profitabilityServiceUrl,
+      host: arr[0],
       path: '/api/query',
       method: 'POST',
+      port: arr[1],
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       },
