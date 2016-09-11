@@ -331,7 +331,7 @@ function getProfitability() {
     });
     var arr = configModule.config.profitabilityServiceUrl.split(":");
     return http.request({
-      host: "http://"+arr[0],
+      host: "http://"+configModule.config.profitabilityServiceUrl,
       path: '/api/query',
       method: 'POST',
       port: arr[1],
