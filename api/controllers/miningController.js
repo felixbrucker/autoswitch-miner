@@ -330,15 +330,14 @@ function getProfitability() {
       }
     });
     var arr = configModule.config.profitabilityServiceUrl.split(":");
-    return http.request({
+    var req= http.request({
       hostname: arr[0],
       path: '/api/query',
       method: 'POST',
       port: arr[1],
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
-      },
-      data: JSON.stringify(query)
+      }
     }, function (response) {
       var body = '';
       response.on('data', function (d) {
@@ -373,6 +372,8 @@ function getProfitability() {
       console.log("Error: Unable to get profitability data");
       console.log(error);
     });
+    req.write(JSON.stringify(query));
+    req.end();
   }
 }
 
