@@ -330,7 +330,7 @@ function getProfitability() {
       }
     });
     var arr = configModule.config.profitabilityServiceUrl.split(":");
-    console.log(arr);
+    console.log(query);
     return http.request({
       host: arr[0],
       path: '/api/query',
