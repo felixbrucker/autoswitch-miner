@@ -54,7 +54,10 @@ var config = module.exports = {
           if (err) throw err;
           config.config = JSON.parse(data);
           Object.keys(config.config.benchmarks).forEach(function (key) {
-            config.config.benchmarks[key].benchRunning=false;
+            if (config.algos[key]===undefined)
+              delete config.config.benchmarks[key];
+            else
+              config.config.benchmarks[key].benchRunning=false;
           });
           if (Object.keys(config.algos).length!==Object.keys(config.config.benchmarks).length){
             Object.keys(config.algos).forEach(function (key) {
