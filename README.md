@@ -26,8 +26,11 @@ On Windows you will need to get the miner binaries manually and place them in "b
 pm2 start process.json
 ```
 
+or
 
-
+```sh
+npm start
+```
 
 to startup on boot:
 
