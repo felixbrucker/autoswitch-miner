@@ -469,8 +469,7 @@ function checkBenchmark(req, res, next) {
 }
 
 function init() {
-  if (!configModule.config.useProfitabilityService)
-    getProfitability();
+  getProfitability();
   getMinerStats();
   if (configModule.config.autostart) {
     console.log("autostart enabled, starting miner shortly..");
@@ -480,10 +479,9 @@ function init() {
   }
 
   var minutes = 3, profitabilityInterval = minutes * 60 * 1000;
-  if (!configModule.config.useProfitabilityService)
-    setInterval(function () {
-      getProfitability();
-    }, profitabilityInterval);
+  setInterval(function () {
+    getProfitability();
+  }, profitabilityInterval);
   setInterval(function () {
     getMinerStats();
   }, 2000);
