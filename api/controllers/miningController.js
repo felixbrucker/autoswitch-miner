@@ -339,7 +339,7 @@ function getProfitability() {
       headers: {
         'Content-Type': 'application/json;charset=UTF-8'
       },
-      data: query
+      data: JSON.stringify(query)
     }, function (response) {
       var body = '';
       response.on('data', function (d) {
