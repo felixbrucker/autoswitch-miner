@@ -23,7 +23,8 @@ var stats = {
   temperature: null,
   profitability: null,
   btcAddress: configModule.config.btcAddress,
-  benchRunning: false
+  benchRunning: false,
+  url:null
 };
 
 global.cpuminer = null;
@@ -105,37 +106,39 @@ function startMiner() {
             var algo = bestAlgo;
             if (configModule.algos[bestAlgo].alt)
               algo = configModule.algos[bestAlgo].alt;
-            var url = "stratum+tcp://";
-            if (configModule.algos[bestAlgo].dn)
-              url += configModule.algos[bestAlgo].dn;
-            else
-              url += bestAlgo;
-            url += ".";
-            switch (configModule.config.region) {
-              case 0:
-                url += "eu";
-                break;
-              case 1:
-                url += "usa";
-                break;
-              default:
-                url += "eu";
-                break;
+            if (!configModule.config.useProfitabilityService){
+              stats.url = "stratum+tcp://";
+              if (configModule.algos[bestAlgo].dn)
+                stats.url += configModule.algos[bestAlgo].dn;
+              else
+                stats.url += bestAlgo;
+              stats.url += ".";
+              switch (configModule.config.region) {
+                case 0:
+                  stats.url += "eu";
+                  break;
+                case 1:
+                  stats.url += "usa";
+                  break;
+                default:
+                  stats.url += "eu";
+                  break;
+              }
+              stats.url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
             }
-            url += ".nicehash.com:" + configModule.algos[bestAlgo].port;
 
             const spawn = require('cross-spawn');
             if (cores !== null && cores !== "") {
               if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-x', configModule.config.proxy, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
               } else {
-                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
               }
             } else {
               if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-x', configModule.config.proxy, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-x', configModule.config.proxy, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
               } else {
-                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
               }
             }
             justStarted=1;
@@ -272,35 +275,98 @@ function doBenchmark() {
 }
 
 function getProfitability() {
-  return https.get({
-    host: 'www.nicehash.com',
-    path: '/api?method=simplemultialgo.info'
-  }, function (response) {
-    var body = '';
-    response.on('data', function (d) {
-      body += d;
+  if (!configModule.config.useProfitabilityService){
+    return https.get({
+      host: 'www.nicehash.com',
+      path: '/api?method=simplemultialgo.info'
+    }, function (response) {
+      var body = '';
+      response.on('data', function (d) {
+        body += d;
+      });
+      response.on('end', function () {
+        var parsed = null;
+        try{
+          parsed=JSON.parse(body);
+        }catch(error){
+          console.log("Error: Unable to get profitability data");
+          console.log(error);
+        }
+        if (parsed != null){
+          setRealProfitability("lyra2re",parseFloat(parsed.result.simplemultialgo['9'].paying));
+          setRealProfitability("axiom",parseFloat(parsed.result.simplemultialgo['13'].paying));
+          setRealProfitability("scryptjanenf16",parseFloat(parsed.result.simplemultialgo['15'].paying));
+          setRealProfitability("hodl",parseFloat(parsed.result.simplemultialgo['19'].paying));
+          setRealProfitability("cryptonight",parseFloat(parsed.result.simplemultialgo['22'].paying));
+          changeAlgo();
+        }
+      });
+    }).on("error", function(error) {
+      console.log("Error: Unable to get profitability data");
+      console.log(error);
     });
-    response.on('end', function () {
-      var parsed = null;
-      try{
-        parsed=JSON.parse(body);
-      }catch(error){
-        console.log("Error: Unable to get profitability data");
-        console.log(error);
-      }
-      if (parsed != null){
-        setRealProfitability("lyra2re",parseFloat(parsed.result.simplemultialgo['9'].paying));
-        setRealProfitability("axiom",parseFloat(parsed.result.simplemultialgo['13'].paying));
-        setRealProfitability("scryptjane",parseFloat(parsed.result.simplemultialgo['15'].paying));
-        setRealProfitability("hodl",parseFloat(parsed.result.simplemultialgo['19'].paying));
-        setRealProfitability("cryptonight",parseFloat(parsed.result.simplemultialgo['22'].paying));
-        changeAlgo();
+  }else{
+    var region="";
+    switch (configModule.config.region) {
+      case 0:
+        region += "eu";
+        break;
+      case 1:
+        region += "usa";
+        break;
+      default:
+        region += "eu";
+        break;
+    }
+    var query={
+      algos:{},
+      region:region,
+      name:configModule.config.rigName
+    };
+    Object.keys(configModule.config.benchmarks).forEach(function (key) {
+      if (configModule.config.benchmarks[key].enabled && configModule.config.benchmarks[key].hashrate!==null && configModule.config.benchmarks[key].hashrate!=="") {
+        query.algos[key]={};
+        query.algos[key].hashrate=configModule.config.benchmarks[key].hashrate*1000;
       }
     });
-  }).on("error", function(error) {
-    console.log("Error: Unable to get profitability data");
-    console.log(error);
-  });
+    return http.post({
+      host: configModule.config.profitabilityServiceUrl,
+      path: '/api/query',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      data: query
+    }, function (response) {
+      var body = '';
+      response.on('data', function (d) {
+        body += d;
+      });
+      response.on('end', function () {
+        var parsed = null;
+        try{
+          parsed=JSON.parse(body);
+        }catch(error){
+          console.log("Error: Unable to get profitability data");
+          console.log(error);
+        }
+        if (parsed != null){
+          if (stats.url!==parsed.result.url){
+            stats.url=parsed.result.url;
+            Object.keys(configModule.algos).forEach(function (key) {
+              if (key===parsed.result.algo)
+                configModule.algos[key].profitability=parsed.result.profitability*1000;
+              else
+                configModule.algos[key].profitability=0;
+            });
+            changeAlgo();
+          }
+        }
+      });
+    }).on("error", function(error) {
+      console.log("Error: Unable to get profitability data");
+      console.log(error);
+    });
+  }
 }
 
 function setRealProfitability(key,profitability){
@@ -403,7 +469,8 @@ function checkBenchmark(req, res, next) {
 }
 
 function init() {
-  getProfitability();
+  if (!configModule.config.useProfitabilityService)
+    getProfitability();
   getMinerStats();
   if (configModule.config.autostart) {
     console.log("autostart enabled, starting miner shortly..");
@@ -413,9 +480,10 @@ function init() {
   }
 
   var minutes = 3, profitabilityInterval = minutes * 60 * 1000;
-  setInterval(function () {
-    getProfitability();
-  }, profitabilityInterval);
+  if (!configModule.config.useProfitabilityService)
+    setInterval(function () {
+      getProfitability();
+    }, profitabilityInterval);
   setInterval(function () {
     getMinerStats();
   }, 2000);
