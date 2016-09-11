@@ -130,15 +130,15 @@ function startMiner() {
             const spawn = require('cross-spawn');
             if (cores !== null && cores !== "") {
               if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-x', configModule.config.proxy, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-x', configModule.config.proxy, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', configModule.config.rigName]);
               } else {
-                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-t', cores, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', configModule.config.rigName]);
               }
             } else {
               if (configModule.config.proxy !== null && configModule.config.proxy !== "") {
-                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-x', configModule.config.proxy, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-x', configModule.config.proxy, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', configModule.config.rigName]);
               } else {
-                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', 'x']);
+                cpuminer = spawn(binPath, ['-b','127.0.0.1:4096','-a', algo, '-o', stats.url, '-u', configModule.config.btcAddress + '.' + configModule.config.rigName, '-p', configModule.config.rigName]);
               }
             }
             justStarted=1;

@@ -46,7 +46,6 @@ var config = module.exports = {
     quark: {id:-1, name:"quark", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
     skein: {id:-1, name:"skein", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
     veltor: {id:-1, name:"veltor", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
-    x11evo: {id:-1, name:"x11evo", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
     x17: {id:-1, name:"x17", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
     yescrypt: {id:-1, name:"yescrpyt", port:-1,profitability: null, submitUnit:-1,profUnit:-1}
   },
