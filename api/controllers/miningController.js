@@ -344,7 +344,6 @@ function getProfitability() {
         body += d;
       });
       response.on('end', function () {
-        console.log(body);
         var parsed = null;
         try{
           parsed=JSON.parse(body);
