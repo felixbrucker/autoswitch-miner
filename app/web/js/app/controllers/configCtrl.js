@@ -93,13 +93,15 @@
                 vm.config.profitabilityServiceUrl=response.data.profitabilityServiceUrl;
                 vm.profitabilityString="&name="+vm.cpuModel;
                 Object.keys(vm.config.benchmarks).forEach(function (key) {
-                    var submitHashrate=vm.config.benchmarks[key].hashrate;
-                    if (vm.config.benchmarks[key].submitUnit===0)
-                        submitHashrate*=1000;
-                    for (var i = 1; i < vm.config.benchmarks[key].submitUnit; i++) {
-                        submitHashrate/=1000;
+                    if (vm.config.benchmarks[key].id!==-1){
+                        var submitHashrate=vm.config.benchmarks[key].hashrate;
+                        if (vm.config.benchmarks[key].submitUnit===0)
+                            submitHashrate*=1000;
+                        for (var i = 1; i < vm.config.benchmarks[key].submitUnit; i++) {
+                            submitHashrate/=1000;
+                        }
+                        vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+submitHashrate.toFixed(2);
                     }
-                    vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+submitHashrate.toFixed(2);
                 });
                 vm.profitabilityString+="&cost=0&power=0";
             }, function errorCallback(response) {
