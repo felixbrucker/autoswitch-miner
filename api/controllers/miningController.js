@@ -497,15 +497,17 @@ function init() {
     setTimeout(function () {
       startMiner();
     }, 10000);
-  }
-  if (bestAlgo === null || bestAlgo === ""){
-    doBenchmarkWrapper2();
-    setTimeout(function(){
-      configModule.config.autostart=true;
-      configModule.saveConfig();
-      startMiner();
-    },160*1000);
-  }
+  }else
+    if (bestAlgo === null || bestAlgo === ""){
+      setTimeout(function(){
+        doBenchmarkWrapper2();
+        setTimeout(function(){
+          configModule.config.autostart=true;
+          configModule.saveConfig();
+          startMiner();
+        },160*1000);
+      },130*1000);
+    }
   var minutes = 3, profitabilityInterval = minutes * 60 * 1000;
   setInterval(function () {
     getProfitability();
@@ -519,7 +521,7 @@ function init() {
   },1000*60*7);
 }
 
-setTimeout(init, 120*1000);
+setTimeout(init, 1000);
 
 exports.getStats = getStats;
 exports.startMining = startMining;
