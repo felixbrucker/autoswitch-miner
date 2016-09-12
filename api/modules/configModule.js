@@ -21,11 +21,16 @@ var config = module.exports = {
     benchTime: null,
     rigName: null,
     cores: null,
-    writeMinerLog: null
+    writeMinerLog: null,
+    useProfitabilityService: false,
+    profitabilityServiceUrl: null
   },
   algos: {
     lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, submitUnit: 2, profUnit: 2},
-    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 2}
+    hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 2},
+    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 2},
+    argon2: {id:-1, name:"Argon2", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
+    yescrypt: {id:-1, name:"Yescrypt", port:-1,profitability: null, submitUnit:-1,profUnit:-1}
   },
   cpuModel: os.cpus()[0].model.trim(),
   getConfig: function () {
@@ -49,7 +54,10 @@ var config = module.exports = {
           if (err) throw err;
           config.config = JSON.parse(data);
           Object.keys(config.config.benchmarks).forEach(function (key) {
-            config.config.benchmarks[key].benchRunning=false;
+            if (config.algos[key]===undefined)
+              delete config.config.benchmarks[key];
+            else
+              config.config.benchmarks[key].benchRunning=false;
           });
           if (Object.keys(config.algos).length!==Object.keys(config.config.benchmarks).length){
             Object.keys(config.algos).forEach(function (key) {
@@ -59,7 +67,10 @@ var config = module.exports = {
                 newAlgo.id=config.algos[key].id;
                 newAlgo.submitUnit=config.algos[key].submitUnit;
                 newAlgo.hashrate=null;
-                newAlgo.enabled=true;
+                if (newAlgo.id===-1)
+                  newAlgo.enabled=false;
+                else
+                  newAlgo.enabled=true;
                 newAlgo.benchRunning=null;
                 newAlgo.binPath=null;
                 newAlgo.cores=null;

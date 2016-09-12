@@ -29,7 +29,9 @@
             benchTime: null,
             rigName: null,
             cores: null,
-            writeMinerLog: null
+            writeMinerLog: null,
+            useProfitabilityService: false,
+            profitabilityServiceUrl: null
         };
         vm.waiting = null;
         vm.waitingBenchmark = null;
@@ -87,15 +89,19 @@
                 vm.config.rigName = response.data.rigName;
                 vm.config.cores=response.data.cores;
                 vm.config.writeMinerLog=response.data.writeMinerLog;
+                vm.config.useProfitabilityService=response.data.useProfitabilityService;
+                vm.config.profitabilityServiceUrl=response.data.profitabilityServiceUrl;
                 vm.profitabilityString="&name="+vm.cpuModel;
                 Object.keys(vm.config.benchmarks).forEach(function (key) {
-                    var submitHashrate=vm.config.benchmarks[key].hashrate;
-                    if (vm.config.benchmarks[key].submitUnit===0)
-                        submitHashrate*=1000;
-                    for (var i = 1; i < vm.config.benchmarks[key].submitUnit; i++) {
-                        submitHashrate/=1000;
+                    if (vm.config.benchmarks[key].id!==-1){
+                        var submitHashrate=vm.config.benchmarks[key].hashrate;
+                        if (vm.config.benchmarks[key].submitUnit===0)
+                            submitHashrate*=1000;
+                        for (var i = 1; i < vm.config.benchmarks[key].submitUnit; i++) {
+                            submitHashrate/=1000;
+                        }
+                        vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+submitHashrate.toFixed(2);
                     }
-                    vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+submitHashrate.toFixed(2);
                 });
                 vm.profitabilityString+="&cost=0&power=0";
             }, function errorCallback(response) {
