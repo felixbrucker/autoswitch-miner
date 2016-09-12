@@ -27,7 +27,7 @@ var config = module.exports = {
   },
   algos: {
     lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, submitUnit: 2, profUnit: 2},
-    hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 2},
+    hodl: {id: -1, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 2},
     cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 2},
     argon2: {id:-1, name:"Argon2", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
     yescrypt: {id:-1, name:"Yescrypt", port:-1,profitability: null, submitUnit:-1,profUnit:-1}

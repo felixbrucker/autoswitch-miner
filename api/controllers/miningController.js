@@ -502,6 +502,7 @@ function init() {
     doBenchmarkWrapper2();
     setTimeout(function(){
       configModule.config.autostart=true;
+      configModule.saveConfig();
       startMiner();
     },160*1000);
   }
