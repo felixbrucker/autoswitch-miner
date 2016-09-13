@@ -185,6 +185,7 @@ function startMiner(type) {
             if (configModule.config.cpu.proxy!== null && configModule.config.cpu.proxy !== "")
               minerString+=" -x "+configModule.config.cpu.proxy;
             minerString+=" -o "+stats.cpu.url+" -u "+configModule.config.cpu.btcAddress+"."+configModule.config.rigName+" -p "+configModule.config.rigName;
+            console.log(minerString);
             const spawn = require('cross-spawn');
             cpuminer = spawn(binPath, [minerString.split(" ")]);
             justStartedCPU=1;
@@ -495,7 +496,6 @@ function getProfitability(type) {
                       bestAlgoGPU = parsed.result.algo;
                       break;
                   }
-                  console.log(bestAlgoCPU);
                 }
               }
             }
