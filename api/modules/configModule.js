@@ -2,7 +2,6 @@
 
 var colors = require('colors/safe');
 var fs = require('fs');
-var os = require('os');
 
 var configPath="data/settings.json";
 
@@ -11,28 +10,55 @@ if (!fs.existsSync("data")){
 }
 var config = module.exports = {
   config: {
-    region: null,
-    regions: null,
-    btcAddress: null,
-    proxy: null,
-    binPath: null,
-    autostart:null,
-    benchmarks: null,
-    benchTime: null,
+    cpu:{
+      enabled: null,
+      btcAddress: null,
+      proxy: null,
+      binPath: null,
+      autostart:null,
+      region: null,
+      benchTime: null,
+      cores: null,
+      writeMinerLog: null
+    },
+    gpu:{
+      enabled:null,
+      btcAddress: null,
+      proxy: null,
+      binPath: null,
+      autostart:null,
+      region: null,
+      benchTime: null,
+      writeMinerLog: null,
+      extraParam:null
+    },
     rigName: null,
-    cores: null,
-    writeMinerLog: null,
-    useProfitabilityService: false,
+    regions: null,
+    benchmarks: null,
     profitabilityServiceUrl: null
   },
   algos: {
-    lyra2re: {id: 9, name: "Lyra2RE", port: 3342, profitability: null, submitUnit: 2, profUnit: 2},
-    hodl: {id: 19, name: "Hodl", port: 3352, profitability: null, submitUnit: 1, profUnit: 2},
-    cryptonight: {id: 22, name: "CryptoNight", port:3355, profitability: null, submitUnit: 1, profUnit: 2},
-    argon2: {id:-1, name:"Argon2", port:-1,profitability: null, submitUnit:-1,profUnit:-1},
-    yescrypt: {id:-1, name:"Yescrypt", port:-1,profitability: null, submitUnit:-1,profUnit:-1}
+    lyra2re: {cpu:true,gpu:true},
+    hodl: {cpu:true,gpu:false},
+    cryptonight: {cpu:true,gpu:false},
+    argon2: {cpu:true,gpu:false},
+    yescrypt: {cpu:true,gpu:false},
+    lbry:{cpu:false,gpu:true},
+    blake256r8:{alt:"blakecoin",cpu:false,gpu:true},
+    blake2s:{cpu:false,gpu:true},
+    c11:{cpu:false,gpu:true},
+    decred:{cpu:false,gpu:true},
+    lyra2rev2:{cpu:false,gpu:true},
+    "myr-gr":{cpu:false,gpu:true},
+    neoscrypt:{cpu:false,gpu:true},
+    nist5:{cpu:false,gpu:true},
+    qubit:{cpu:false,gpu:true},
+    quark:{cpu:false,gpu:true},
+    skein:{cpu:false,gpu:true},
+    x11evo:{cpu:false,gpu:true},
+    sib:{cpu:false,gpu:true},
+    x17:{cpu:false,gpu:true}
   },
-  cpuModel: os.cpus()[0].model.trim(),
   getConfig: function () {
     return config.config;
   },
@@ -63,45 +89,68 @@ var config = module.exports = {
             Object.keys(config.algos).forEach(function (key) {
               if(!(config.config.benchmarks.hasOwnProperty(key))){
                 var newAlgo = {};
-                newAlgo.name=config.algos[key].name;
-                newAlgo.id=config.algos[key].id;
-                newAlgo.submitUnit=config.algos[key].submitUnit;
-                newAlgo.hashrate=null;
-                if (newAlgo.id===-1)
-                  newAlgo.enabled=false;
-                else
-                  newAlgo.enabled=true;
-                newAlgo.benchRunning=null;
-                newAlgo.binPath=null;
-                newAlgo.cores=null;
+                if (config.algos[key].cpu){
+                  newAlgo.cpu={};
+                  newAlgo.cpu.enabled=true;
+                  newAlgo.cpu.hashrate=null;
+                  newAlgo.cpu.binPath=null;
+                  newAlgo.cpu.cores=null;
+                  newAlgo.cpu.benchRunning=false;
+                }
+
+                if (config.algos[key].gpu){
+                  newAlgo.gpu={};
+                  newAlgo.gpu.enabled=true;
+                  newAlgo.gpu.hashrate=null;
+                  newAlgo.gpu.binPath=null;
+                  newAlgo.gpu.benchRunning=false;
+                }
+
                 config.config.benchmarks[key]=newAlgo;
               }
             });
           }else{
             Object.keys(config.config.benchmarks).forEach(function (key) {
-              if(config.config.benchmarks[key].id===undefined)
-                config.config.benchmarks[key].id=config.algos[key].id;
-              if(config.config.benchmarks[key].submitUnit===undefined)
-                config.config.benchmarks[key].submitUnit=config.algos[key].submitUnit;
-              if(config.config.benchmarks[key].cores===undefined)
-                config.config.benchmarks[key].cores=null;
+              if(config.config.benchmarks[key].cpu===undefined && config.algos[key].cpu){
+                config.config.benchmarks[key].cpu={};
+                config.config.benchmarks[key].cpu.enabled=true;
+                config.config.benchmarks[key].cpu.hashrate=null;
+                config.config.benchmarks[key].cpu.binPath=null;
+                config.config.benchmarks[key].cpu.cores=null;
+                config.config.benchmarks[key].cpu.benchRunning=false;
+              }
+              if(config.config.benchmarks[key].gpu===undefined && config.algos[key].gpu){
+                config.config.benchmarks[key].gpu={};
+                config.config.benchmarks[key].gpu.enabled=true;
+                config.config.benchmarks[key].gpu.hashrate=null;
+                config.config.benchmarks[key].gpu.binPath=null;
+                config.config.benchmarks[key].gpu.benchRunning=false;
+              }
             });
           }
         });
       } else if (err.code == 'ENOENT') {
         //default conf
-        config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}];
+        config.config.cpu.enabled=true;
+        config.config.gpu.enabled=false;
+        config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}, {id: 2, name: "Nicehash Hong Kong"}, {id: 3, name: "Nicehash Japan"}];
         var isWin = /^win/.test(process.platform);
-        if (isWin)
-          config.config.binPath = "bin\\cpuminer.exe";
-        else
-          config.config.binPath = "bin/cpuminer";
-        config.config.autostart=false;
+        if (isWin){
+          config.config.cpu.binPath = "bin\\cpuminer.exe";
+          config.config.cpu.binPath = "bin\\ccminer.exe";
+        }else{
+          config.config.cpu.binPath = "bin/cpuminer";
+          config.config.cpu.binPath = "bin/ccminer";
+        }
+        config.config.cpu.autostart=false;
+        config.config.gpu.autostart=false;
         config.config.benchmarks = {
         };
-        config.config.benchTime=60;
+        config.config.cpu.benchTime=120;
+        config.config.gpu.benchTime=120;
         config.config.rigName='RXX';
-        config.config.writeMinerLog=false;
+        config.config.cpu.writeMinerLog=false;
+        config.config.gpu.writeMinerLog=false;
         config.saveConfig();
         config.loadConfig();
       }

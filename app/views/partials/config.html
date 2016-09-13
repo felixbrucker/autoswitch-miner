@@ -1,26 +1,26 @@
 <div class="col-md-12">
   <form name="config">
-    <div class="col-md-12">
-      <td><input type="checkbox" ng-model="configVm.config.autostart" ng-click="configVm.setConfig()"> Autostart Mining</td>
+    <div class="row">
+      <td><input type="checkbox" ng-model="configVm.config.cpu.autostart" ng-click="configVm.setConfig()">[CPU] Autostart Mining</td>
     </div>
     <div class="row">
       <div class="col-md-5 col-md-offset-1">
         <table class='table table-borderless'>
           <tr>
-            <td>Region</td>
+            <td>[CPU] Region</td>
             <td>
-              <select name="regionSelect" id="regionSelect"
+              <select name="regionSelect" id="regionSelectCPU"
                       ng-options="region.id as region.name for region in configVm.config.regions"
-                      ng-model="configVm.config.region" required></select>
+                      ng-model="configVm.config.cpu.region" required></select>
             </td>
           </tr>
           <tr>
-            <td>Proxy</td>
-            <td><input type="text" name="proxy" ng-model="configVm.config.proxy" size="32" placeholder="optional"></td>
+            <td>[CPU] Proxy</td>
+            <td><input type="text" name="proxy" ng-model="configVm.config.cpu.proxy" size="32" placeholder="optional"></td>
           </tr>
           <tr>
-            <td>Rig Name</td>
-            <td><input type="text" name="rigName" ng-model="configVm.config.rigName" size="8" placeholder="required" required></td>
+            <td>[CPU] write Miner Log to file</td>
+            <td><input type="checkbox" ng-model="configVm.config.cpu.writeMinerLog" ng-click="configVm.setConfig()"></td>
           </tr>
         </table>
       </div>
@@ -28,31 +28,72 @@
       <div class="col-md-5">
         <table class='table table-borderless'>
           <tr>
-            <td>BTC Address</td>
-            <td><input type="text" name="btcAddress" ng-model="configVm.config.btcAddress" size="42" placeholder="required" required></td>
+            <td>[CPU] BTC Address</td>
+            <td><input type="text" name="btcAddress" ng-model="configVm.config.cpu.btcAddress" size="42" placeholder="required" required></td>
           </tr>
           <tr>
-            <td>binPath</td>
-            <td><input type="text" name="binPath" ng-model="configVm.config.binPath" size="26" placeholder="path to miner bin" required></td>
+            <td>[CPU] binPath</td>
+            <td><input type="text" name="binPath" ng-model="configVm.config.cpu.binPath" size="26" placeholder="path to miner bin" required></td>
           </tr>
           <tr>
-            <td>Cores</td>
-            <td><input type="number" name="cores" ng-model="configVm.config.cores" placeholder="empty for all cores"></td>
+            <td>[CPU] Cores</td>
+            <td><input type="number" name="cores" ng-model="configVm.config.cpu.cores" placeholder="empty for all cores"></td>
           </tr>
         </table>
       </div>
     </div>
+
+    <div class="row">
+      <td><input type="checkbox" ng-model="configVm.config.gpu.autostart" ng-click="configVm.setConfig()">[GPU] Autostart Mining</td>
+    </div>
+    <div class="row">
+      <div class="col-md-5 col-md-offset-1">
+        <table class='table table-borderless'>
+          <tr>
+            <td>[GPU] Region</td>
+            <td>
+              <select name="regionSelect" id="regionSelectGPU"
+                      ng-options="region.id as region.name for region in configVm.config.regions"
+                      ng-model="configVm.config.gpu.region" required></select>
+            </td>
+          </tr>
+          <tr>
+            <td>[GPU] Proxy</td>
+            <td><input type="text" name="proxy" ng-model="configVm.config.gpu.proxy" size="32" placeholder="optional"></td>
+          </tr>
+          <tr>
+            <td>[GPU] write Miner Log to file</td>
+            <td><input type="checkbox" ng-model="configVm.config.gpu.writeMinerLog" ng-click="configVm.setConfig()"></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="col-md-5">
+        <table class='table table-borderless'>
+          <tr>
+            <td>[GPU] BTC Address</td>
+            <td><input type="text" name="btcAddress" ng-model="configVm.config.gpu.btcAddress" size="42" placeholder="required" required></td>
+          </tr>
+          <tr>
+            <td>[GPU] binPath</td>
+            <td><input type="text" name="binPath" ng-model="configVm.config.gpu.binPath" size="26" placeholder="path to miner bin" required></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
     <div>
-      <input type="checkbox" ng-model="configVm.config.useProfitabilityService" ng-click="configVm.setConfig()"> Use external <a href="https://github.com/felixbrucker/profitability-service" target="_blank">Profitability-Service</a> | URL: <input type="text" name="profitabilityServiceUrl" ng-model="configVm.config.profitabilityServiceUrl" size="26" placeholder="IP:PORT eg. 127.0.0.1:8081">
+      Rig Name: <input type="text" name="rigName" ng-model="configVm.config.rigName" size="8" placeholder="required" required>
     </div>
     <div>
-      <input type="checkbox" ng-model="configVm.config.writeMinerLog" ng-click="configVm.setConfig()"> write Miner Log to file
+      <a href="https://github.com/felixbrucker/profitability-service" target="_blank">Profitability-Service</a> URL: <input type="text" name="profitabilityServiceUrl" ng-model="configVm.config.profitabilityServiceUrl" size="26" placeholder="IP:PORT eg. 127.0.0.1:8081">
     </div>
+
     <div class="col-md-12">
       <br />
-      <b>Benchmarks:</b>
+      <b>[CPU] Benchmarks:</b>
       <br />
-      Benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.benchTime" placeholder="in seconds" required>
+      [CPU] Benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.cpu.benchTime" placeholder="in seconds" required>
       <table class='table table-borderless'>
         <tr>
           <th>enabled</th>
@@ -63,15 +104,41 @@
           <th>benchmark running</th>
         </tr>
         <tr ng-repeat="(key, algo) in configVm.config.benchmarks  track by $index">
-          <td><input type="checkbox" ng-model="algo.enabled" ng-click="configVm.setConfig()"></td>
-          <td>{{algo.name}}</td>
-          <td><input type="number" name="hashrate-{{algo.name}}" ng-model="algo.hashrate" placeholder="hashrate"> KH/s</td>
-          <td><input type="text" name="binPath-{{algo.name}}" ng-model="algo.binPath" placeholder="path to custom miner bin" size="26"></td>
-          <td><input type="number" name="cores-{{algo.name}}" ng-model="algo.cores" placeholder="custom core count"></td>
-          <td><i ng-show="algo.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.benchRunning">no</span></td>
+          <td ng-if="algo.cpu!==undefined"><input type="checkbox" ng-model="algo.cpu.enabled" ng-click="configVm.setConfig()"></td>
+          <td ng-if="algo.cpu!==undefined">{{key}}</td>
+          <td ng-if="algo.cpu!==undefined"><input type="number" name="hashrate-{{key}}-CPU" ng-model="algo.cpu.hashrate" placeholder="hashrate"> KH/s</td>
+          <td ng-if="algo.cpu!==undefined"><input type="text" name="binPath-{{key}}-CPU" ng-model="algo.cpu.binPath" placeholder="path to custom miner bin" size="26"></td>
+          <td ng-if="algo.cpu!==undefined"><input type="number" name="cores-{{key}}-CPU" ng-model="algo.cpu.cores" placeholder="custom core count"></td>
+          <td ng-if="algo.cpu!==undefined"><i ng-show="algo.cpu.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.cpu.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.cpu.benchRunning">no</span></td>
         </tr>
       </table>
     </div>
+
+    <div class="col-md-12">
+      <br />
+      <b>[GPU] Benchmarks:</b>
+      <br />
+      [GPU] Benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.gpu.benchTime" placeholder="in seconds" required>
+      <table class='table table-borderless'>
+        <tr>
+          <th>enabled</th>
+          <th>algorithm</th>
+          <th>benchmarked speed</th>
+          <th>custom miner path</th>
+          <th>extra Parameter</th>
+          <th>benchmark running</th>
+        </tr>
+        <tr ng-repeat="(key, algo) in configVm.config.benchmarks  track by $index">
+          <td ng-if="algo.gpu!==undefined"><input type="checkbox" ng-model="algo.gpu.enabled" ng-click="configVm.setConfig()"></td>
+          <td ng-if="algo.gpu!==undefined">{{key}}</td>
+          <td ng-if="algo.gpu!==undefined"><input type="number" name="hashrate-{{key}}-GPU" ng-model="algo.gpu.hashrate" placeholder="hashrate"> KH/s</td>
+          <td ng-if="algo.gpu!==undefined"><input type="text" name="binPath-{{key}}-GPU" ng-model="algo.gpu.binPath" placeholder="path to custom miner bin" size="26"></td>
+          <td ng-if="algo.gpu!==undefined"><input type="number" name="extraParam-{{key}}-GPU" ng-model="algo.gpu.extraParam" placeholder="extra Parameters"></td>
+          <td ng-if="algo.gpu!==undefined"><i ng-show="algo.gpu.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.gpu.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.gpu.benchRunning">no</span></td>
+        </tr>
+      </table>
+    </div>
+
     <div class="col-md-12" style="margin-bottom: 10px;">
       <button type="button" class="btn btn-success" ng-disabled="config.$invalid" ng-click="configVm.setConfig()">Save
       </button>
@@ -80,15 +147,20 @@
     </div>
   </form>
   <div style="margin-bottom: 10px;">
-    <button ng-show="!configVm.waitingBenchmark" type="button" class="btn btn-success" ng-click="configVm.doBenchmark()">Run Benchmark
+    <button ng-show="!configVm.waitingBenchmarkCPU" type="button" class="btn btn-success" ng-click="configVm.doBenchmark('cpu')">[CPU] Run Benchmark
     </button>
-    <button ng-show="configVm.waitingBenchmark" type="button" class="btn btn-success" disabled>Benchmark running..
+    <button ng-show="configVm.waitingBenchmarkCPU" type="button" class="btn btn-success" disabled>[CPU] Benchmark running..
     </button>
-    <i ng-show="configVm.waitingBenchmark" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+    <i ng-show="configVm.waitingBenchmarkCPU" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
     <span class="sr-only">Loading...</span>
   </div>
   <div style="margin-bottom: 10px;">
-    <a href="https://www.nicehash.com/?p=calc{{configVm.profitabilityString}}" target="_blank">Check Profitability</a>
+    <button ng-show="!configVm.waitingBenchmarkGPU" type="button" class="btn btn-success" ng-click="configVm.doBenchmark('gpu')">[GPU] Run Benchmark
+    </button>
+    <button ng-show="configVm.waitingBenchmarkGPU" type="button" class="btn btn-success" disabled>[GPU] Benchmark running..
+    </button>
+    <i ng-show="configVm.waitingBenchmarkGPU" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+    <span class="sr-only">Loading...</span>
   </div>
   <div style="margin-bottom: 10px;">
     <button ng-show="!configVm.updating" type="button" class="btn btn-success" ng-click="configVm.update()"><i class="fa fa-refresh" aria-hidden="true"></i> Git Pull

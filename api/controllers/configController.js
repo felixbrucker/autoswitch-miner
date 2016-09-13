@@ -11,12 +11,7 @@ function setConfig(req, res, next) {
   configModule.setConfig(req.body);
   configModule.saveConfig();
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({success: true}));
-}
-
-function getCPUModel(req, res, next) {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({cpuModel: configModule.cpuModel}));
+  res.send(JSON.stringify({result: true}));
 }
 
 function update(req, res, next) {
@@ -27,19 +22,22 @@ function update(req, res, next) {
       shell:true
     });
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({success:true}));
+  res.send(JSON.stringify({result:true}));
 }
 
 function updateMiner(req, res, next) {
   runUpdateScript();
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({success:true}));
+  res.send(JSON.stringify({result:true}));
 }
 
 function runUpdateScript(){
   var miningController = require(__basedir + 'api/controllers/miningController');
-  if (cpuminer!==null&&cpuminer!==""){
-    miningController.stopMiner();
+  if (cpuminer!==null){
+    miningController.stopMiner("cpu");
+  }
+  if (gpuminer!==null){
+    miningController.stopMiner("gpu");
   }
   const spawn = require('cross-spawn');
   const child = spawn('bash',['update.sh'],{
@@ -56,6 +54,5 @@ init();
 
 exports.getConfig = getConfig;
 exports.setConfig = setConfig;
-exports.getCPUModel = getCPUModel;
 exports.update = update;
 exports.updateMiner = updateMiner;

@@ -20,22 +20,11 @@
     var vm = this;
     vm.statsInterval = null;
     vm.current = {
-      running: null,
-      hashrate: null,
-      algorithm: null,
-      cores: null,
-      miner: null,
-      accepted: null,
-      rejected: null,
-      acceptedPerMinute: null,
-      difficulty: null,
-      uptime: null,
-      temperature: null,
-      profitability: null,
-      btcAddress: null,
-      benchRunning:null
+      cpu:{},
+      gpu:{}
     };
-    vm.waiting = null;
+    vm.waitingCPU = null;
+    vm.waitingGPU = null;
 
     // controller API
     vm.init = init;
@@ -66,20 +55,8 @@
         method: 'GET',
         url: 'api/mining/stats'
       }).then(function successCallback(response) {
-        vm.current.accepted = response.data.accepted;
-        vm.current.acceptedPerMinute = response.data.acceptedPerMinute;
-        vm.current.algorithm = response.data.algorithm;
-        vm.current.cores = response.data.cores;
-        vm.current.difficulty = response.data.difficulty;
-        vm.current.hashrate = response.data.hashrate;
-        vm.current.miner = response.data.miner;
-        vm.current.profitability = response.data.profitability;
-        vm.current.rejected = response.data.rejected;
-        vm.current.running = response.data.running;
-        vm.current.temperature = response.data.temperature;
-        vm.current.uptime = response.data.uptime;
-        vm.current.btcAddress = response.data.btcAddress;
-        vm.current.benchRunning=response.data.benchRunning;
+        vm.current.cpu = response.data.cpu;
+        vm.current.gpu = response.data.gpu;
       }, function errorCallback(response) {
         console.log(response);
       });
@@ -90,14 +67,35 @@
      * @desc start the Miner
      * @memberOf statsCtrl
      */
-    function startMiner() {
-      vm.waiting = true;
+    function startMiner(type) {
+      switch(type){
+        case "cpu":
+          vm.waitingCPU = true;
+          break;
+        case "gpu":
+          vm.waitingGPU = true;
+          break;
+      }
+
       $http({
         method: 'POST',
-        url: 'api/mining/start'
+        url: 'api/mining/start',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8'
+        },
+        data: {type:type}
       }).then(function successCallback(response) {
-        setTimeout(function(){vm.waiting = false;}, 1000);
-        if (response.data.success === true) {
+        setTimeout(function(){
+          switch(type){
+            case "cpu":
+              vm.waitingCPU = false;
+              break;
+            case "gpu":
+              vm.waitingGPU = false;
+              break;
+          }
+        }, 1000);
+        if (response.data.result === true) {
           vm.getStats();
         }
       }, function errorCallback(response) {
@@ -111,14 +109,34 @@
      * @desc stop the Miner
      * @memberOf statsCtrl
      */
-    function stopMiner() {
-      vm.waiting = true;
+    function stopMiner(type) {
+      switch(type){
+        case "cpu":
+          vm.waitingCPU = true;
+          break;
+        case "gpu":
+          vm.waitingGPU = true;
+          break;
+      }
       $http({
         method: 'POST',
-        url: 'api/mining/stop'
+        url: 'api/mining/stop',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8'
+        },
+        data: {type:type}
       }).then(function successCallback(response) {
-        setTimeout(function(){vm.waiting = false;}, 1000);
-        if (response.data.success === true) {
+        setTimeout(function(){
+          switch(type){
+            case "cpu":
+              vm.waitingCPU = false;
+              break;
+            case "gpu":
+              vm.waitingGPU = false;
+              break;
+          }
+        }, 1000);
+        if (response.data.result === true) {
           vm.getStats();
         }
       }, function errorCallback(response) {

@@ -1,34 +1,34 @@
-<div class="col-md-6 col-md-offset-3">
-  <button type="button" class="btn btn-success" ng-show="!statsVm.current.running" ng-click="statsVm.startMiner()">Start Miner</button>
-  <button type="button" class="btn btn-danger" ng-show="statsVm.current.running" ng-click="statsVm.stopMiner()">Stop Miner</button>
-  <i ng-show="statsVm.waiting" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+<div class="col-md-8 col-md-offset-2">
+  <button type="button" class="btn btn-success" ng-show="!statsVm.current.cpu.running" ng-click="statsVm.startMiner('cpu')">[CPU] Start Miner</button>
+  <button type="button" class="btn btn-danger" ng-show="statsVm.current.cpu.running" ng-click="statsVm.stopMiner('cpu')">[CPU] Stop Miner</button>
+  <i ng-show="statsVm.waitingCPU" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
   <span class="sr-only">Loading...</span>
   <br />
-  Miner is <span ng-show="!statsVm.current.running" class="label label-danger">stopped</span>
-  <span ng-show="statsVm.current.running">
-    <span class="label label-success">running</span><span ng-show="statsVm.current.benchRunning"> (in Benchmark Mode)</span>
+  [CPU] Miner is <span ng-show="!statsVm.current.cpu.running" class="label label-danger">stopped</span>
+  <span ng-show="statsVm.current.cpu.running">
+    <span class="label label-success">running</span><span ng-show="statsVm.current.cpu.benchRunning"> (in Benchmark Mode)</span>
     <br />
     <div class="col-md-6">
       <table class='table table-borderless'>
         <tr>
           <td>Hashrate</td>
-          <td><span class="label label-primary">{{statsVm.current.hashrate | hashrate}}</span></td>
+          <td><span class="label label-primary">{{statsVm.current.cpu.hashrate | hashrate}}</span></td>
         </tr>
         <tr>
           <td>Profitability</td>
-          <td ng-show="statsVm.current.profitability"><span class="label label-primary">{{statsVm.current.profitability | number:8}} BTC/Day</span></td>
+          <td ng-show="statsVm.current.cpu.profitability"><span class="label label-primary">{{statsVm.current.cpu.profitability | number:8}} BTC/Day</span></td>
         </tr>
         <tr>
           <td>Algorithm</td>
-          <td><span class="label label-info">{{statsVm.current.algorithm}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.cpu.algorithm}}</span></td>
         </tr>
         <tr>
           <td>Cores</td>
-          <td><span class="label label-info">{{statsVm.current.cores}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.cpu.cores}}</span></td>
         </tr>
         <tr>
           <td>Temperature</td>
-          <td ng-show="statsVm.current.temperature"><span class="label label-info">{{statsVm.current.temperature}} °C</span></td>
+          <td ng-show="statsVm.current.cpu.temperature"><span class="label label-info">{{statsVm.current.cpu.temperature}} °C</span></td>
         </tr>
       </table>
     </div>
@@ -37,29 +37,89 @@
       <table class='table table-borderless'>
         <tr>
           <td>Accepted Shares</td>
-          <td><span class="label label-primary">{{statsVm.current.accepted}}</span></td>
+          <td><span class="label label-primary">{{statsVm.current.cpu.accepted}}</span></td>
         </tr>
         <tr>
           <td>Rejected Shares</td>
-          <td><span class="label label-primary">{{statsVm.current.rejected}}</span></td>
+          <td><span class="label label-primary">{{statsVm.current.cpu.rejected}}</span></td>
         </tr>
         <tr>
           <td>Accepted Shares / Min</td>
-          <td><span class="label label-info">{{statsVm.current.acceptedPerMinute}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.cpu.acceptedPerMinute}}</span></td>
         </tr>
         <tr>
           <td>Difficulty</td>
-          <td><span class="label label-info">{{statsVm.current.difficulty}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.cpu.difficulty}}</span></td>
         </tr>
         <tr>
           <td>Uptime</td>
-          <td><span class="label label-info">{{statsVm.current.uptime | secondsToTimeString}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.cpu.uptime | secondsToTimeString}}</span></td>
         </tr>
       </table>
     </div>
     <div class="col-md-12">
-      Miner: {{statsVm.current.miner}} <br />
-      <a ng-href="https://www.nicehash.com/?p=miners&addr={{statsVm.current.btcAddress}}" target="_blank">Nicehash Status Page</a>
+      Miner: {{statsVm.current.cpu.miner}}
+    </div>
+  </span>
+</div>
+
+<div class="col-md-8 col-md-offset-2">
+  <button type="button" class="btn btn-success" ng-show="!statsVm.current.gpu.running" ng-click="statsVm.startMiner('gpu')">[GPU] Start Miner</button>
+  <button type="button" class="btn btn-danger" ng-show="statsVm.current.gpu.running" ng-click="statsVm.stopMiner('gpu')">[GPU] Stop Miner</button>
+  <i ng-show="statsVm.waitingGPU" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+  <span class="sr-only">Loading...</span>
+  <br />
+  [GPU] Miner is <span ng-show="!statsVm.current.gpu.running" class="label label-danger">stopped</span>
+  <span ng-show="statsVm.current.gpu.running">
+    <span class="label label-success">running</span><span ng-show="statsVm.current.gpu.benchRunning"> (in Benchmark Mode)</span>
+    <br />
+    <div class="col-md-6">
+      <table class='table table-borderless'>
+        <tr>
+          <td>Hashrate</td>
+          <td><span class="label label-primary">{{statsVm.current.gpu.hashrate | hashrate}}</span></td>
+        </tr>
+        <tr>
+          <td>Profitability</td>
+          <td ng-show="statsVm.current.gpu.profitability"><span class="label label-primary">{{statsVm.current.gpu.profitability | number:8}} BTC/Day</span></td>
+        </tr>
+        <tr>
+          <td>Algorithm</td>
+          <td><span class="label label-info">{{statsVm.current.gpu.algorithm}}</span></td>
+        </tr>
+        <tr>
+          <td>GPUs</td>
+          <td><span class="label label-info">{{statsVm.current.gpu.gpus}}</span></td>
+        </tr>
+        <tr>
+          <td>Uptime</td>
+          <td><span class="label label-info">{{statsVm.current.gpu.uptime | secondsToTimeString}}</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-md-6">
+      <table class='table table-borderless'>
+        <tr>
+          <td>Accepted Shares</td>
+          <td><span class="label label-primary">{{statsVm.current.gpu.accepted}}</span></td>
+        </tr>
+        <tr>
+          <td>Rejected Shares</td>
+          <td><span class="label label-primary">{{statsVm.current.gpu.rejected}}</span></td>
+        </tr>
+        <tr>
+          <td>Accepted Shares / Min</td>
+          <td><span class="label label-info">{{statsVm.current.gpu.acceptedPerMinute}}</span></td>
+        </tr>
+        <tr>
+          <td>Difficulty</td>
+          <td><span class="label label-info">{{statsVm.current.gpu.difficulty}}</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-12">
+      Miner: {{statsVm.current.gpu.miner}}
     </div>
   </span>
 </div>

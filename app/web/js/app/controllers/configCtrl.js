@@ -19,26 +19,20 @@
 
         var vm = this;
         vm.config = {
-            region: null,
-            regions: null,
-            btcAddress: null,
-            proxy: null,
-            binPath: null,
-            autostart:null,
-            benchmarks: null,
-            benchTime: null,
+            cpu:{},
+            gpu:{},
             rigName: null,
-            cores: null,
-            writeMinerLog: null,
-            useProfitabilityService: false,
+            regions: null,
+            benchmarks: {},
             profitabilityServiceUrl: null
         };
         vm.waiting = null;
-        vm.waitingBenchmark = null;
+        vm.waitingBenchmarkCPU = null;
+        vm.waitingBenchmarkGPU = null;
         vm.configInterval=null;
-        vm.benchmarkInterval=null;
+        vm.benchmarkIntervalCPU=null;
+        vm.benchmarkIntervalGPU=null;
         vm.profitabilityString=null;
-        vm.cpuModel=null;
         vm.updating=null;
         vm.updatingMiner=null;
 
@@ -47,7 +41,6 @@
         vm.init = init;
         vm.getConfig=getConfig;
         vm.setConfig=setConfig;
-        vm.getCPUModel=getCPUModel;
         vm.doBenchmark=doBenchmark;
         vm.checkBenchmark=checkBenchmark;
         vm.update=update;
@@ -62,7 +55,6 @@
          */
         function init() {
             angular.element(document).ready(function () {
-                vm.getCPUModel();
                 vm.getConfig();
                 vm.checkBenchmark();
             });
@@ -78,52 +70,17 @@
                 method: 'GET',
                 url: 'api/config'
             }).then(function successCallback(response) {
-                vm.config.region = response.data.region;
-                vm.config.regions = response.data.regions;
-                vm.config.btcAddress = response.data.btcAddress;
-                vm.config.proxy = response.data.proxy;
-                vm.config.binPath = response.data.binPath;
-                vm.config.autostart=response.data.autostart;
+                vm.config.cpu = response.data.cpu;
+                vm.config.gpu = response.data.gpu;
                 vm.config.benchmarks = response.data.benchmarks;
-                vm.config.benchTime = response.data.benchTime;
                 vm.config.rigName = response.data.rigName;
-                vm.config.cores=response.data.cores;
-                vm.config.writeMinerLog=response.data.writeMinerLog;
-                vm.config.useProfitabilityService=response.data.useProfitabilityService;
+                vm.config.regions = response.data.regions;
                 vm.config.profitabilityServiceUrl=response.data.profitabilityServiceUrl;
-                vm.profitabilityString="&name="+vm.cpuModel;
-                Object.keys(vm.config.benchmarks).forEach(function (key) {
-                    if (vm.config.benchmarks[key].id!==-1){
-                        var submitHashrate=vm.config.benchmarks[key].hashrate;
-                        if (vm.config.benchmarks[key].submitUnit===0)
-                            submitHashrate*=1000;
-                        for (var i = 1; i < vm.config.benchmarks[key].submitUnit; i++) {
-                            submitHashrate/=1000;
-                        }
-                        vm.profitabilityString+="&speed"+vm.config.benchmarks[key].id+"="+submitHashrate.toFixed(2);
-                    }
-                });
-                vm.profitabilityString+="&cost=0&power=0";
             }, function errorCallback(response) {
                 console.log(response);
             });
         }
 
-        /**
-         * @name getCPUModel
-         * @desc get the CPU Model
-         * @memberOf configCtrl
-         */
-        function getCPUModel() {
-            return $http({
-                method: 'GET',
-                url: 'api/config/cpumodel'
-            }).then(function successCallback(response) {
-                vm.cpuModel=response.data.cpuModel;
-            }, function errorCallback(response) {
-                console.log(response);
-            });
-        }
 
         /**
          * @name setConfig
@@ -192,16 +149,38 @@
          * @desc starts the benchmark
          * @memberOf configCtrl
          */
-        function doBenchmark() {
-            vm.waitingBenchmark=true;
+        function doBenchmark(type) {
+            switch(type){
+                case "cpu":
+                    vm.waitingBenchmarkCPU=true;
+                    break;
+                case "gpu":
+                    vm.waitingBenchmarkGPU=true;
+                    break;
+            }
             vm.setConfig().then(function successCallback(response){
                 return $http({
                     method: 'POST',
-                    url: 'api/mining/benchmark'
+                    url: 'api/mining/benchmark',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    data: {type:type}
                 }).then(function successCallback(response) {
-                    if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 5000);
-                    if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 10000);
-                    vm.getConfig();
+                    if (response.data.result===true){
+                        switch(type){
+                            case "cpu":
+                                if (vm.benchmarkIntervalCPU===null) vm.benchmarkIntervalCPU = $interval( function() {vm.checkBenchmark(type)}, 5000);
+                                break;
+                            case "gpu":
+                                if (vm.benchmarkIntervalGPU===null) vm.benchmarkIntervalGPU = $interval( function() {vm.checkBenchmark(type)}, 5000);
+                                break;
+                        }
+                        if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 10000);
+                        vm.getConfig();
+                    }else{
+                        alert("it seems the miner type was sent unsuccessfully or the benchmark is already running");
+                    }
                 }, function errorCallback(response) {
                     console.log(response);
                 });
@@ -216,25 +195,48 @@
          * @desc checks the benchmark
          * @memberOf configCtrl
          */
-        function checkBenchmark(){
+        function checkBenchmark(type){
             return $http({
                 method: 'GET',
-                url: 'api/mining/benchmark/current'
+                url: 'api/mining/benchmark/current',
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8'
+                },
+                data: {type:type}
             }).then(function successCallback(response) {
                 if (response.data.running===true){
-                    vm.waitingBenchmark=true;
-                    if (vm.benchmarkInterval===null) vm.benchmarkInterval = $interval(vm.checkBenchmark, 5000);
+                    switch(type){
+                        case "cpu":
+                            vm.waitingBenchmarkCPU=true;
+                            if (vm.benchmarkIntervalCPU===null) vm.benchmarkIntervalCPU = $interval( function() {vm.checkBenchmark(type)}, 5000);
+                            break;
+                        case "gpu":
+                            vm.waitingBenchmarkGPU=true;
+                            if (vm.benchmarkIntervalGPU===null) vm.benchmarkIntervalGPU = $interval( function() {vm.checkBenchmark(type)}, 5000);
+                            break;
+                    }
                     if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 10000);
                 }else{
-                    if (vm.benchmarkInterval!==null){
-                        $interval.cancel(vm.benchmarkInterval);
-                        vm.benchmarkInterval=null;
+                    switch(type){
+                        case "cpu":
+                            vm.waitingBenchmarkCPU=false;
+                            if (vm.benchmarkIntervalCPU!==null) {
+                                $interval.cancel(vm.benchmarkIntervalCPU);
+                                vm.benchmarkIntervalCPU=null;
+                            }
+                            break;
+                        case "gpu":
+                            vm.waitingBenchmarkGPU=false;
+                            if (vm.benchmarkIntervalGPU!==null) {
+                                $interval.cancel(vm.benchmarkIntervalGPU);
+                                vm.benchmarkIntervalGPU=null;
+                            }
+                            break;
                     }
                     if (vm.configInterval!==null) {
                         $interval.cancel(vm.configInterval);
                         vm.configInterval=null;
                     }
-                    vm.waitingBenchmark = false;
                     vm.getConfig();
                 }
             }, function errorCallback(response) {
@@ -249,8 +251,10 @@
         $scope.$on('$destroy', function () {
             if (vm.configInterval)
                 $interval.cancel(vm.configInterval);
-            if (vm.benchmarkInterval)
-                $interval.cancel(vm.benchmarkInterval);
+            if (vm.benchmarkIntervalCPU)
+                $interval.cancel(vm.benchmarkIntervalCPU);
+            if (vm.benchmarkIntervalGPU)
+                $interval.cancel(vm.benchmarkIntervalGPU);
         });
     }
 

@@ -10,7 +10,6 @@ module.exports = function(app) {
 
   router.get('/config', configController.getConfig);
   router.post('/config', configController.setConfig);
-  router.get('/config/cpumodel', configController.getCPUModel);
   router.post('/config/update', configController.update);
   router.post('/config/updateMiner', configController.updateMiner);
 
