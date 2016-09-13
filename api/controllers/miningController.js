@@ -519,7 +519,6 @@ function getProfitability(type) {
                       break;
                     case "gpu":
                       bestAlgoGPU = parsed.result.algo;
-                      console.log(bestAlgoGPU);
                       break;
                   }
                 }
