@@ -67,7 +67,7 @@
   app.filter('hashrate', function () {
     return function (hashrate, precision) {
       if (isNaN(parseFloat(hashrate)) || !isFinite(hashrate)) return '';
-      if (parseFloat(hashrate) === 0) return '0 H/s'
+      if (parseFloat(hashrate) === 0) return '0 H/s';
       if (typeof precision === 'undefined') precision = 1;
       hashrate = hashrate * 1000;
       var units = ['H/s', 'KH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s'],
