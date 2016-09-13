@@ -293,6 +293,7 @@ function startMiner(type) {
     }
   } else {
     console.log(colors.red("some required settings are not properly configured"));
+    return false;
   }
   return true;
 }
