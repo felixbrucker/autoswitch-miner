@@ -158,7 +158,7 @@ function startMiner(type) {
             else
               minerString="-b 127.0.0.1:4096 -a "+algo+" --benchmark";
             const spawn = require('cross-spawn');
-            cpuminer = spawn(binPath, [minerString.split(" ")]);
+            cpuminer = spawn(binPath, minerString.split(" "));
             justStartedCPU=1;
             setTimeout(function (){
               justStartedCPU=null;
@@ -185,9 +185,9 @@ function startMiner(type) {
             if (configModule.config.cpu.proxy!== null && configModule.config.cpu.proxy !== "")
               minerString+=" -x "+configModule.config.cpu.proxy;
             minerString+=" -o "+stats.cpu.url+" -u "+configModule.config.cpu.btcAddress+"."+configModule.config.rigName+" -p "+configModule.config.rigName;
-            console.log(minerString);
+            console.log(minerString.split(" "));
             const spawn = require('cross-spawn');
-            cpuminer = spawn(binPath, [minerString.split(" ")]);
+            cpuminer = spawn(binPath, minerString.split(" "));
             justStartedCPU=1;
             setTimeout(function (){
               justStartedCPU=null;
@@ -227,7 +227,7 @@ function startMiner(type) {
               if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
                 minerString+=" "+configModule.config.gpu.extraParam;
               const spawn = require('cross-spawn');
-              gpuminer = spawn(binPath, [minerString.split(" ")]);
+              gpuminer = spawn(binPath, minerString.split(" "));
               justStartedGPU=1;
               setTimeout(function (){
                 justStartedGPU=null;
@@ -254,7 +254,7 @@ function startMiner(type) {
               if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
                 minerString+=" "+configModule.config.gpu.extraParam;
               const spawn = require('cross-spawn');
-              gpuminer = spawn(binPath, [minerString.split(" ")]);
+              gpuminer = spawn(binPath, minerString.split(" "));
               justStartedGPU=1;
               setTimeout(function (){
                 justStartedGPU=null;
