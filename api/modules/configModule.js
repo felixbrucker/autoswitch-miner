@@ -82,8 +82,10 @@ var config = module.exports = {
           Object.keys(config.config.benchmarks).forEach(function (key) {
             if (config.algos[key]===undefined)
               delete config.config.benchmarks[key];
-            else
-              config.config.benchmarks[key].benchRunning=false;
+            else{
+              config.config.benchmarks[key].cpu.benchRunning=false;
+              config.config.benchmarks[key].gpu.benchRunning=false;
+            }
           });
           if (Object.keys(config.algos).length!==Object.keys(config.config.benchmarks).length){
             Object.keys(config.algos).forEach(function (key) {
