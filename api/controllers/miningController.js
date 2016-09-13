@@ -412,99 +412,100 @@ function doBenchmark(type) {
 }
 
 function getProfitability(type) {
-  var region="";
-  switch (configModule.config[type].region) {
-    case 0:
-      region += "eu";
-      break;
-    case 1:
-      region += "usa";
-      break;
-    case 2:
-      region += "hk";
-      break;
-    case 3:
-      region += "jp";
-      break;
-  }
-  var query={
-    algos:{},
-    region:region,
-    name:+configModule.config.rigName+" ("+type.toUpperCase()+")"
-  };
-  Object.keys(configModule.config.benchmarks).forEach(function (key) {
-    if (configModule.config.benchmarks[key][type]!==undefined && configModule.config.benchmarks[key][type].enabled && configModule.config.benchmarks[key][type].hashrate!==null && configModule.config.benchmarks[key][type].hashrate!=="") {
-      query.algos[key]={};
-      query.algos[key].hashrate=configModule.config.benchmarks[key][type].hashrate*1000;
+  if (configModule.config.profitabilityServiceUrl!==null&&configModule.config.profitabilityServiceUrl!==""){
+    var region="";
+    switch (configModule.config[type].region) {
+      case 0:
+        region += "eu";
+        break;
+      case 1:
+        region += "usa";
+        break;
+      case 2:
+        region += "hk";
+        break;
+      case 3:
+        region += "jp";
+        break;
     }
-  });
-  var arr = configModule.config.profitabilityServiceUrl.split(":");
-  var req= http.request({
-    host: arr[0],
-    path: '/api/query',
-    method: 'POST',
-    port: arr[1],
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
-  }, function (response) {
-    response.setEncoding('utf8');
-    var body = '';
-    response.on('data', function (d) {
-      body += d;
-    });
-    response.on('end', function () {
-      var parsed = null;
-      try{
-        parsed=JSON.parse(body);
-      }catch(error){
-        console.log("["+type.toUpperCase()+"] Error: Unable to get profitability data");
-        console.log(error);
+    var query={
+      algos:{},
+      region:region,
+      name:+configModule.config.rigName+" ("+type.toUpperCase()+")"
+    };
+    Object.keys(configModule.config.benchmarks).forEach(function (key) {
+      if (configModule.config.benchmarks[key][type]!==undefined && configModule.config.benchmarks[key][type].enabled && configModule.config.benchmarks[key][type].hashrate!==null && configModule.config.benchmarks[key][type].hashrate!=="") {
+        query.algos[key]={};
+        query.algos[key].hashrate=configModule.config.benchmarks[key][type].hashrate*1000;
       }
-      if (parsed != null){
-        if (parsed.result!==false){
-          stats[type].profitabilityPerKH=parsed.result.profitability*1000;
-          if (stats[type].url!==parsed.result.url){
-            stats[type].url=parsed.result.url;
-            if (stats[type].benchRunning === false) {
-              if (stats[type].running) {
-                switch (type){
-                  case "cpu":
-                    console.log("[CPU] changing algo: " + bestAlgoCPU + " => " + parsed.result.algo);
-                    stopMiner(type);
-                    bestAlgoCPU = parsed.result.algo;
-                    startMiner(type);
-                    break;
-                  case "gpu":
-                    console.log("[GPU] changing algo: " + bestAlgoGPU + " => " + parsed.result.algo);
-                    stopMiner(type);
-                    bestAlgoGPU = parsed.result.algo;
-                    startMiner(type);
-                    break;
-                }
-              }else{
-                switch(type){
-                  case "cpu":
-                    bestAlgoCPU = parsed.result.algo;
-                    break;
-                  case "gpu":
-                    bestAlgoGPU = parsed.result.algo;
-                    break;
+    });
+    var arr = configModule.config.profitabilityServiceUrl.split(":");
+    var req= http.request({
+      host: arr[0],
+      path: '/api/query',
+      method: 'POST',
+      port: arr[1],
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      }
+    }, function (response) {
+      response.setEncoding('utf8');
+      var body = '';
+      response.on('data', function (d) {
+        body += d;
+      });
+      response.on('end', function () {
+        var parsed = null;
+        try{
+          parsed=JSON.parse(body);
+        }catch(error){
+          console.log("["+type.toUpperCase()+"] Error: Unable to get profitability data");
+          console.log(error);
+        }
+        if (parsed != null){
+          if (parsed.result!==false){
+            stats[type].profitabilityPerKH=parsed.result.profitability*1000;
+            if (stats[type].url!==parsed.result.url){
+              stats[type].url=parsed.result.url;
+              if (stats[type].benchRunning === false) {
+                if (stats[type].running) {
+                  switch (type){
+                    case "cpu":
+                      console.log("[CPU] changing algo: " + bestAlgoCPU + " => " + parsed.result.algo);
+                      stopMiner(type);
+                      bestAlgoCPU = parsed.result.algo;
+                      startMiner(type);
+                      break;
+                    case "gpu":
+                      console.log("[GPU] changing algo: " + bestAlgoGPU + " => " + parsed.result.algo);
+                      stopMiner(type);
+                      bestAlgoGPU = parsed.result.algo;
+                      startMiner(type);
+                      break;
+                  }
+                }else{
+                  switch(type){
+                    case "cpu":
+                      bestAlgoCPU = parsed.result.algo;
+                      break;
+                    case "gpu":
+                      bestAlgoGPU = parsed.result.algo;
+                      break;
+                  }
                 }
               }
             }
-          }
-        }else
-          console.log("["+type.toUpperCase()+"] Error: malformed profitability request");
-      }
+          }else
+            console.log("["+type.toUpperCase()+"] Error: malformed profitability request");
+        }
+      });
+    }).on("error", function(error) {
+      console.log("["+type.toUpperCase()+"] Error: Unable to get profitability data");
+      console.log(error);
     });
-  }).on("error", function(error) {
-    console.log("["+type.toUpperCase()+"] Error: Unable to get profitability data");
-    console.log(error);
-  });
-  req.write(JSON.stringify(query));
-  req.end();
-
+    req.write(JSON.stringify(query));
+    req.end();
+  }
 }
 
 
