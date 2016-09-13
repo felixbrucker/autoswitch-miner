@@ -83,8 +83,10 @@ var config = module.exports = {
             if (config.algos[key]===undefined)
               delete config.config.benchmarks[key];
             else{
-              config.config.benchmarks[key].cpu.benchRunning=false;
-              config.config.benchmarks[key].gpu.benchRunning=false;
+              if (config.config.benchmarks[key].cpu!==undefined)
+                config.config.benchmarks[key].cpu.benchRunning=false;
+              if (config.config.benchmarks[key].gpu!==undefined)
+                config.config.benchmarks[key].gpu.benchRunning=false;
             }
           });
           if (Object.keys(config.algos).length!==Object.keys(config.config.benchmarks).length){
