@@ -256,8 +256,8 @@ function startMiner(type) {
                 if (configModule.config.gpu.proxy!== null && configModule.config.gpu.proxy !== "")
                   minerString+=" -x "+configModule.config.gpu.proxy;
                 minerString+=" -o "+stats.gpu.url+" -u "+configModule.config.gpu.btcAddress+"."+configModule.config.rigName+" -p "+configModule.config.rigName;
-                if (configModule.config.gpu.passwordParam!==null&&configModule.config.gpu.passwordParam!=="")
-                  minerString+=","+configModule.config.gpu.passwordParam;
+                if (configModule.config.benchmarks[bestAlgoGPU].gpu.passwordParam!==undefined && configModule.config.benchmarks[bestAlgoGPU].gpu.passwordParam!==null&&configModule.config.benchmarks[bestAlgoGPU].gpu.passwordParam!=="")
+                  minerString+=","+configModule.config.benchmarks[bestAlgoGPU].gpu.passwordParam;
                 if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
                   minerString+=" "+configModule.config.gpu.extraParam;
                 const spawn = require('cross-spawn');
