@@ -96,9 +96,9 @@ function getStats(req, res, next) {
 function startMining(req, res, next) {
   if (req.body.type!==undefined&&(req.body.type==="cpu"||req.body.type==="gpu")) {
     if (!stats[req.body.type].running) {
-      startMiner(req.body.type);
+      var result=startMiner(req.body.type);
       res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify({result: true}));
+      res.send(JSON.stringify({result: result}));
     }else{
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({result: false}));
@@ -138,142 +138,152 @@ function startMiner(type) {
     var minerString="";
     var binPath="";
     if (type==="cpu"){
-      if (cpuminer == null){
-        if (bestAlgoCPU!==null && bestAlgoCPU!==""){
+      if (configModule.config.cpu.enabled){
+        if (cpuminer == null){
+          if (bestAlgoCPU!==null && bestAlgoCPU!==""){
 
-          binPath = configModule.config.cpu.binPath;
-          var cores = configModule.config.cpu.cores;
-          if (configModule.config.benchmarks[bestAlgoCPU].cpu.cores!==undefined && configModule.config.benchmarks[bestAlgoCPU].cpu.cores!==null && configModule.config.benchmarks[bestAlgoCPU].cpu.cores!=="")
-            cores=configModule.config.benchmarks[bestAlgoCPU].cpu.cores;
-          if (configModule.config.benchmarks[bestAlgoCPU].cpu.binPath!==undefined && configModule.config.benchmarks[bestAlgoCPU].cpu.binPath!==null && configModule.config.benchmarks[bestAlgoCPU].cpu.binPath!=="")
-            binPath=configModule.config.benchmarks[bestAlgoCPU].cpu.binPath;
+            binPath = configModule.config.cpu.binPath;
+            var cores = configModule.config.cpu.cores;
+            if (configModule.config.benchmarks[bestAlgoCPU].cpu.cores!==undefined && configModule.config.benchmarks[bestAlgoCPU].cpu.cores!==null && configModule.config.benchmarks[bestAlgoCPU].cpu.cores!=="")
+              cores=configModule.config.benchmarks[bestAlgoCPU].cpu.cores;
+            if (configModule.config.benchmarks[bestAlgoCPU].cpu.binPath!==undefined && configModule.config.benchmarks[bestAlgoCPU].cpu.binPath!==null && configModule.config.benchmarks[bestAlgoCPU].cpu.binPath!=="")
+              binPath=configModule.config.benchmarks[bestAlgoCPU].cpu.binPath;
 
-          if (stats.cpu.benchRunning) {
-            //benchmark mode
-            var algo = bestAlgoCPU;
-            if (configModule.algos[bestAlgoCPU].alt)
-              algo = configModule.algos[bestAlgoCPU].alt;
-            if (cores !== null && cores !== "")
-              minerString="-b 127.0.0.1:4096 -a "+algo+" -t "+cores+" --benchmark";
-            else
-              minerString="-b 127.0.0.1:4096 -a "+algo+" --benchmark";
-            const spawn = require('cross-spawn');
-            cpuminer = spawn(binPath, minerString.split(" "));
-            justStartedCPU=1;
-            setTimeout(function (){
-              justStartedCPU=null;
-            },5000);
-            console.log(colors.green("[CPU] benchmark miner started, using "+algo));
-            if (configModule.config.cpu.writeMinerLog) {
-              cpuminer.stdout.on('data', function (data) {
-                cpu_miner_log.write(data.toString());
-              });
-              cpuminer.stderr.on('data', function (data) {
-                cpu_miner_log.write(data.toString());
-              });
-            }
-          }else{
-            //real mining
-            stats.cpu.btcAddress = configModule.config.cpu.btcAddress;
-            var algo = bestAlgoCPU;
-            if (configModule.algos[bestAlgoCPU].alt)
-              algo = configModule.algos[bestAlgoCPU].alt;
-            if (cores !== null && cores !== "")
-              minerString="-b 127.0.0.1:4096 -a "+algo+" -t "+cores;
-            else
-              minerString="-b 127.0.0.1:4096 -a "+algo;
-            if (configModule.config.cpu.proxy!== null && configModule.config.cpu.proxy !== "")
-              minerString+=" -x "+configModule.config.cpu.proxy;
-            minerString+=" -o "+stats.cpu.url+" -u "+configModule.config.cpu.btcAddress+"."+configModule.config.rigName+" -p "+configModule.config.rigName;
-            const spawn = require('cross-spawn');
-            cpuminer = spawn(binPath, minerString.split(" "));
-            justStartedCPU=1;
-            setTimeout(function (){
-              justStartedCPU=null;
-            },5000);
-            console.log(colors.green("[CPU] miner started, using "+algo));
-            if (configModule.config.cpu.writeMinerLog) {
-              cpuminer.stdout.on('data', function (data) {
-                cpu_miner_log.write(data.toString());
-              });
-              cpuminer.stderr.on('data', function (data) {
-                cpu_miner_log.write(data.toString());
-              });
-            }
-          }
-        }else{
-          console.log(colors.red("[CPU] no profitibility data or algo available"));
-          return false;
-        }
-      }else{
-        console.log(colors.red("[CPU] miner already running"));
-        return false;
-      }
-    }else{
-      if (type==="gpu"){
-        if (gpuminer == null){
-          if (bestAlgoGPU!==null && bestAlgoGPU!==""){
-
-            binPath = configModule.config.gpu.binPath;
-            if (configModule.config.benchmarks[bestAlgoGPU].gpu.binPath!==undefined && configModule.config.benchmarks[bestAlgoGPU].gpu.binPath!==null && configModule.config.benchmarks[bestAlgoGPU].gpu.binPath!=="")
-              binPath=configModule.config.benchmarks[bestAlgoGPU].gpu.binPath;
-
-            if (stats.gpu.benchRunning) {
-              var algo = bestAlgoGPU;
-              if (configModule.algos[bestAlgoGPU].alt)
-                algo = configModule.algos[bestAlgoGPU].alt;
-              minerString="-b 127.0.0.1:4097 -a "+algo+" --benchmark";
-              if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
-                minerString+=" "+configModule.config.gpu.extraParam;
+            if (stats.cpu.benchRunning) {
+              //benchmark mode
+              var algo = bestAlgoCPU;
+              if (configModule.algos[bestAlgoCPU].alt)
+                algo = configModule.algos[bestAlgoCPU].alt;
+              if (cores !== null && cores !== "")
+                minerString="-b 127.0.0.1:4096 -a "+algo+" -t "+cores+" --benchmark";
+              else
+                minerString="-b 127.0.0.1:4096 -a "+algo+" --benchmark";
               const spawn = require('cross-spawn');
-              gpuminer = spawn(binPath, minerString.split(" "));
-              justStartedGPU=1;
+              cpuminer = spawn(binPath, minerString.split(" "));
+              justStartedCPU=1;
               setTimeout(function (){
-                justStartedGPU=null;
+                justStartedCPU=null;
               },5000);
-              console.log(colors.green("[GPU] benchmark miner started, using "+algo));
-              if (configModule.config.gpu.writeMinerLog) {
-                gpuminer.stdout.on('data', function (data) {
-                  gpu_miner_log.write(data.toString());
+              console.log(colors.green("[CPU] benchmark miner started, using "+algo));
+              if (configModule.config.cpu.writeMinerLog) {
+                cpuminer.stdout.on('data', function (data) {
+                  cpu_miner_log.write(data.toString());
                 });
-                gpuminer.stderr.on('data', function (data) {
-                  gpu_miner_log.write(data.toString());
+                cpuminer.stderr.on('data', function (data) {
+                  cpu_miner_log.write(data.toString());
                 });
               }
             }else{
               //real mining
-              stats.gpu.btcAddress = configModule.config.gpu.btcAddress;
-              var algo = bestAlgoGPU;
-              if (configModule.algos[bestAlgoGPU].alt)
-                algo = configModule.algos[bestAlgoGPU].alt;
-              minerString="-b 127.0.0.1:4097 -a "+algo;
-              if (configModule.config.gpu.proxy!== null && configModule.config.gpu.proxy !== "")
-                minerString+=" -x "+configModule.config.gpu.proxy;
-              minerString+=" -o "+stats.gpu.url+" -u "+configModule.config.gpu.btcAddress+"."+configModule.config.rigName+" -p "+configModule.config.rigName;
-              if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
-                minerString+=" "+configModule.config.gpu.extraParam;
+              stats.cpu.btcAddress = configModule.config.cpu.btcAddress;
+              var algo = bestAlgoCPU;
+              if (configModule.algos[bestAlgoCPU].alt)
+                algo = configModule.algos[bestAlgoCPU].alt;
+              if (cores !== null && cores !== "")
+                minerString="-b 127.0.0.1:4096 -a "+algo+" -t "+cores;
+              else
+                minerString="-b 127.0.0.1:4096 -a "+algo;
+              if (configModule.config.cpu.proxy!== null && configModule.config.cpu.proxy !== "")
+                minerString+=" -x "+configModule.config.cpu.proxy;
+              minerString+=" -o "+stats.cpu.url+" -u "+configModule.config.cpu.btcAddress+"."+configModule.config.rigName+" -p "+configModule.config.rigName;
               const spawn = require('cross-spawn');
-              gpuminer = spawn(binPath, minerString.split(" "));
-              justStartedGPU=1;
+              cpuminer = spawn(binPath, minerString.split(" "));
+              justStartedCPU=1;
               setTimeout(function (){
-                justStartedGPU=null;
+                justStartedCPU=null;
               },5000);
-              console.log(colors.green("[GPU] miner started, using "+algo));
-              if (configModule.config.gpu.writeMinerLog) {
-                gpuminer.stdout.on('data', function (data) {
-                  gpu_miner_log.write(data.toString());
+              console.log(colors.green("[CPU] miner started, using "+algo));
+              if (configModule.config.cpu.writeMinerLog) {
+                cpuminer.stdout.on('data', function (data) {
+                  cpu_miner_log.write(data.toString());
                 });
-                gpuminer.stderr.on('data', function (data) {
-                  gpu_miner_log.write(data.toString());
+                cpuminer.stderr.on('data', function (data) {
+                  cpu_miner_log.write(data.toString());
                 });
               }
             }
           }else{
-            console.log(colors.red("[GPU] no profitibility data or algo available"));
+            console.log(colors.red("[CPU] no profitibility data or algo available"));
             return false;
           }
         }else{
-          console.log(colors.red("[GPU] miner already running"));
+          console.log(colors.red("[CPU] miner already running"));
+          return false;
+        }
+      }else{
+        console.log(colors.red("[CPU] miner disabled"));
+        return false;
+      }
+    }else{
+      if (type==="gpu"){
+        if (configModule.config.gpu.enabled){
+          if (gpuminer == null){
+            if (bestAlgoGPU!==null && bestAlgoGPU!==""){
+
+              binPath = configModule.config.gpu.binPath;
+              if (configModule.config.benchmarks[bestAlgoGPU].gpu.binPath!==undefined && configModule.config.benchmarks[bestAlgoGPU].gpu.binPath!==null && configModule.config.benchmarks[bestAlgoGPU].gpu.binPath!=="")
+                binPath=configModule.config.benchmarks[bestAlgoGPU].gpu.binPath;
+
+              if (stats.gpu.benchRunning) {
+                var algo = bestAlgoGPU;
+                if (configModule.algos[bestAlgoGPU].alt)
+                  algo = configModule.algos[bestAlgoGPU].alt;
+                minerString="-b 127.0.0.1:4097 -a "+algo+" --benchmark";
+                if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
+                  minerString+=" "+configModule.config.gpu.extraParam;
+                const spawn = require('cross-spawn');
+                gpuminer = spawn(binPath, minerString.split(" "));
+                justStartedGPU=1;
+                setTimeout(function (){
+                  justStartedGPU=null;
+                },5000);
+                console.log(colors.green("[GPU] benchmark miner started, using "+algo));
+                if (configModule.config.gpu.writeMinerLog) {
+                  gpuminer.stdout.on('data', function (data) {
+                    gpu_miner_log.write(data.toString());
+                  });
+                  gpuminer.stderr.on('data', function (data) {
+                    gpu_miner_log.write(data.toString());
+                  });
+                }
+              }else{
+                //real mining
+                stats.gpu.btcAddress = configModule.config.gpu.btcAddress;
+                var algo = bestAlgoGPU;
+                if (configModule.algos[bestAlgoGPU].alt)
+                  algo = configModule.algos[bestAlgoGPU].alt;
+                minerString="-b 127.0.0.1:4097 -a "+algo;
+                if (configModule.config.gpu.proxy!== null && configModule.config.gpu.proxy !== "")
+                  minerString+=" -x "+configModule.config.gpu.proxy;
+                minerString+=" -o "+stats.gpu.url+" -u "+configModule.config.gpu.btcAddress+"."+configModule.config.rigName+" -p "+configModule.config.rigName;
+                if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
+                  minerString+=" "+configModule.config.gpu.extraParam;
+                const spawn = require('cross-spawn');
+                gpuminer = spawn(binPath, minerString.split(" "));
+                justStartedGPU=1;
+                setTimeout(function (){
+                  justStartedGPU=null;
+                },5000);
+                console.log(colors.green("[GPU] miner started, using "+algo));
+                if (configModule.config.gpu.writeMinerLog) {
+                  gpuminer.stdout.on('data', function (data) {
+                    gpu_miner_log.write(data.toString());
+                  });
+                  gpuminer.stderr.on('data', function (data) {
+                    gpu_miner_log.write(data.toString());
+                  });
+                }
+              }
+            }else{
+              console.log(colors.red("[GPU] no profitibility data or algo available"));
+              return false;
+            }
+          }else{
+            console.log(colors.red("[GPU] miner already running"));
+            return false;
+          }
+        }else{
+          console.log(colors.red("[GPU] miner disabled"));
           return false;
         }
       }else{
@@ -284,6 +294,7 @@ function startMiner(type) {
   } else {
     console.log(colors.red("some required settings are not properly configured"));
   }
+  return true;
 }
 
 function stopMining(req, res, next) {
@@ -346,72 +357,85 @@ function asyncSleep(param, callback) {
 function doBenchmark(type) {
   if (validateSettings(type)) {
     if (type==="cpu"){
-      stats.cpu.benchRunning = true;
-      if (cpuminer !== null) {
-        wait.for(stopMiner,type);
-      }
-      var currentBest = bestAlgoCPU;
-      Object.keys(configModule.config.benchmarks).forEach(function (key) {
-        if (configModule.config.benchmarks[key].cpu!==undefined && configModule.config.benchmarks[key].cpu.enabled) {
-          bestAlgoCPU = key;
-          configModule.config.benchmarks[key].cpu.benchRunning = true;
-          console.log("[CPU] benchmarking: " + key + " ..");
-          startMiner(type);
-          var i = 0;
-          var hashrate = 0;
-          while (stats.cpu.hashrate === null || stats.hashrate === 0) {
-            wait.for(asyncSleep, 1000);
-          }
-          wait.for(asyncSleep, 20000);
-          for (; i < configModule.config.cpu.benchTime && cpuminer !== null; i++) {
-            wait.for(asyncSleep, 1000);
-            hashrate += stats.cpu.hashrate;
-          }
-          configModule.config.benchmarks[key].cpu.benchRunning = false;
-          stopMiner(type);
-          configModule.config.benchmarks[key].cpu.hashrate = (hashrate) / i;
-          console.log(colors.green("[CPU] avg hashrate: " + configModule.config.benchmarks[key].cpu.hashrate.toFixed(6) + " KH/s"));
-          configModule.saveConfig();
-        }
-      });
-      stats.cpu.benchRunning = false;
-      bestAlgoCPU = currentBest;
-    }else{
-      if (type==="gpu"){
-        stats.gpu.benchRunning = true;
-        if (gpuminer !== null) {
+      if (configModule.config.cpu.enabled){
+        stats.cpu.benchRunning = true;
+        if (cpuminer !== null) {
           wait.for(stopMiner,type);
         }
-        var currentBest = bestAlgoGPU;
+        var currentBest = bestAlgoCPU;
         Object.keys(configModule.config.benchmarks).forEach(function (key) {
-          if (configModule.config.benchmarks[key].gpu!==undefined && configModule.config.benchmarks[key].gpu.enabled) {
-            bestAlgoGPU = key;
-            configModule.config.benchmarks[key].gpu.benchRunning = true;
-            console.log("[GPU] benchmarking: " + key + " ..");
+          if (configModule.config.benchmarks[key].cpu!==undefined && configModule.config.benchmarks[key].cpu.enabled) {
+            bestAlgoCPU = key;
+            configModule.config.benchmarks[key].cpu.benchRunning = true;
+            console.log("[CPU] benchmarking: " + key + " ..");
             startMiner(type);
             var i = 0;
             var hashrate = 0;
-            while (stats.gpu.hashrate === null || stats.gpu.hashrate === 0) {
+            while (stats.cpu.hashrate === null || stats.hashrate === 0) {
               wait.for(asyncSleep, 1000);
             }
             wait.for(asyncSleep, 20000);
-            for (; i < configModule.config.gpu.benchTime && gpuminer !== null; i++) {
+            for (; i < configModule.config.cpu.benchTime && cpuminer !== null; i++) {
               wait.for(asyncSleep, 1000);
-              hashrate += stats.gpu.hashrate;
+              hashrate += stats.cpu.hashrate;
             }
-            configModule.config.benchmarks[key].gpu.benchRunning = false;
+            configModule.config.benchmarks[key].cpu.benchRunning = false;
             stopMiner(type);
-            configModule.config.benchmarks[key].gpu.hashrate = (hashrate) / i;
-            console.log(colors.green("[GPU] avg hashrate: " + configModule.config.benchmarks[key].gpu.hashrate.toFixed(6) + " KH/s"));
+            configModule.config.benchmarks[key].cpu.hashrate = (hashrate) / i;
+            console.log(colors.green("[CPU] avg hashrate: " + configModule.config.benchmarks[key].cpu.hashrate.toFixed(6) + " KH/s"));
             configModule.saveConfig();
           }
         });
-        stats.gpu.benchRunning = false;
-        bestAlgoGPU = currentBest;
+        stats.cpu.benchRunning = false;
+        bestAlgoCPU = currentBest;
+      }else{
+        console.log(colors.red("[CPU] miner disabled"));
+        return false;
+      }
+
+    }else{
+      if (type==="gpu"){
+        if (configModule.config.gpu.enabled){
+          stats.gpu.benchRunning = true;
+          if (gpuminer !== null) {
+            wait.for(stopMiner,type);
+          }
+          var currentBest = bestAlgoGPU;
+          Object.keys(configModule.config.benchmarks).forEach(function (key) {
+            if (configModule.config.benchmarks[key].gpu!==undefined && configModule.config.benchmarks[key].gpu.enabled) {
+              bestAlgoGPU = key;
+              configModule.config.benchmarks[key].gpu.benchRunning = true;
+              console.log("[GPU] benchmarking: " + key + " ..");
+              startMiner(type);
+              var i = 0;
+              var hashrate = 0;
+              while (stats.gpu.hashrate === null || stats.gpu.hashrate === 0) {
+                wait.for(asyncSleep, 1000);
+              }
+              wait.for(asyncSleep, 20000);
+              for (; i < configModule.config.gpu.benchTime && gpuminer !== null; i++) {
+                wait.for(asyncSleep, 1000);
+                hashrate += stats.gpu.hashrate;
+              }
+              configModule.config.benchmarks[key].gpu.benchRunning = false;
+              stopMiner(type);
+              configModule.config.benchmarks[key].gpu.hashrate = (hashrate) / i;
+              console.log(colors.green("[GPU] avg hashrate: " + configModule.config.benchmarks[key].gpu.hashrate.toFixed(6) + " KH/s"));
+              configModule.saveConfig();
+            }
+          });
+          stats.gpu.benchRunning = false;
+          bestAlgoGPU = currentBest;
+        }else{
+          console.log(colors.red("[GPU] miner disabled"));
+          return false;
+        }
+
       }
     }
+    return true;
   }
-
+  return false;
 }
 
 function getProfitability(type) {
