@@ -29,8 +29,7 @@ var config = module.exports = {
       autostart:null,
       region: null,
       benchTime: null,
-      writeMinerLog: null,
-      extraParam:null
+      writeMinerLog: null
     },
     rigName: null,
     regions: null,
@@ -44,16 +43,11 @@ var config = module.exports = {
     argon2: {cpu:true,gpu:false},
     yescrypt: {cpu:true,gpu:false},
     lbry:{cpu:false,gpu:true},
-    blake256r8:{alt:"blakecoin",cpu:false,gpu:true},
     blake2s:{cpu:false,gpu:true},
-    decred:{cpu:false,gpu:true},
     lyra2rev2:{cpu:false,gpu:true},
     "myr-gr":{cpu:false,gpu:true},
     neoscrypt:{cpu:false,gpu:true},
-    nist5:{cpu:false,gpu:true},
     skein:{cpu:false,gpu:true},
-    x11evo:{cpu:false,gpu:true},
-    sib:{cpu:false,gpu:true},
     x17:{cpu:false,gpu:true}
   },
   getConfig: function () {
@@ -105,6 +99,7 @@ var config = module.exports = {
                   newAlgo.gpu.hashrate=null;
                   newAlgo.gpu.binPath=null;
                   newAlgo.gpu.benchRunning=false;
+                  newAlgo.gpu.extraParam=null;
                 }
 
                 config.config.benchmarks[key]=newAlgo;
@@ -126,6 +121,7 @@ var config = module.exports = {
                 config.config.benchmarks[key].gpu.hashrate=null;
                 config.config.benchmarks[key].gpu.binPath=null;
                 config.config.benchmarks[key].gpu.benchRunning=false;
+                config.config.benchmarks[key].gpu.extraParam=false;
               }
             });
           }
