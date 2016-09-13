@@ -113,7 +113,9 @@ function validateSettings(type) {
   if (configModule.config[type].btcAddress !== null && configModule.config[type].region !== null && configModule.config[type].binPath !== null && configModule.config.rigName !== null && configModule.config.rigName !== '') {
     try {
       fs.statSync(configModule.config[type].binPath);
+      console.log("test");
     } catch (err) {
+      console.log(err);
       return !(err && err.code === 'ENOENT');
     }
     Object.keys(configModule.config.benchmarks).forEach(function (key) {
