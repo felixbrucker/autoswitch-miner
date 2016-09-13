@@ -17,7 +17,7 @@ module.exports = function(app) {
   router.post('/mining/start', miningController.startMining);
   router.post('/mining/stop', miningController.stopMining);
   router.post('/mining/benchmark', miningController.doBenchmarkWrapper);
-  router.get('/mining/benchmark/current', miningController.checkBenchmark);
+  router.post('/mining/benchmark/current', miningController.checkBenchmark);
 
   app.use('/api', router);
 };

@@ -197,7 +197,7 @@
          */
         function checkBenchmark(type){
             return $http({
-                method: 'GET',
+                method: 'POST',
                 url: 'api/mining/benchmark/current',
                 headers: {
                     'Content-Type': 'application/json;charset=UTF-8'
