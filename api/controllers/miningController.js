@@ -96,6 +96,7 @@ function getStats(req, res, next) {
 function startMining(req, res, next) {
   if (req.body.type!==undefined&&(req.body.type==="cpu"||req.body.type==="gpu")) {
     if (!stats[req.body.type].running) {
+      getProfitability(req.body.type);
       var result=startMiner(req.body.type);
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({result: result}));
@@ -134,7 +135,6 @@ function validateSettings(type) {
 
 function startMiner(type) {
   if (validateSettings(type)) {
-    getProfitability(type);
     var minerString="";
     var binPath="";
     if (type==="cpu"){
