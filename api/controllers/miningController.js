@@ -258,8 +258,8 @@ function startMiner(type) {
                 minerString+=" -o "+stats.gpu.url+" -u "+configModule.config.gpu.btcAddress+"."+configModule.config.rigName+" -p "+configModule.config.rigName;
                 if (configModule.config.benchmarks[bestAlgoGPU].gpu.passwordParam!==undefined && configModule.config.benchmarks[bestAlgoGPU].gpu.passwordParam!==null&&configModule.config.benchmarks[bestAlgoGPU].gpu.passwordParam!=="")
                   minerString+=","+configModule.config.benchmarks[bestAlgoGPU].gpu.passwordParam;
-                if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
-                  minerString+=" "+configModule.config.gpu.extraParam;
+                if (configModule.config.benchmarks[bestAlgoGPU].gpu.extraParam!==undefined && configModule.config.benchmarks[bestAlgoGPU].gpu.extraParam!==null&&configModule.config.benchmarks[bestAlgoGPU].gpu.extraParam!=="")
+                  minerString+=" "+configModule.config.benchmarks[bestAlgoGPU].gpu.extraParam;
                 const spawn = require('cross-spawn');
                 gpuminer = spawn(binPath, minerString.split(" "));
                 justStartedGPU=1;
