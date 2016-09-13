@@ -434,7 +434,7 @@ function getProfitability(type) {
     var query={
       algos:{},
       region:region,
-      name:+configModule.config.rigName+" ("+type.toUpperCase()+")"
+      name:configModule.config.rigName+" ("+type.toUpperCase()+")"
     };
     Object.keys(configModule.config.benchmarks).forEach(function (key) {
       if (configModule.config.benchmarks[key][type]!==undefined && configModule.config.benchmarks[key][type].enabled && configModule.config.benchmarks[key][type].hashrate!==null && configModule.config.benchmarks[key][type].hashrate!=="") {
@@ -495,6 +495,7 @@ function getProfitability(type) {
                       bestAlgoGPU = parsed.result.algo;
                       break;
                   }
+                  console.log(bestAlgoCPU);
                 }
               }
             }
