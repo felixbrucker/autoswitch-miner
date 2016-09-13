@@ -344,71 +344,74 @@ function asyncSleep(param, callback) {
 }
 
 function doBenchmark(type) {
-  if (type==="cpu"){
-    stats.cpu.benchRunning = true;
-    if (cpuminer !== null) {
-      wait.for(stopMiner,type);
-    }
-    var currentBest = bestAlgoCPU;
-    Object.keys(configModule.config.benchmarks).forEach(function (key) {
-      if (configModule.config.benchmarks[key].cpu!==undefined && configModule.config.benchmarks[key].cpu.enabled) {
-        bestAlgoCPU = key;
-        configModule.config.benchmarks[key].cpu.benchRunning = true;
-        console.log("[CPU] benchmarking: " + key + " ..");
-        startMiner(type);
-        var i = 0;
-        var hashrate = 0;
-        while (stats.cpu.hashrate === null || stats.hashrate === 0) {
-          wait.for(asyncSleep, 1000);
-        }
-        wait.for(asyncSleep, 20000);
-        for (; i < configModule.config.cpu.benchTime && cpuminer !== null; i++) {
-          wait.for(asyncSleep, 1000);
-          hashrate += stats.cpu.hashrate;
-        }
-        configModule.config.benchmarks[key].cpu.benchRunning = false;
-        stopMiner(type);
-        configModule.config.benchmarks[key].cpu.hashrate = (hashrate) / i;
-        console.log(colors.green("[CPU] avg hashrate: " + configModule.config.benchmarks[key].cpu.hashrate.toFixed(6) + " KH/s"));
-        configModule.saveConfig();
-      }
-    });
-    stats.cpu.benchRunning = false;
-    bestAlgoCPU = currentBest;
-  }else{
-    if (type==="gpu"){
-      stats.gpu.benchRunning = true;
-      if (gpuminer !== null) {
+  if (validateSettings(type)) {
+    if (type==="cpu"){
+      stats.cpu.benchRunning = true;
+      if (cpuminer !== null) {
         wait.for(stopMiner,type);
       }
-      var currentBest = bestAlgoGPU;
+      var currentBest = bestAlgoCPU;
       Object.keys(configModule.config.benchmarks).forEach(function (key) {
-        if (configModule.config.benchmarks[key].gpu!==undefined && configModule.config.benchmarks[key].gpu.enabled) {
-          bestAlgoGPU = key;
-          configModule.config.benchmarks[key].gpu.benchRunning = true;
-          console.log("[GPU] benchmarking: " + key + " ..");
+        if (configModule.config.benchmarks[key].cpu!==undefined && configModule.config.benchmarks[key].cpu.enabled) {
+          bestAlgoCPU = key;
+          configModule.config.benchmarks[key].cpu.benchRunning = true;
+          console.log("[CPU] benchmarking: " + key + " ..");
           startMiner(type);
           var i = 0;
           var hashrate = 0;
-          while (stats.gpu.hashrate === null || stats.gpu.hashrate === 0) {
+          while (stats.cpu.hashrate === null || stats.hashrate === 0) {
             wait.for(asyncSleep, 1000);
           }
           wait.for(asyncSleep, 20000);
-          for (; i < configModule.config.gpu.benchTime && gpuminer !== null; i++) {
+          for (; i < configModule.config.cpu.benchTime && cpuminer !== null; i++) {
             wait.for(asyncSleep, 1000);
-            hashrate += stats.gpu.hashrate;
+            hashrate += stats.cpu.hashrate;
           }
-          configModule.config.benchmarks[key].gpu.benchRunning = false;
+          configModule.config.benchmarks[key].cpu.benchRunning = false;
           stopMiner(type);
-          configModule.config.benchmarks[key].gpu.hashrate = (hashrate) / i;
-          console.log(colors.green("[GPU] avg hashrate: " + configModule.config.benchmarks[key].gpu.hashrate.toFixed(6) + " KH/s"));
+          configModule.config.benchmarks[key].cpu.hashrate = (hashrate) / i;
+          console.log(colors.green("[CPU] avg hashrate: " + configModule.config.benchmarks[key].cpu.hashrate.toFixed(6) + " KH/s"));
           configModule.saveConfig();
         }
       });
-      stats.gpu.benchRunning = false;
-      bestAlgoGPU = currentBest;
+      stats.cpu.benchRunning = false;
+      bestAlgoCPU = currentBest;
+    }else{
+      if (type==="gpu"){
+        stats.gpu.benchRunning = true;
+        if (gpuminer !== null) {
+          wait.for(stopMiner,type);
+        }
+        var currentBest = bestAlgoGPU;
+        Object.keys(configModule.config.benchmarks).forEach(function (key) {
+          if (configModule.config.benchmarks[key].gpu!==undefined && configModule.config.benchmarks[key].gpu.enabled) {
+            bestAlgoGPU = key;
+            configModule.config.benchmarks[key].gpu.benchRunning = true;
+            console.log("[GPU] benchmarking: " + key + " ..");
+            startMiner(type);
+            var i = 0;
+            var hashrate = 0;
+            while (stats.gpu.hashrate === null || stats.gpu.hashrate === 0) {
+              wait.for(asyncSleep, 1000);
+            }
+            wait.for(asyncSleep, 20000);
+            for (; i < configModule.config.gpu.benchTime && gpuminer !== null; i++) {
+              wait.for(asyncSleep, 1000);
+              hashrate += stats.gpu.hashrate;
+            }
+            configModule.config.benchmarks[key].gpu.benchRunning = false;
+            stopMiner(type);
+            configModule.config.benchmarks[key].gpu.hashrate = (hashrate) / i;
+            console.log(colors.green("[GPU] avg hashrate: " + configModule.config.benchmarks[key].gpu.hashrate.toFixed(6) + " KH/s"));
+            configModule.saveConfig();
+          }
+        });
+        stats.gpu.benchRunning = false;
+        bestAlgoGPU = currentBest;
+      }
     }
   }
+
 }
 
 function getProfitability(type) {
