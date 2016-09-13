@@ -56,7 +56,8 @@
         function init() {
             angular.element(document).ready(function () {
                 vm.getConfig();
-                vm.checkBenchmark();
+                vm.checkBenchmark("cpu");
+                vm.checkBenchmark("gpu");
             });
         }
 

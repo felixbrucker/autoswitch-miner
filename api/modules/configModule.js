@@ -133,7 +133,7 @@ var config = module.exports = {
         //default conf
         config.config.cpu.enabled=true;
         config.config.gpu.enabled=false;
-        config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}, {id: 2, name: "Nicehash Hong Kong"}, {id: 3, name: "Nicehash Japan"}];
+        config.config.regions = [{id: 0, name: "EU"}, {id: 1, name: "USA"}, {id: 2, name: "Hong Kong"}, {id: 3, name: "Japan"}];
         var isWin = /^win/.test(process.platform);
         if (isWin){
           config.config.cpu.binPath = "bin\\cpuminer.exe";
