@@ -72,7 +72,7 @@
       hashrate = hashrate * 1000;
       var units = ['H/s', 'KH/s', 'MH/s', 'GH/s', 'TH/s', 'PH/s'],
         number = Math.floor(Math.log(hashrate) / Math.log(1024));
-      return (hashrate / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number];
+      return (hashrate / Math.pow(1000, Math.floor(number))).toFixed(precision) + ' ' + units[number];
     }
   });
   app.filter('secondsToTimeString', function () {
