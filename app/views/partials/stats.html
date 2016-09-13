@@ -1,4 +1,4 @@
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-8 col-md-offset-2" style="margin-bottom: 10px;">
   <button type="button" class="btn btn-success" ng-show="!statsVm.current.cpu.running" ng-click="statsVm.startMiner('cpu')">[CPU] Start Miner</button>
   <button type="button" class="btn btn-danger" ng-show="statsVm.current.cpu.running" ng-click="statsVm.stopMiner('cpu')">[CPU] Stop Miner</button>
   <i ng-show="statsVm.waitingCPU" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
@@ -63,7 +63,7 @@
   </span>
 </div>
 
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-8 col-md-offset-2" style="margin-bottom: 10px;">
   <button type="button" class="btn btn-success" ng-show="!statsVm.current.gpu.running" ng-click="statsVm.startMiner('gpu')">[GPU] Start Miner</button>
   <button type="button" class="btn btn-danger" ng-show="statsVm.current.gpu.running" ng-click="statsVm.stopMiner('gpu')">[GPU] Stop Miner</button>
   <i ng-show="statsVm.waitingGPU" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
