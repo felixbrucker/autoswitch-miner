@@ -137,10 +137,10 @@ var config = module.exports = {
         var isWin = /^win/.test(process.platform);
         if (isWin){
           config.config.cpu.binPath = "bin\\cpuminer.exe";
-          config.config.cpu.binPath = "bin\\ccminer.exe";
+          config.config.gpu.binPath = "bin\\ccminer.exe";
         }else{
           config.config.cpu.binPath = "bin/cpuminer";
-          config.config.cpu.binPath = "bin/ccminer";
+          config.config.gpu.binPath = "bin/ccminer";
         }
         config.config.cpu.autostart=false;
         config.config.gpu.autostart=false;

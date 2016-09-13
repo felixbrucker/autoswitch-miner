@@ -3,7 +3,7 @@
     <div class="row">
       <td><input type="checkbox" ng-model="configVm.config.cpu.enabled" ng-click="configVm.setConfig()">[CPU] Enabled</td>
     </div>
-    <div class="row" ng-show="configVm.config.cpu.enabled">
+    <div class="row" ng-show="configVm.config.cpu.enabled" style="margin-bottom: 10px;">
       <div class="col-md-12">
         <div class="row">
           <td><input type="checkbox" ng-model="configVm.config.cpu.autostart" ng-click="configVm.setConfig()">[CPU] Autostart Mining</td>
@@ -51,7 +51,7 @@
     <div class="row">
       <td><input type="checkbox" ng-model="configVm.config.gpu.enabled" ng-click="configVm.setConfig()">[GPU] Enabled</td>
     </div>
-    <div class="row" ng-show="configVm.config.gpu.enabled">
+    <div class="row" ng-show="configVm.config.gpu.enabled" style="margin-bottom: 10px;">
       <div class="col-md-12">
         <div class="row">
           <td><input type="checkbox" ng-model="configVm.config.gpu.autostart" ng-click="configVm.setConfig()">[GPU] Autostart Mining</td>
@@ -99,7 +99,7 @@
       <a href="https://github.com/felixbrucker/profitability-service" target="_blank">Profitability-Service</a> URL: <input type="text" name="profitabilityServiceUrl" ng-model="configVm.config.profitabilityServiceUrl" size="26" placeholder="IP:PORT eg. 127.0.0.1:8081">
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12" ng-show="configVm.config.cpu.enabled">
       <br />
       <b>[CPU] Benchmarks:</b>
       <br />
@@ -124,7 +124,7 @@
       </table>
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12" ng-show="configVm.config.gpu.enabled">
       <br />
       <b>[GPU] Benchmarks:</b>
       <br />
@@ -150,7 +150,7 @@
     </div>
 
     <div class="col-md-12" style="margin-bottom: 10px;">
-      <button type="button" class="btn btn-success" ng-disabled="config.$invalid" ng-click="configVm.setConfig()">Save
+      <button type="button" class="btn btn-success" ng-click="configVm.setConfig()">Save
       </button>
       <i ng-show="configVm.waiting" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
       <span class="sr-only">Loading...</span>
