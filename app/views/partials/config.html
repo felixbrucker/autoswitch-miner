@@ -144,6 +144,7 @@
           <td ng-if="algo.gpu!==undefined"><input type="number" name="hashrate-{{key}}-GPU" ng-model="algo.gpu.hashrate" placeholder="hashrate"> KH/s</td>
           <td ng-if="algo.gpu!==undefined"><input type="text" name="binPath-{{key}}-GPU" ng-model="algo.gpu.binPath" placeholder="path to custom miner bin" size="26"></td>
           <td ng-if="algo.gpu!==undefined"><input type="text" name="extraParam-{{key}}-GPU" ng-model="algo.gpu.extraParam" placeholder="extra Parameters"></td>
+          <td ng-if="algo.gpu!==undefined"><input type="text" name="passwordParam-{{key}}-GPU" ng-model="algo.gpu.passwordParam" placeholder="password Parameters"></td>
           <td ng-if="algo.gpu!==undefined"><i ng-show="algo.gpu.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.gpu.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.gpu.benchRunning">no</span></td>
         </tr>
       </table>

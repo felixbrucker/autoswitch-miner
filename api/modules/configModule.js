@@ -100,6 +100,7 @@ var config = module.exports = {
                   newAlgo.gpu.binPath=null;
                   newAlgo.gpu.benchRunning=false;
                   newAlgo.gpu.extraParam=null;
+                  newAlgo.gpu.passwordParam=null;
                 }
 
                 config.config.benchmarks[key]=newAlgo;
@@ -122,6 +123,7 @@ var config = module.exports = {
                 config.config.benchmarks[key].gpu.binPath=null;
                 config.config.benchmarks[key].gpu.benchRunning=false;
                 config.config.benchmarks[key].gpu.extraParam=false;
+                config.config.benchmarks[key].gpu.passwordParam=false;
               }
             });
           }
