@@ -207,13 +207,20 @@ function startMiner(type) {
                 justStartedCPU=null;
               },5000);
               console.log(colors.green("[CPU] miner started, using "+algo));
-              if (configModule.config.cpu.writeMinerLog) {
-                cpuminer.stdout.on('data', function (data) {
+
+              cpuminer.stdout.on('data', function (data) {
+                if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1)
+                  console.log(data.toString().trim().slice(30));
+                if (configModule.config.cpu.writeMinerLog) {
                   cpu_miner_log.write(data.toString());
-                });
-                cpuminer.stderr.on('data', function (data) {
+                }
+              });
+
+              cpuminer.stderr.on('data', function (data) {
+                console.log(data.toString().trim().slice(30));
+                if (configModule.config.cpu.writeMinerLog)
                   cpu_miner_log.write(data.toString());
-                });
+              });
               }
             }
           }else{
@@ -281,13 +288,21 @@ function startMiner(type) {
                   justStartedGPU=null;
                 },5000);
                 console.log(colors.green("[GPU] miner started, using "+algo));
-                if (configModule.config.gpu.writeMinerLog) {
-                  gpuminer.stdout.on('data', function (data) {
+
+                gpuminer.stdout.on('data', function (data) {
+                  if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1)
+                    console.log(data.toString().trim().slice(30));
+                  if (configModule.config.gpu.writeMinerLog) {
                     gpu_miner_log.write(data.toString());
-                  });
-                  gpuminer.stderr.on('data', function (data) {
+                  }
+                });
+
+                gpuminer.stderr.on('data', function (data) {
+                  console.log(data.toString().trim().slice(30));
+                  if (configModule.config.gpu.writeMinerLog)
                     gpu_miner_log.write(data.toString());
-                  });
+                });
+
                 }
               }
             }else{
