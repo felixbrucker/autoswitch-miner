@@ -210,14 +210,14 @@ function startMiner(type) {
 
               cpuminer.stdout.on('data', function (data) {
                 if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1)
-                  console.log(data.toString().trim().slice(30));
+                  console.log("[CPU] "+data.toString().trim().slice(30));
                 if (configModule.config.cpu.writeMinerLog) {
                   cpu_miner_log.write(data.toString());
                 }
               });
 
               cpuminer.stderr.on('data', function (data) {
-                console.log(data.toString().trim().slice(30));
+                console.log("[CPU] "+data.toString().trim().slice(30));
                 if (configModule.config.cpu.writeMinerLog)
                   cpu_miner_log.write(data.toString());
               });
@@ -291,19 +291,19 @@ function startMiner(type) {
 
                 gpuminer.stdout.on('data', function (data) {
                   if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1)
-                    console.log(data.toString().trim().slice(30));
+                    console.log("[GPU] "+data.toString().trim().slice(30));
                   if (configModule.config.gpu.writeMinerLog) {
                     gpu_miner_log.write(data.toString());
                   }
                 });
 
                 gpuminer.stderr.on('data', function (data) {
-                  console.log(data.toString().trim().slice(30));
+                  console.log("[GPU] "+data.toString().trim().slice(30));
                   if (configModule.config.gpu.writeMinerLog)
                     gpu_miner_log.write(data.toString());
                 });
 
-                
+
               }
             }else{
               console.log(colors.red("[GPU] no profitibility data or algo available"));
