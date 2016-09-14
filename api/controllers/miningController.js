@@ -221,7 +221,7 @@ function startMiner(type) {
                 if (configModule.config.cpu.writeMinerLog)
                   cpu_miner_log.write(data.toString());
               });
-              }
+
             }
           }else{
             console.log(colors.red("[CPU] no profitibility data or algo available"));
@@ -303,7 +303,7 @@ function startMiner(type) {
                     gpu_miner_log.write(data.toString());
                 });
 
-                }
+                
               }
             }else{
               console.log(colors.red("[GPU] no profitibility data or algo available"));
