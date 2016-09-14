@@ -355,14 +355,14 @@ function stopMiner(type) {
       if (cpuminer !== null) {
         kill(cpuminer.pid);
         cpuminer = null;
-        console.log(colors.green("[CPU] miner stopped"));
+        console.log(colors.magenta("[CPU] ")+colors.green("miner stopped"));
       }
       break;
     case "gpu":
       if (gpuminer !== null) {
         kill(gpuminer.pid);
         gpuminer = null;
-        console.log(colors.green("[GPU] miner stopped"));
+        console.log(colors.green("[GPU] ")+colors.green("miner stopped"));
       }
       break;
   }
@@ -403,7 +403,7 @@ function doBenchmark(type) {
           if (configModule.config.benchmarks[key].cpu!==undefined && configModule.config.benchmarks[key].cpu.enabled) {
             bestAlgoCPU = key;
             configModule.config.benchmarks[key].cpu.benchRunning = true;
-            console.log("[CPU] benchmarking: " + key + " ..");
+            console.log(colors.magenta("[CPU] ")+"benchmarking: " + key + " ..");
             startMiner(type);
             var i = 0;
             var hashrate = 0;
@@ -418,7 +418,7 @@ function doBenchmark(type) {
             configModule.config.benchmarks[key].cpu.benchRunning = false;
             stopMiner(type);
             configModule.config.benchmarks[key].cpu.hashrate = (hashrate) / i;
-            console.log(colors.green("[CPU] avg hashrate: " + configModule.config.benchmarks[key].cpu.hashrate.toFixed(6) + " KH/s"));
+            console.log(colors.magenta("[CPU] ")+colors.green("avg hashrate: " + configModule.config.benchmarks[key].cpu.hashrate.toFixed(6) + " KH/s"));
             configModule.saveConfig();
           }
         });
@@ -441,7 +441,7 @@ function doBenchmark(type) {
             if (configModule.config.benchmarks[key].gpu!==undefined && configModule.config.benchmarks[key].gpu.enabled) {
               bestAlgoGPU = key;
               configModule.config.benchmarks[key].gpu.benchRunning = true;
-              console.log("[GPU] benchmarking: " + key + " ..");
+              console.log(colors.green("[GPU] ")+"benchmarking: " + key + " ..");
               startMiner(type);
               var i = 0;
               var hashrate = 0;
@@ -456,7 +456,7 @@ function doBenchmark(type) {
               configModule.config.benchmarks[key].gpu.benchRunning = false;
               stopMiner(type);
               configModule.config.benchmarks[key].gpu.hashrate = (hashrate) / i;
-              console.log(colors.green("[GPU] avg hashrate: " + configModule.config.benchmarks[key].gpu.hashrate.toFixed(6) + " KH/s"));
+              console.log(colors.green("[GPU] ")+colors.green("avg hashrate: " + configModule.config.benchmarks[key].gpu.hashrate.toFixed(6) + " KH/s"));
               configModule.saveConfig();
             }
           });
@@ -523,7 +523,7 @@ function getProfitability(type) {
         try{
           parsed=JSON.parse(body);
         }catch(error){
-          console.log("["+type.toUpperCase()+"] Error: Unable to get profitability data");
+          console.log(colors.red("["+type.toUpperCase()+"] Error: Unable to get profitability data"));
           console.log(error);
         }
         if (parsed != null){
@@ -535,13 +535,13 @@ function getProfitability(type) {
                 if (stats[type].running) {
                   switch (type){
                     case "cpu":
-                      console.log("[CPU] changing algo: " + bestAlgoCPU + " => " + parsed.result.algo);
+                      console.log(colors.magenta("[CPU] ")+"changing algo: " + bestAlgoCPU + " => " + parsed.result.algo);
                       stopMiner(type);
                       bestAlgoCPU = parsed.result.algo;
                       startMiner(type);
                       break;
                     case "gpu":
-                      console.log("[GPU] changing algo: " + bestAlgoGPU + " => " + parsed.result.algo);
+                      console.log(colors.magenta("[GPU] ")+"changing algo: " + bestAlgoGPU + " => " + parsed.result.algo);
                       stopMiner(type);
                       bestAlgoGPU = parsed.result.algo;
                       startMiner(type);
@@ -560,11 +560,11 @@ function getProfitability(type) {
               }
             }
           }else
-            console.log("["+type.toUpperCase()+"] Error: malformed profitability request");
+            console.log(colors.red("["+type.toUpperCase()+"] Error: malformed profitability request"));
         }
       });
     }).on("error", function(error) {
-      console.log("["+type.toUpperCase()+"] Error: Unable to get profitability data");
+      console.log(colors.red("["+type.toUpperCase()+"] Error: Unable to get profitability data"));
       console.log(error);
     });
     req.write(JSON.stringify(query));
@@ -598,7 +598,7 @@ function getMinerStats(type) {
 
   client.on('connect', function (connection) {
     connection.on('error', function (error) {
-      console.log("Connection Error: " + error.toString());
+      console.log(colors.red("Connection Error: " + error.toString()));
     });
     connection.on('close', function () {
     });
@@ -663,13 +663,13 @@ function init() {
   getMinerStats("cpu");
   getMinerStats("gpu");
   if (configModule.config.cpu.enabled&&configModule.config.cpu.autostart) {
-    console.log("[CPU] autostart enabled, starting miner shortly..");
+    console.log(colors.magenta("[CPU] ")+"autostart enabled, starting miner shortly..");
     setTimeout(function () {
       startMiner("cpu");
     }, 10000);
   }
   if (configModule.config.gpu.enabled&&configModule.config.gpu.autostart) {
-    console.log("[GPU] autostart enabled, starting miner shortly..");
+    console.log(colors.green("[GPU] ")+"autostart enabled, starting miner shortly..");
     setTimeout(function () {
       startMiner("gpu");
     }, 10000);
