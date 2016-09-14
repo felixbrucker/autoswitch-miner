@@ -9,13 +9,19 @@ var psTree = require('ps-tree');
 var rfs    = require('rotating-file-stream');
 var cpu_miner_log = rfs('cpuminer.log', {
   size:     '10M',
-  path:'data',
-  compress:true
+  path:'data'
 });
 var gpu_miner_log = rfs('gpuminer.log', {
   size:     '10M',
-  path:'data',
-  compress:true
+  path:'data'
+});
+
+cpu_miner_log.on('rotated', function(filename) {
+  fs.unlinkSync("data/"+filename);
+});
+gpu_miner_log.on('rotated', function(filename) {
+  console.log(filename);
+  fs.unlinkSync("data/"+filename);
 });
 
 var configModule = require(__basedir + 'api/modules/configModule');
