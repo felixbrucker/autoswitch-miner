@@ -6,10 +6,15 @@ const wait = require('wait.for');
 var fs = require('fs');
 var colors = require('colors/safe');
 var psTree = require('ps-tree');
+var rfs    = require('rotating-file-stream');
+var cpu_miner_log = rfs('data/cpuminer.log', {
+  size:     '10M'
+});
+var gpu_miner_log = rfs('data/gpuminer.log', {
+  size:     '10M'
+});
 
 var configModule = require(__basedir + 'api/modules/configModule');
-var cpu_miner_log = fs.createWriteStream('data/cpuminer.log', {flags: 'w'});
-var gpu_miner_log = fs.createWriteStream('data/gpuminer.log', {flags: 'w'});
 
 var stats = {
   cpu:{
