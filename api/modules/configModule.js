@@ -145,7 +145,7 @@ var config = module.exports = {
         config.config.gpu.autostart=false;
         config.config.benchmarks = {
         };
-        config.config.cpu.benchTime=120;
+        config.config.cpu.benchTime=60;
         config.config.gpu.benchTime=120;
         config.config.rigName='RXX';
         config.config.cpu.writeMinerLog=false;
