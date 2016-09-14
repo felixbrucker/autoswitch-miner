@@ -179,14 +179,16 @@ function startMiner(type) {
                 justStartedCPU=null;
               },5000);
               console.log(colors.green("[CPU] benchmark miner started, using "+algo));
-              if (configModule.config.cpu.writeMinerLog) {
-                cpuminer.stdout.on('data', function (data) {
+              cpuminer.stdout.on('data', function (data) {
+                if (configModule.config.cpu.writeMinerLog) {
                   cpu_miner_log.write(data.toString());
-                });
-                cpuminer.stderr.on('data', function (data) {
+                }
+              });
+
+              cpuminer.stderr.on('data', function (data) {
+                if (configModule.config.cpu.writeMinerLog)
                   cpu_miner_log.write(data.toString());
-                });
-              }
+              });
             }else{
               //real mining
               stats.cpu.btcAddress = configModule.config.cpu.btcAddress;
@@ -206,33 +208,33 @@ function startMiner(type) {
               setTimeout(function (){
                 justStartedCPU=null;
               },5000);
-              console.log(colors.green("[CPU] miner started, using "+algo));
+              console.log(colors.magenta("[CPU] ")+colors.green("miner started, using "+algo));
 
               cpuminer.stdout.on('data', function (data) {
                 if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1)
-                  console.log("[CPU] "+data.toString().trim().slice(30));
+                  console.log(colors.magenta("[CPU] ")+data.toString().trim().slice(30));
                 if (configModule.config.cpu.writeMinerLog) {
                   cpu_miner_log.write(data.toString());
                 }
               });
 
               cpuminer.stderr.on('data', function (data) {
-                console.log("[CPU] "+data.toString().trim().slice(30));
+                console.log(colors.magenta("[CPU] ")+data.toString().trim().slice(30));
                 if (configModule.config.cpu.writeMinerLog)
                   cpu_miner_log.write(data.toString());
               });
 
             }
           }else{
-            console.log(colors.red("[CPU] no profitibility data or algo available"));
+            console.log(colors.magenta("[CPU] ")+colors.red("no profitibility data or algo available"));
             return false;
           }
         }else{
-          console.log(colors.red("[CPU] miner already running"));
+          console.log(colors.magenta("[CPU] ")+colors.red("miner already running"));
           return false;
         }
       }else{
-        console.log(colors.red("[CPU] miner disabled"));
+        console.log(colors.magenta("[CPU] ")+colors.red("miner disabled"));
         return false;
       }
     }else{
@@ -258,15 +260,17 @@ function startMiner(type) {
                 setTimeout(function (){
                   justStartedGPU=null;
                 },5000);
-                console.log(colors.green("[GPU] benchmark miner started, using "+algo));
-                if (configModule.config.gpu.writeMinerLog) {
-                  gpuminer.stdout.on('data', function (data) {
+                console.log(colors.green("[GPU] ")+colors.green("benchmark miner started, using "+algo));
+                gpuminer.stdout.on('data', function (data) {
+                  if (configModule.config.gpu.writeMinerLog) {
                     gpu_miner_log.write(data.toString());
-                  });
-                  gpuminer.stderr.on('data', function (data) {
+                  }
+                });
+
+                gpuminer.stderr.on('data', function (data) {
+                  if (configModule.config.gpu.writeMinerLog)
                     gpu_miner_log.write(data.toString());
-                  });
-                }
+                });
               }else{
                 //real mining
                 stats.gpu.btcAddress = configModule.config.gpu.btcAddress;
@@ -287,18 +291,18 @@ function startMiner(type) {
                 setTimeout(function (){
                   justStartedGPU=null;
                 },5000);
-                console.log(colors.green("[GPU] miner started, using "+algo));
+                console.log(colors.green("[GPU] ")+colors.green("miner started, using "+algo));
 
                 gpuminer.stdout.on('data', function (data) {
                   if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1)
-                    console.log("[GPU] "+data.toString().trim().slice(30));
+                    console.log(colors.green("[GPU] ")+data.toString().trim().slice(30));
                   if (configModule.config.gpu.writeMinerLog) {
                     gpu_miner_log.write(data.toString());
                   }
                 });
 
                 gpuminer.stderr.on('data', function (data) {
-                  console.log("[GPU] "+data.toString().trim().slice(30));
+                  console.log(colors.green("[GPU] ")+data.toString().trim().slice(30));
                   if (configModule.config.gpu.writeMinerLog)
                     gpu_miner_log.write(data.toString());
                 });
@@ -306,15 +310,15 @@ function startMiner(type) {
 
               }
             }else{
-              console.log(colors.red("[GPU] no profitibility data or algo available"));
+              console.log(colors.green("[GPU] ")+colors.red("no profitibility data or algo available"));
               return false;
             }
           }else{
-            console.log(colors.red("[GPU] miner already running"));
+            console.log(colors.green("[GPU] ")+colors.red("miner already running"));
             return false;
           }
         }else{
-          console.log(colors.red("[GPU] miner disabled"));
+          console.log(colors.green("[GPU] ")+colors.red("miner disabled"));
           return false;
         }
       }else{
