@@ -8,11 +8,11 @@ var colors = require('colors/safe');
 var psTree = require('ps-tree');
 var rfs    = require('rotating-file-stream');
 var cpu_miner_log = rfs('cpuminer.log', {
-  size:     '10M',
+  size:     '50M',
   path:'data'
 });
 var gpu_miner_log = rfs('gpuminer.log', {
-  size:     '10M',
+  size:     '50M',
   path:'data'
 });
 
