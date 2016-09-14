@@ -9,11 +9,13 @@ var psTree = require('ps-tree');
 var rfs    = require('rotating-file-stream');
 var cpu_miner_log = rfs('cpuminer.log', {
   size:     '10M',
-  path:'data'
+  path:'data',
+  compress:true
 });
 var gpu_miner_log = rfs('gpuminer.log', {
   size:     '10M',
-  path:'data'
+  path:'data',
+  compress:true
 });
 
 var configModule = require(__basedir + 'api/modules/configModule');
