@@ -17,11 +17,10 @@ var gpu_miner_log = rfs('gpuminer.log', {
 });
 
 cpu_miner_log.on('rotated', function(filename) {
-  fs.unlinkSync("data/"+filename);
+  fs.unlinkSync(filename);
 });
 gpu_miner_log.on('rotated', function(filename) {
-  console.log(filename);
-  fs.unlinkSync("data/"+filename);
+  fs.unlinkSync(filename);
 });
 
 var configModule = require(__basedir + 'api/modules/configModule');
