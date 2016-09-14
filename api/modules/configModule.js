@@ -148,8 +148,8 @@ var config = module.exports = {
         config.config.cpu.benchTime=120;
         config.config.gpu.benchTime=120;
         config.config.rigName='RXX';
-        config.config.cpu.writeMinerLog=true;
-        config.config.gpu.writeMinerLog=true;
+        config.config.cpu.writeMinerLog=false;
+        config.config.gpu.writeMinerLog=false;
         config.saveConfig();
         config.loadConfig();
       }
