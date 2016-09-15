@@ -110,10 +110,9 @@ function getStats(req, res, next) {
 function startMining(req, res, next) {
   if (req.body.type!==undefined&&(req.body.type==="cpu"||req.body.type==="gpu")) {
     if (!stats[req.body.type].running) {
-      getProfitability(req.body.type);
-      var result=startMiner(req.body.type);
+      startMinerWrapper(req.body.type);
       res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify({result: result}));
+      res.send(JSON.stringify({result: true}));
     }else{
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({result: false}));
@@ -146,6 +145,12 @@ function validateSettings(type) {
     return false;
 }
 
+function startMinerWrapper(type){
+  getProfitability(type);
+  setTimeout(function(){
+    startMiner(type)
+  },1000);
+}
 
 function startMiner(type) {
   if (validateSettings(type)) {
@@ -475,6 +480,12 @@ function doBenchmark(type) {
   return false;
 }
 
+function restartMiner(type){
+  stopMiner(type);
+  wait.for(asyncSleep, 2000);
+  startMiner(type);
+}
+
 function getProfitability(type) {
   if (configModule.config.profitabilityServiceUrl!==null&&configModule.config.profitabilityServiceUrl!==""){
     var region="";
@@ -536,15 +547,13 @@ function getProfitability(type) {
                   switch (type){
                     case "cpu":
                       console.log(colors.magenta("[CPU] ")+"changing algo: " + bestAlgoCPU + " => " + parsed.result.algo);
-                      stopMiner(type);
                       bestAlgoCPU = parsed.result.algo;
-                      startMiner(type);
+                      wait.launchFiber(restartMiner,type);
                       break;
                     case "gpu":
                       console.log(colors.magenta("[GPU] ")+"changing algo: " + bestAlgoGPU + " => " + parsed.result.algo);
-                      stopMiner(type);
                       bestAlgoGPU = parsed.result.algo;
-                      startMiner(type);
+                      wait.launchFiber(restartMiner,type);
                       break;
                   }
                 }else{
