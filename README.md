@@ -2,7 +2,7 @@
 
 auto profit switching monitoring software for cpu and gpu mining (nvidia)
 
-uses nicehash and zpool api (caution: zpool api is buggy and might display abnormal high estimates) via https://github.com/felixbrucker/profitability-service (soon to be integrated as git submodule)
+uses nicehash and zpool api via https://github.com/felixbrucker/profitability-service (soon to be integrated as git submodule)
 
 
 ### Prerequisites
