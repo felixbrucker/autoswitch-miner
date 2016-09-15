@@ -8,6 +8,7 @@
   <span ng-show="statsVm.current.cpu.running">
     <span class="label label-success">running</span><span ng-show="statsVm.current.cpu.benchRunning"> (in Benchmark Mode)</span>
     <br />
+    URL: {{statsVm.current.cpu.url}}
     <div class="col-md-6">
       <table class='table table-borderless'>
         <tr>
@@ -73,6 +74,7 @@
   <span ng-show="statsVm.current.gpu.running">
     <span class="label label-success">running</span><span ng-show="statsVm.current.gpu.benchRunning"> (in Benchmark Mode)</span>
     <br />
+    URL: {{statsVm.current.gpu.url}}
     <div class="col-md-6">
       <table class='table table-borderless'>
         <tr>
