@@ -39,7 +39,7 @@ var config = module.exports = {
   algos: {
     lyra2re: {cpu:true,gpu:true},
     hodl: {cpu:true,gpu:false},
-    cryptonight: {cpu:true,gpu:true},
+    cryptonight: {cpu:true,gpu:false},
     argon2: {cpu:true,gpu:false},
     yescrypt: {cpu:true,gpu:false},
     lbry:{cpu:false,gpu:true},
@@ -122,8 +122,8 @@ var config = module.exports = {
                 config.config.benchmarks[key].gpu.hashrate=null;
                 config.config.benchmarks[key].gpu.binPath=null;
                 config.config.benchmarks[key].gpu.benchRunning=false;
-                config.config.benchmarks[key].gpu.extraParam=false;
-                config.config.benchmarks[key].gpu.passwordParam=false;
+                config.config.benchmarks[key].gpu.extraParam=null;
+                config.config.benchmarks[key].gpu.passwordParam=null;
               }
             });
           }
