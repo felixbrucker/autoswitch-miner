@@ -39,7 +39,7 @@ var config = module.exports = {
   algos: {
     lyra2re: {cpu:true,gpu:true},
     hodl: {cpu:true,gpu:false},
-    cryptonight: {cpu:true,gpu:false},
+    cryptonight: {cpu:true,gpu:true},
     argon2: {cpu:true,gpu:false},
     yescrypt: {cpu:true,gpu:false},
     lbry:{cpu:false,gpu:true},
