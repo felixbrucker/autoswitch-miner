@@ -684,7 +684,7 @@ function init() {
     }, 10000);
   }
 
-  var minutes = 5, profitabilityInterval = minutes * 60 * 1000;
+  var minutes = 3, profitabilityInterval = minutes * 60 * 1000;
   setInterval(function () {
     if (configModule.config.cpu.enabled)
       getProfitability("cpu");
