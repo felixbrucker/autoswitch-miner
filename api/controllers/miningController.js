@@ -257,7 +257,7 @@ function startMiner(type) {
                 if (configModule.algos[bestAlgoGPU].alt)
                   algo = configModule.algos[bestAlgoGPU].alt;
                 minerString="-b 127.0.0.1:4097 -a "+algo+" --benchmark";
-                if (configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
+                if (configModule.config.gpu.extraParam!==undefined&&configModule.config.gpu.extraParam!==null&&configModule.config.gpu.extraParam!=="")
                   minerString+=" "+configModule.config.gpu.extraParam;
                 const spawn = require('cross-spawn');
                 gpuminer = spawn(binPath, minerString.split(" "));
