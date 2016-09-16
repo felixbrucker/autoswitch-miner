@@ -551,7 +551,7 @@ function getProfitability(type) {
                       wait.launchFiber(restartMiner,type);
                       break;
                     case "gpu":
-                      console.log(colors.magenta("[GPU] ")+"changing algo: " + bestAlgoGPU + " => " + parsed.result.algo);
+                      console.log(colors.green("[GPU] ")+"changing algo: " + bestAlgoGPU + " => " + parsed.result.algo);
                       bestAlgoGPU = parsed.result.algo;
                       wait.launchFiber(restartMiner,type);
                       break;
