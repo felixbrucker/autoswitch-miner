@@ -23,7 +23,7 @@ npm install
 npm install pm2 -g
 ```
 
-On Windows you will need to get the miner binaries manually and place them in "bin", Linux users get the required binaries with the "update.sh" script (currently only cpuminer-opt)
+On Windows and Linux you get the required binaries with the "startTemplate.bat" and the "update.sh" script (currently only cpuminer-opt)
 
 ### Run
 
