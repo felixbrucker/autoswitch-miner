@@ -216,7 +216,7 @@ function startMiner(type) {
               console.log(colors.magenta("[CPU] ")+colors.green("miner started, using "+algo));
 
               cpuminer.stdout.on('data', function (data) {
-                if (data.toString().search("accepted") !== -1 || data.toString().search("rejected") !== -1)
+                if (data.toString().search("Accepted") !== -1 || data.toString().search("Rejected") !== -1)
                   console.log(colors.magenta("[CPU] ")+data.toString().trim().slice(30));
                 if (configModule.config.cpu.writeMinerLog) {
                   cpu_miner_log.write(data.toString());
