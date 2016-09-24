@@ -44,13 +44,15 @@ pm2 save
 pm2 startup
 ```
 
-note: windows users need the following instead:
+note: windows users need the following instead for pm2:
 
 ```sh
 npm install pm2-windows-startup -g
 pm2-startup install
 pm2 save
 ```
+
+or just create a .bat file with ```npm start```
 
 ### Update software (and miners on linux)
 

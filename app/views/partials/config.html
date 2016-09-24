@@ -49,31 +49,31 @@
     </div>
 
     <div class="row">
-      <td><input type="checkbox" ng-model="configVm.config.gpu.enabled" ng-click="configVm.setConfig()"> [GPU] Enabled</td>
+      <td><input type="checkbox" ng-model="configVm.config.nvidia.enabled" ng-click="configVm.setConfig()"> [NVIDIA] Enabled</td>
     </div>
-    <div class="row" ng-show="configVm.config.gpu.enabled" style="margin-bottom: 10px;">
+    <div class="row" ng-show="configVm.config.nvidia.enabled" style="margin-bottom: 10px;">
       <div class="col-md-12">
         <div class="row">
-          <td><input type="checkbox" ng-model="configVm.config.gpu.autostart" ng-click="configVm.setConfig()"> [GPU] Autostart Mining</td>
+          <td><input type="checkbox" ng-model="configVm.config.nvidia.autostart" ng-click="configVm.setConfig()"> [NVIDIA] Autostart Mining</td>
         </div>
       </div>
       <div class="col-md-5 col-md-offset-1">
         <table class='table table-borderless'>
           <tr>
-            <td>[GPU] Nicehash Region</td>
+            <td>[NVIDIA] Nicehash Region</td>
             <td>
-              <select name="regionSelect" id="regionSelectGPU"
+              <select name="regionSelect" id="regionSelectNVIDIA"
                       ng-options="region.id as region.name for region in configVm.config.regions"
-                      ng-model="configVm.config.gpu.region" required></select>
+                      ng-model="configVm.config.nvidia.region" required></select>
             </td>
           </tr>
           <tr>
-            <td>[GPU] Proxy</td>
-            <td><input type="text" name="proxy" ng-model="configVm.config.gpu.proxy" size="32" placeholder="optional"></td>
+            <td>[NVIDIA] Proxy</td>
+            <td><input type="text" name="proxy" ng-model="configVm.config.nvidia.proxy" size="32" placeholder="optional"></td>
           </tr>
           <tr>
-            <td>[GPU] write Miner Log to file</td>
-            <td><input type="checkbox" ng-model="configVm.config.gpu.writeMinerLog" ng-click="configVm.setConfig()"></td>
+            <td>[NVIDIA] write Miner Log to file</td>
+            <td><input type="checkbox" ng-model="configVm.config.nvidia.writeMinerLog" ng-click="configVm.setConfig()"></td>
           </tr>
         </table>
       </div>
@@ -81,12 +81,12 @@
       <div class="col-md-5">
         <table class='table table-borderless'>
           <tr>
-            <td>[GPU] BTC Address</td>
-            <td><input type="text" name="btcAddress" ng-model="configVm.config.gpu.btcAddress" size="42" placeholder="required" required></td>
+            <td>[NVIDIA] BTC Address</td>
+            <td><input type="text" name="btcAddress" ng-model="configVm.config.nvidia.btcAddress" size="42" placeholder="required" required></td>
           </tr>
           <tr>
-            <td>[GPU] binPath</td>
-            <td><input type="text" name="binPath" ng-model="configVm.config.gpu.binPath" size="26" placeholder="path to miner bin" required></td>
+            <td>[NVIDIA] binPath</td>
+            <td><input type="text" name="binPath" ng-model="configVm.config.nvidia.binPath" size="26" placeholder="path to miner bin" required></td>
           </tr>
         </table>
       </div>
@@ -124,11 +124,11 @@
       </table>
     </div>
 
-    <div class="col-md-12" ng-show="configVm.config.gpu.enabled">
+    <div class="col-md-12" ng-show="configVm.config.nvidia.enabled">
       <br />
-      <b>[GPU] Benchmarks:</b>
+      <b>[NVIDIA] Benchmarks:</b>
       <br />
-      [GPU] Benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.gpu.benchTime" placeholder="in seconds" required>
+      [NVIDIA] Benchmark time: <input type="number" name="benchTime" ng-model="configVm.config.nvidia.benchTime" placeholder="in seconds" required>
       <table class='table table-borderless'>
         <tr>
           <th>enabled</th>
@@ -140,13 +140,13 @@
           <th>benchmark running</th>
         </tr>
         <tr ng-repeat="(key, algo) in configVm.config.benchmarks  track by $index">
-          <td ng-if="algo.gpu!==undefined"><input type="checkbox" ng-model="algo.gpu.enabled" ng-click="configVm.setConfig()"></td>
-          <td ng-if="algo.gpu!==undefined">{{key}}</td>
-          <td ng-if="algo.gpu!==undefined"><input type="number" name="hashrate-{{key}}-GPU" ng-model="algo.gpu.hashrate" placeholder="hashrate"> KH/s</td>
-          <td ng-if="algo.gpu!==undefined"><input type="text" name="binPath-{{key}}-GPU" ng-model="algo.gpu.binPath" placeholder="path to custom miner bin" size="26"></td>
-          <td ng-if="algo.gpu!==undefined"><input type="text" name="extraParam-{{key}}-GPU" ng-model="algo.gpu.extraParam" placeholder="extra Parameters"></td>
-          <td ng-if="algo.gpu!==undefined"><input type="text" name="passwordParam-{{key}}-GPU" ng-model="algo.gpu.passwordParam" placeholder="password Parameters"></td>
-          <td ng-if="algo.gpu!==undefined"><i ng-show="algo.gpu.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.gpu.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.gpu.benchRunning">no</span></td>
+          <td ng-if="algo.nvidia!==undefined"><input type="checkbox" ng-model="algo.nvidia.enabled" ng-click="configVm.setConfig()"></td>
+          <td ng-if="algo.nvidia!==undefined">{{key}}</td>
+          <td ng-if="algo.nvidia!==undefined"><input type="number" name="hashrate-{{key}}-NVIDIA" ng-model="algo.nvidia.hashrate" placeholder="hashrate"> KH/s</td>
+          <td ng-if="algo.nvidia!==undefined"><input type="text" name="binPath-{{key}}-NVIDIA" ng-model="algo.nvidia.binPath" placeholder="path to custom miner bin" size="26"></td>
+          <td ng-if="algo.nvidia!==undefined"><input type="text" name="extraParam-{{key}}-NVIDIA" ng-model="algo.nvidia.extraParam" placeholder="extra Parameters"></td>
+          <td ng-if="algo.nvidia!==undefined"><input type="text" name="passwordParam-{{key}}-NVIDIA" ng-model="algo.nvidia.passwordParam" placeholder="password Parameters"></td>
+          <td ng-if="algo.nvidia!==undefined"><i ng-show="algo.nvidia.benchRunning" class="fa fa-cog fa-spin fa-lg fa-fw"></i><span ng-show="algo.nvidia.benchRunning" class="sr-only">Loading...</span><span ng-show="!algo.nvidia.benchRunning">no</span></td>
         </tr>
       </table>
     </div>
@@ -167,11 +167,11 @@
     <span class="sr-only">Loading...</span>
   </div>
   <div style="margin-bottom: 10px;">
-    <button ng-show="!configVm.waitingBenchmarkGPU" type="button" class="btn btn-success" ng-click="configVm.doBenchmark('gpu')">[GPU] Run Benchmark
+    <button ng-show="!configVm.waitingBenchmarkNVIDIA" type="button" class="btn btn-success" ng-click="configVm.doBenchmark('nvidia')">[NVIDIA] Run Benchmark
     </button>
-    <button ng-show="configVm.waitingBenchmarkGPU" type="button" class="btn btn-success" disabled>[GPU] Benchmark running..
+    <button ng-show="configVm.waitingBenchmarkNVIDIA" type="button" class="btn btn-success" disabled>[NVIDIA] Benchmark running..
     </button>
-    <i ng-show="configVm.waitingBenchmarkGPU" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+    <i ng-show="configVm.waitingBenchmarkNVIDIA" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
     <span class="sr-only">Loading...</span>
   </div>
   <div style="margin-bottom: 10px;">

@@ -36,8 +36,8 @@ function runUpdateScript(){
   if (cpuminer!==null){
     miningController.stopMiner("cpu");
   }
-  if (gpuminer!==null){
-    miningController.stopMiner("gpu");
+  if (nvidiaminer!==null){
+    miningController.stopMiner("nvidia");
   }
   const spawn = require('cross-spawn');
   const child = spawn('bash',['update.sh'],{

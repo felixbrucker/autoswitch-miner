@@ -21,7 +21,7 @@ var config = module.exports = {
       cores: null,
       writeMinerLog: null
     },
-    gpu:{
+    nvidia:{
       enabled:null,
       btcAddress: null,
       proxy: null,
@@ -34,21 +34,22 @@ var config = module.exports = {
     rigName: null,
     regions: null,
     benchmarks: null,
-    profitabilityServiceUrl: null
+    profitabilityServiceUrl: null,
+    types:null
   },
   algos: {
-    lyra2re: {cpu:true,gpu:true},
-    hodl: {cpu:true,gpu:false},
-    cryptonight: {cpu:true,gpu:false},
-    argon2: {cpu:true,gpu:false},
-    yescrypt: {cpu:true,gpu:false},
-    lbry:{cpu:false,gpu:true},
-    blake2s:{cpu:false,gpu:true},
-    lyra2rev2:{cpu:false,gpu:true},
-    "myr-gr":{cpu:false,gpu:true},
-    neoscrypt:{cpu:false,gpu:true},
-    skein:{cpu:false,gpu:true},
-    x17:{cpu:false,gpu:true}
+    lyra2re: {cpu:true,nvidia:true},
+    hodl: {cpu:true,nvidia:false},
+    cryptonight: {cpu:true,nvidia:false},
+    argon2: {cpu:true,nvidia:false},
+    yescrypt: {cpu:true,nvidia:false},
+    lbry:{cpu:false,nvidia:true},
+    blake2s:{cpu:false,nvidia:true},
+    lyra2rev2:{cpu:false,nvidia:true},
+    "myr-gr":{cpu:false,nvidia:true},
+    neoscrypt:{cpu:false,nvidia:true},
+    skein:{cpu:false,nvidia:true},
+    x17:{cpu:false,nvidia:true}
   },
   getConfig: function () {
     return config.config;
@@ -76,8 +77,8 @@ var config = module.exports = {
             else{
               if (config.config.benchmarks[key].cpu!==undefined)
                 config.config.benchmarks[key].cpu.benchRunning=false;
-              if (config.config.benchmarks[key].gpu!==undefined)
-                config.config.benchmarks[key].gpu.benchRunning=false;
+              if (config.config.benchmarks[key].nvidia!==undefined)
+                config.config.benchmarks[key].nvidia.benchRunning=false;
             }
           });
           if (Object.keys(config.algos).length!==Object.keys(config.config.benchmarks).length){
@@ -93,14 +94,14 @@ var config = module.exports = {
                   newAlgo.cpu.benchRunning=false;
                 }
 
-                if (config.algos[key].gpu){
-                  newAlgo.gpu={};
-                  newAlgo.gpu.enabled=true;
-                  newAlgo.gpu.hashrate=null;
-                  newAlgo.gpu.binPath=null;
-                  newAlgo.gpu.benchRunning=false;
-                  newAlgo.gpu.extraParam=null;
-                  newAlgo.gpu.passwordParam=null;
+                if (config.algos[key].nvidia){
+                  newAlgo.nvidia={};
+                  newAlgo.nvidia.enabled=true;
+                  newAlgo.nvidia.hashrate=null;
+                  newAlgo.nvidia.binPath=null;
+                  newAlgo.nvidia.benchRunning=false;
+                  newAlgo.nvidia.extraParam=null;
+                  newAlgo.nvidia.passwordParam=null;
                 }
 
                 config.config.benchmarks[key]=newAlgo;
@@ -116,14 +117,14 @@ var config = module.exports = {
                 config.config.benchmarks[key].cpu.cores=null;
                 config.config.benchmarks[key].cpu.benchRunning=false;
               }
-              if(config.config.benchmarks[key].gpu===undefined && config.algos[key].gpu){
-                config.config.benchmarks[key].gpu={};
-                config.config.benchmarks[key].gpu.enabled=true;
-                config.config.benchmarks[key].gpu.hashrate=null;
-                config.config.benchmarks[key].gpu.binPath=null;
-                config.config.benchmarks[key].gpu.benchRunning=false;
-                config.config.benchmarks[key].gpu.extraParam=null;
-                config.config.benchmarks[key].gpu.passwordParam=null;
+              if(config.config.benchmarks[key].nvidia===undefined && config.algos[key].nvidia){
+                config.config.benchmarks[key].nvidia={};
+                config.config.benchmarks[key].nvidia.enabled=true;
+                config.config.benchmarks[key].nvidia.hashrate=null;
+                config.config.benchmarks[key].nvidia.binPath=null;
+                config.config.benchmarks[key].nvidia.benchRunning=false;
+                config.config.benchmarks[key].nvidia.extraParam=null;
+                config.config.benchmarks[key].nvidia.passwordParam=null;
               }
             });
           }
@@ -131,25 +132,25 @@ var config = module.exports = {
       } else if (err.code == 'ENOENT') {
         //default conf
         config.config.cpu.enabled=true;
-        config.config.gpu.enabled=false;
+        config.config.nvidia.enabled=false;
         config.config.regions = [{id: 0, name: "EU"}, {id: 1, name: "USA"}, {id: 2, name: "Hong Kong"}, {id: 3, name: "Japan"}];
         var isWin = /^win/.test(process.platform);
         if (isWin){
           config.config.cpu.binPath = "bin\\cpuminer.exe";
-          config.config.gpu.binPath = "bin\\ccminer.exe";
+          config.config.nvidia.binPath = "bin\\ccminer.exe";
         }else{
           config.config.cpu.binPath = "bin/cpuminer";
-          config.config.gpu.binPath = "bin/ccminer";
+          config.config.nvidia.binPath = "bin/ccminer";
         }
         config.config.cpu.autostart=false;
-        config.config.gpu.autostart=false;
+        config.config.nvidia.autostart=false;
         config.config.benchmarks = {
         };
         config.config.cpu.benchTime=60;
-        config.config.gpu.benchTime=120;
+        config.config.nvidia.benchTime=60;
         config.config.rigName='RXX';
         config.config.cpu.writeMinerLog=false;
-        config.config.gpu.writeMinerLog=false;
+        config.config.nvidia.writeMinerLog=false;
         config.saveConfig();
         config.loadConfig();
       }

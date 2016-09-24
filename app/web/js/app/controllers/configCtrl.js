@@ -20,7 +20,7 @@
         var vm = this;
         vm.config = {
             cpu:{},
-            gpu:{},
+            nvidia:{},
             rigName: null,
             regions: null,
             benchmarks: {},
@@ -28,10 +28,10 @@
         };
         vm.waiting = null;
         vm.waitingBenchmarkCPU = null;
-        vm.waitingBenchmarkGPU = null;
+        vm.waitingBenchmarkNVIDIA = null;
         vm.configInterval=null;
         vm.benchmarkIntervalCPU=null;
-        vm.benchmarkIntervalGPU=null;
+        vm.benchmarkIntervalNVIDIA=null;
         vm.profitabilityString=null;
         vm.updating=null;
         vm.updatingMiner=null;
@@ -57,7 +57,7 @@
             angular.element(document).ready(function () {
                 vm.getConfig();
                 vm.checkBenchmark("cpu");
-                vm.checkBenchmark("gpu");
+                vm.checkBenchmark("nvidia");
             });
         }
 
@@ -72,7 +72,7 @@
                 url: 'api/config'
             }).then(function successCallback(response) {
                 vm.config.cpu = response.data.cpu;
-                vm.config.gpu = response.data.gpu;
+                vm.config.nvidia = response.data.nvidia;
                 vm.config.benchmarks = response.data.benchmarks;
                 vm.config.rigName = response.data.rigName;
                 vm.config.regions = response.data.regions;
@@ -155,8 +155,8 @@
                 case "cpu":
                     vm.waitingBenchmarkCPU=true;
                     break;
-                case "gpu":
-                    vm.waitingBenchmarkGPU=true;
+                case "nvidia":
+                    vm.waitingBenchmarkNVIDIA=true;
                     break;
             }
             vm.setConfig().then(function successCallback(response){
@@ -173,8 +173,8 @@
                             case "cpu":
                                 if (vm.benchmarkIntervalCPU===null) vm.benchmarkIntervalCPU = $interval( function() {vm.checkBenchmark(type)}, 5000);
                                 break;
-                            case "gpu":
-                                if (vm.benchmarkIntervalGPU===null) vm.benchmarkIntervalGPU = $interval( function() {vm.checkBenchmark(type)}, 5000);
+                            case "nvidia":
+                                if (vm.benchmarkIntervalNVIDIA===null) vm.benchmarkIntervalNVIDIA = $interval( function() {vm.checkBenchmark(type)}, 5000);
                                 break;
                         }
                         if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 10000);
@@ -211,9 +211,9 @@
                             vm.waitingBenchmarkCPU=true;
                             if (vm.benchmarkIntervalCPU===null) vm.benchmarkIntervalCPU = $interval( function() {vm.checkBenchmark(type)}, 5000);
                             break;
-                        case "gpu":
-                            vm.waitingBenchmarkGPU=true;
-                            if (vm.benchmarkIntervalGPU===null) vm.benchmarkIntervalGPU = $interval( function() {vm.checkBenchmark(type)}, 5000);
+                        case "nvidia":
+                            vm.waitingBenchmarkNVIDIA=true;
+                            if (vm.benchmarkIntervalNVIDIA===null) vm.benchmarkIntervalNVIDIA = $interval( function() {vm.checkBenchmark(type)}, 5000);
                             break;
                     }
                     if (vm.configInterval===null) vm.configInterval = $interval(vm.getConfig, 10000);
@@ -226,11 +226,11 @@
                                 vm.benchmarkIntervalCPU=null;
                             }
                             break;
-                        case "gpu":
-                            vm.waitingBenchmarkGPU=false;
-                            if (vm.benchmarkIntervalGPU!==null) {
-                                $interval.cancel(vm.benchmarkIntervalGPU);
-                                vm.benchmarkIntervalGPU=null;
+                        case "nvidia":
+                            vm.waitingBenchmarkNVIDIA=false;
+                            if (vm.benchmarkIntervalNVIDIA!==null) {
+                                $interval.cancel(vm.benchmarkIntervalNVIDIA);
+                                vm.benchmarkIntervalNVIDIA=null;
                             }
                             break;
                     }
@@ -254,8 +254,8 @@
                 $interval.cancel(vm.configInterval);
             if (vm.benchmarkIntervalCPU)
                 $interval.cancel(vm.benchmarkIntervalCPU);
-            if (vm.benchmarkIntervalGPU)
-                $interval.cancel(vm.benchmarkIntervalGPU);
+            if (vm.benchmarkIntervalNVIDIA)
+                $interval.cancel(vm.benchmarkIntervalNVIDIA);
         });
     }
 

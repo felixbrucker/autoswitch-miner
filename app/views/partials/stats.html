@@ -67,35 +67,35 @@
 </div>
 
 <div class="col-md-8 col-md-offset-2" style="margin-bottom: 10px;">
-  <button type="button" class="btn btn-success" ng-show="!statsVm.current.gpu.running" ng-click="statsVm.startMiner('gpu')">[GPU] Start Miner</button>
-  <button type="button" class="btn btn-danger" ng-show="statsVm.current.gpu.running" ng-click="statsVm.stopMiner('gpu')">[GPU] Stop Miner</button>
-  <i ng-show="statsVm.waitingGPU" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
+  <button type="button" class="btn btn-success" ng-show="!statsVm.current.nvidia.running" ng-click="statsVm.startMiner('nvidia')">[NVIDIA] Start Miner</button>
+  <button type="button" class="btn btn-danger" ng-show="statsVm.current.nvidia.running" ng-click="statsVm.stopMiner('nvidia')">[NVIDIA] Stop Miner</button>
+  <i ng-show="statsVm.waitingNVIDIA" class="fa fa-cog fa-spin fa-lg fa-fw"></i>
   <span class="sr-only">Loading...</span>
   <br />
-  [GPU] Miner is <span ng-show="!statsVm.current.gpu.running" class="label label-danger">stopped</span>
-  <span ng-show="statsVm.current.gpu.running">
-    <span class="label label-success">running</span><span ng-show="statsVm.current.gpu.benchRunning"> (in Benchmark Mode)</span>
+  [NVIDIA] Miner is <span ng-show="!statsVm.current.nvidia.running" class="label label-danger">stopped</span>
+  <span ng-show="statsVm.current.nvidia.running">
+    <span class="label label-success">running</span><span ng-show="statsVm.current.nvidia.benchRunning"> (in Benchmark Mode)</span>
     <br />
     <div class="col-md-12">
-      URL: {{statsVm.current.gpu.url}}
+      URL: {{statsVm.current.nvidia.url}}
     </div>
     <div class="col-md-6">
       <table class='table table-borderless'>
         <tr>
           <td>Hashrate</td>
-          <td><span class="label label-primary">{{statsVm.current.gpu.hashrate | hashrate}}</span></td>
+          <td><span class="label label-primary">{{statsVm.current.nvidia.hashrate | hashrate}}</span></td>
         </tr>
         <tr>
           <td>Profitability</td>
-          <td ng-show="statsVm.current.gpu.profitability"><span class="label label-primary">{{statsVm.current.gpu.profitability | number:8}} BTC/Day</span></td>
+          <td ng-show="statsVm.current.nvidia.profitability"><span class="label label-primary">{{statsVm.current.nvidia.profitability | number:8}} BTC/Day</span></td>
         </tr>
         <tr>
           <td>Algorithm</td>
-          <td><span class="label label-info">{{statsVm.current.gpu.algorithm}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.nvidia.algorithm}}</span></td>
         </tr>
         <tr>
           <td>GPUs</td>
-          <td><span class="label label-info">{{statsVm.current.gpu.gpus}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.nvidia.gpus}}</span></td>
         </tr>
       </table>
     </div>
@@ -104,28 +104,28 @@
       <table class='table table-borderless'>
         <tr>
           <td>Accepted Shares</td>
-          <td><span class="label label-primary">{{statsVm.current.gpu.accepted}}</span></td>
+          <td><span class="label label-primary">{{statsVm.current.nvidia.accepted}}</span></td>
         </tr>
         <tr>
           <td>Rejected Shares</td>
-          <td><span class="label label-primary">{{statsVm.current.gpu.rejected}}</span></td>
+          <td><span class="label label-primary">{{statsVm.current.nvidia.rejected}}</span></td>
         </tr>
         <tr>
           <td>Accepted Shares / Min</td>
-          <td><span class="label label-info">{{statsVm.current.gpu.acceptedPerMinute}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.nvidia.acceptedPerMinute}}</span></td>
         </tr>
         <tr>
           <td>Difficulty</td>
-          <td><span class="label label-info">{{statsVm.current.gpu.difficulty}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.nvidia.difficulty}}</span></td>
         </tr>
         <tr>
           <td>Uptime</td>
-          <td><span class="label label-info">{{statsVm.current.gpu.uptime | secondsToTimeString}}</span></td>
+          <td><span class="label label-info">{{statsVm.current.nvidia.uptime | secondsToTimeString}}</span></td>
         </tr>
       </table>
     </div>
     <div class="col-md-12">
-      Miner: {{statsVm.current.gpu.miner}}
+      Miner: {{statsVm.current.nvidia.miner}}
     </div>
   </span>
 </div>

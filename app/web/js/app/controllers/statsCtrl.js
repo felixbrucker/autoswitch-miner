@@ -21,10 +21,10 @@
     vm.statsInterval = null;
     vm.current = {
       cpu:{},
-      gpu:{}
+      nvidia:{}
     };
     vm.waitingCPU = null;
-    vm.waitingGPU = null;
+    vm.waitingNVIDIA = null;
 
     // controller API
     vm.init = init;
@@ -56,7 +56,7 @@
         url: 'api/mining/stats'
       }).then(function successCallback(response) {
         vm.current.cpu = response.data.cpu;
-        vm.current.gpu = response.data.gpu;
+        vm.current.nvidia = response.data.nvidia;
       }, function errorCallback(response) {
         console.log(response);
       });
@@ -72,8 +72,8 @@
         case "cpu":
           vm.waitingCPU = true;
           break;
-        case "gpu":
-          vm.waitingGPU = true;
+        case "nvidia":
+          vm.waitingNVIDIA = true;
           break;
       }
 
@@ -90,8 +90,8 @@
             case "cpu":
               vm.waitingCPU = false;
               break;
-            case "gpu":
-              vm.waitingGPU = false;
+            case "nvidia":
+              vm.waitingNVIDIA = false;
               break;
           }
         }, 1000);
@@ -114,8 +114,8 @@
         case "cpu":
           vm.waitingCPU = true;
           break;
-        case "gpu":
-          vm.waitingGPU = true;
+        case "nvidia":
+          vm.waitingNVIDIA = true;
           break;
       }
       $http({
@@ -131,8 +131,8 @@
             case "cpu":
               vm.waitingCPU = false;
               break;
-            case "gpu":
-              vm.waitingGPU = false;
+            case "nvidia":
+              vm.waitingNVIDIA = false;
               break;
           }
         }, 1000);
