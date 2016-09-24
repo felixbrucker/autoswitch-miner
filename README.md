@@ -52,7 +52,7 @@ pm2-startup install
 pm2 save
 ```
 
-or just create a .bat file with ```npm start```
+or just modify startTemplate.bat file to match your preferred compile and save as start.bat to not interfere with git updates
 
 ### Update software (and miners on linux)
 
