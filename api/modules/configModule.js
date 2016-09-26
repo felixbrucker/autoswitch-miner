@@ -93,7 +93,7 @@ var config = module.exports = {
         config.config.regions = [{id: 0, name: "Nicehash EU"}, {id: 1, name: "Nicehash USA"}];
         config.config.region = 1;
         config.config.btcAddress = '1G6DD3skr8kzjJURzoME8TWLT6iqrFApk3';
-        config.config.cores = null;
+        config.config.cores = 4;
         var isWin = /^win/.test(process.platform);
         if (isWin)
           config.config.binPath = "bin\\cpuminer.exe";
