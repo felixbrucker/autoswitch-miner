@@ -76,6 +76,13 @@ var config = module.exports = {
         fs.readFile(configPath, 'utf8', function (err, data) {
           if (err) throw err;
           config.config = JSON.parse(data);
+          if (config.config.custom===undefined){
+            config.config.custom={
+              enabled:null,
+              autostart:null,
+              entries:[]
+            };
+          }
           Object.keys(config.config.benchmarks).forEach(function (key) {
             if (config.algos[key]===undefined)
               delete config.config.benchmarks[key];
