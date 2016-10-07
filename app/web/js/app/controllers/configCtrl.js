@@ -42,7 +42,8 @@
             enabled:true,
             binPath:"",
             cmdline:"",
-            writeMinerLog:true
+            writeMinerLog:true,
+            shell:false
         };
 
 
