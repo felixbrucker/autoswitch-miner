@@ -21,10 +21,13 @@
     vm.statsInterval = null;
     vm.current = {
       cpu:{},
-      nvidia:{}
+      nvidia:{},
+      custom:{},
+      rigName:null
     };
     vm.waitingCPU = null;
     vm.waitingNVIDIA = null;
+    vm.waitingCUSTOM = null;
 
     // controller API
     vm.init = init;
@@ -57,6 +60,8 @@
       }).then(function successCallback(response) {
         vm.current.cpu = response.data.cpu;
         vm.current.nvidia = response.data.nvidia;
+        vm.current.custom = response.data.custom;
+        vm.current.rigName = response.data.rigName;
       }, function errorCallback(response) {
         console.log(response);
       });
@@ -75,6 +80,9 @@
         case "nvidia":
           vm.waitingNVIDIA = true;
           break;
+        case "custom":
+          vm.waitingCUSTOM = true;
+          break;
       }
 
       $http({
@@ -92,6 +100,9 @@
               break;
             case "nvidia":
               vm.waitingNVIDIA = false;
+              break;
+            case "custom":
+              vm.waitingCUSTOM = false;
               break;
           }
         }, 1000);
@@ -117,6 +128,9 @@
         case "nvidia":
           vm.waitingNVIDIA = true;
           break;
+        case "custom":
+          vm.waitingCUSTOM = true;
+          break;
       }
       $http({
         method: 'POST',
@@ -133,6 +147,9 @@
               break;
             case "nvidia":
               vm.waitingNVIDIA = false;
+              break;
+            case "custom":
+              vm.waitingCUSTOM = false;
               break;
           }
         }, 1000);

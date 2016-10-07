@@ -31,6 +31,11 @@ var config = module.exports = {
       benchTime: null,
       writeMinerLog: null
     },
+    custom:{
+      enabled:null,
+      autostart:null,
+      entries:[]
+    },
     rigName: null,
     regions: null,
     benchmarks: null,
@@ -133,6 +138,7 @@ var config = module.exports = {
         //default conf
         config.config.cpu.enabled=true;
         config.config.nvidia.enabled=false;
+        config.config.custom.enabled=false;
         config.config.regions = [{id: 0, name: "EU"}, {id: 1, name: "USA"}, {id: 2, name: "Hong Kong"}, {id: 3, name: "Japan"}];
         var isWin = /^win/.test(process.platform);
         if (isWin){
@@ -144,8 +150,8 @@ var config = module.exports = {
         }
         config.config.cpu.autostart=false;
         config.config.nvidia.autostart=false;
-        config.config.benchmarks = {
-        };
+        config.config.custom.autostart=false;
+        config.config.benchmarks = {};
         config.config.cpu.benchTime=60;
         config.config.nvidia.benchTime=60;
         config.config.rigName='RXX';

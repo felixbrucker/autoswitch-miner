@@ -15,6 +15,7 @@ var nvidia_miner_log = rfs('nvidiaminer.log', {
   size:     '50M',
   path:'data'
 });
+var custom_miner_logs = {};
 
 cpu_miner_log.on('rotated', function(filename) {
   fs.unlinkSync(filename);
@@ -27,6 +28,7 @@ var configModule = require(__basedir + 'api/modules/configModule');
 
 var stats = {
   cpu:{
+    enabled:configModule.config.cpu.enabled,
     running: null,
     hashrate: null,
     algorithm: null,
@@ -45,6 +47,7 @@ var stats = {
     url:null
   },
   nvidia:{
+    enabled:configModule.config.nvidia.enabled,
     running: null,
     hashrate: null,
     algorithm: null,
@@ -60,12 +63,19 @@ var stats = {
     btcAddress: configModule.config.nvidia.btcAddress,
     benchRunning: false,
     url:null
-  }
+  },
+  custom:{
+    running:null,
+    enabled:configModule.config.custom.enabled,
+    entries:configModule.config.custom.entries
+  },
+  rigName:null
 
 };
 
 global.cpuminer = null;
 global.nvidiaminer = null;
+global.customminer = {};
 var bestAlgoCPU = null;
 var bestAlgoNVIDIA = null;
 var justStartedCPU = null;
@@ -103,12 +113,17 @@ var kill = function (pid, signal, callback) {
 };
 
 function getStats(req, res, next) {
+  stats.cpu.enabled=configModule.config.cpu.enabled;
+  stats.nvidia.enabled=configModule.config.nvidia.enabled;
+  stats.custom.enabled=configModule.config.custom.enabled;
+  stats.rigName=configModule.config.rigName;
+  stats.custom.entries=configModule.config.custom.entries;
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(stats));
 }
 
 function startMining(req, res, next) {
-  if (req.body.type!==undefined&&(req.body.type==="cpu"||req.body.type==="nvidia")) {
+  if (req.body.type!==undefined&&(req.body.type==="cpu"||req.body.type==="nvidia"||req.body.type==="custom")) {
     if (!stats[req.body.type].running) {
       startMinerWrapper(req.body.type);
       res.setHeader('Content-Type', 'application/json');
@@ -124,25 +139,39 @@ function startMining(req, res, next) {
 }
 
 function validateSettings(type) {
-  if (configModule.config[type].btcAddress !== null && configModule.config[type].region !== null && configModule.config[type].binPath !== null && configModule.config.rigName !== null && configModule.config.rigName !== '') {
-    try {
-      fs.statSync(configModule.config[type].binPath);
-    } catch (err) {
-      return !(err && err.code === 'ENOENT');
+  if (type!=="custom"){
+    if (configModule.config[type].btcAddress !== null && configModule.config[type].region !== null && configModule.config[type].binPath !== null && configModule.config.rigName !== null && configModule.config.rigName !== '') {
+      try {
+        fs.statSync(configModule.config[type].binPath);
+      } catch (err) {
+        return !(err && err.code === 'ENOENT');
+      }
+      Object.keys(configModule.config.benchmarks).forEach(function (key) {
+        if(configModule.config.benchmarks[key][type]!==undefined && configModule.config.benchmarks[key][type].binPath!==undefined && configModule.config.benchmarks[key][type].binPath!==null && configModule.config.benchmarks[key][type].binPath!=="") {
+          try {
+            fs.statSync(configModule.config.benchmarks[key][type].binPath);
+          } catch (err) {
+            return !(err && err.code === 'ENOENT');
+          }
+        }
+      });
+      return true;
     }
-    Object.keys(configModule.config.benchmarks).forEach(function (key) {
-      if(configModule.config.benchmarks[key][type]!==undefined && configModule.config.benchmarks[key][type].binPath!==undefined && configModule.config.benchmarks[key][type].binPath!==null && configModule.config.benchmarks[key][type].binPath!=="") {
+    else
+      return false;
+  }else{
+    for(var i = 0; i < configModule.config.custom.entries.length; i++) {
+      var entry=configModule.config.custom.entries[i];
+      if(entry.enabled===true && entry.binPath!==undefined && entry.binPath!==null && entry.binPath!=="") {
         try {
-          fs.statSync(configModule.config.benchmarks[key][type].binPath);
+          fs.statSync(entry.binPath);
         } catch (err) {
           return !(err && err.code === 'ENOENT');
         }
       }
-    });
+    }
     return true;
   }
-  else
-    return false;
 }
 
 function startMinerWrapper(type){
@@ -327,8 +356,41 @@ function startMiner(type) {
           return false;
         }
       }else{
-        console.log(colors.red("invalid miner type"));
-        return false;
+        if (type==="custom"){
+          const spawn = require('cross-spawn');
+          configModule.config.custom.entries.forEach(function (entry,index,array) {
+            if (entry.enabled){
+              if (customminer[entry.id]===undefined || customminer[entry.id]===null){
+                stats.custom.running=true;
+                customminer[entry.id]=spawn(entry.binPath, entry.cmdline.split(" "));
+                console.log(colors.cyan("[CUSTOM] ")+colors.green("miner started"));
+                custom_miner_logs[entry.id] = rfs('customminer'+entry.id+'.log', {
+                  size:     '50M',
+                  path:'data'
+                });
+                custom_miner_logs[entry.id].on('rotated', function(filename) {
+                  fs.unlinkSync(filename);
+                });
+                customminer[entry.id].stdout.on('data', function (data) {
+                  if (entry.writeMinerLog) {
+                    custom_miner_logs[entry.id].write(data.toString());
+                  }
+                });
+                customminer[entry.id].stderr.on('data', function (data) {
+                  if (entry.writeMinerLog)
+                    custom_miner_logs[entry.id].write(data.toString());
+                });
+                return true;
+              }else{
+                console.log(colors.red("miner already running"));
+                return false;
+              }
+            }
+          });
+        }else{
+          console.log(colors.red("invalid miner type"));
+          return false;
+        }
       }
     }
   } else {
@@ -339,7 +401,7 @@ function startMiner(type) {
 }
 
 function stopMining(req, res, next) {
-  if (req.body.type!==undefined&&(req.body.type==="cpu"||req.body.type==="nvidia")) {
+  if (req.body.type!==undefined&&(req.body.type==="cpu"||req.body.type==="nvidia"||req.body.type==="custom")) {
     if (stats[req.body.type].running) {
       stopMiner(req.body.type);
       res.setHeader('Content-Type', 'application/json');
@@ -370,6 +432,16 @@ function stopMiner(type) {
         console.log(colors.green("[NVIDIA] ")+colors.green("miner stopped"));
       }
       break;
+    case "custom":
+      Object.keys(customminer).forEach(function (key) {
+        kill(customminer[key].pid);
+        console.log(colors.cyan("[CUSTOM] ")+colors.green("miner stopped"));
+        customminer[key]=null;
+        custom_miner_logs[key]=null;
+        delete customminer[key];
+        delete custom_miner_logs[key];
+      });
+      stats.custom.running=false;
   }
 }
 
@@ -649,7 +721,6 @@ function getMinerStats(type) {
       client.connect('ws://127.0.0.1:4097/summary', 'text');
       break;
   }
-
 }
 
 function checkBenchmark(req, res, next) {
@@ -683,6 +754,12 @@ function init() {
       startMiner("nvidia");
     }, 10000);
   }
+  if (configModule.config.custom.enabled&&configModule.config.custom.autostart) {
+    console.log(colors.cyan("[CUSTOM] ")+"autostart enabled, starting miner shortly..");
+    setTimeout(function () {
+      startMiner("custom");
+    }, 10000);
+  }
 
   var minutes = 3, profitabilityInterval = minutes * 60 * 1000;
   setInterval(function () {
@@ -697,6 +774,8 @@ function init() {
     if (configModule.config.nvidia.enabled)
       getMinerStats("nvidia");
   }, 2000);
+
+  stats.rigName=configModule.config.rigName;
 }
 
 setTimeout(init, 1000);

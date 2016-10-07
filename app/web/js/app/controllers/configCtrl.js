@@ -24,7 +24,8 @@
             rigName: null,
             regions: null,
             benchmarks: {},
-            profitabilityServiceUrl: null
+            profitabilityServiceUrl: null,
+            custom:null
         };
         vm.waiting = null;
         vm.waitingBenchmarkCPU = null;
@@ -36,6 +37,14 @@
         vm.updating=null;
         vm.updatingMiner=null;
 
+        vm.newCustomMiner={
+            id:null,
+            enabled:true,
+            binPath:"",
+            cmdline:"",
+            writeMinerLog:true
+        };
+
 
         // controller API
         vm.init = init;
@@ -45,6 +54,8 @@
         vm.checkBenchmark=checkBenchmark;
         vm.update=update;
         vm.updateMiner=updateMiner;
+        vm.addCustomMiner=addCustomMiner;
+        vm.delCustomMiner=delCustomMiner;
 
 
 
@@ -59,6 +70,43 @@
                 vm.checkBenchmark("cpu");
                 vm.checkBenchmark("nvidia");
             });
+        }
+
+        /**
+         * @name addCustomMiner
+         * @desc add new custom miner to array
+         * @memberOf configCtrl
+         */
+        function addCustomMiner() {
+            if (vm.newCustomMiner.binPath!==""&&vm.newCustomMiner.binPath!==null&&vm.newCustomMiner.cmdline!==""&&vm.newCustomMiner.cmdline!==null){
+                //gen unique id
+                vm.newCustomMiner.id=Date.now();
+                //add to array
+                vm.config.custom.entries.push(JSON.parse(JSON.stringify(vm.newCustomMiner)));
+                //clear variables
+                vm.newCustomMiner.id=null;
+                vm.newCustomMiner.enabled=true;
+                vm.newCustomMiner.binPath="";
+                vm.newCustomMiner.cmdline="";
+                vm.newCustomMiner.writeMinerLog=true;
+                vm.setConfig();
+            }
+        }
+
+        /**
+         * @name delCustomMiner
+         * @desc delete custom miner from array
+         * @memberOf configCtrl
+         */
+        function delCustomMiner(id) {
+            vm.config.custom.entries.forEach(function (entry,index,array) {
+                if (entry.id===id){
+                    console.log("a");
+                    vm.config.custom.entries.splice(index,1);
+                }
+
+            });
+            vm.setConfig();
         }
 
         /**
@@ -77,6 +125,7 @@
                 vm.config.rigName = response.data.rigName;
                 vm.config.regions = response.data.regions;
                 vm.config.profitabilityServiceUrl=response.data.profitabilityServiceUrl;
+                vm.config.custom=response.data.custom;
             }, function errorCallback(response) {
                 console.log(response);
             });
