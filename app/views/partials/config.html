@@ -169,18 +169,20 @@
           <th>miner path</th>
           <th>commandline</th>
           <th>write miner log</th>
+          <th>own shell window</th>
           <th>action</th>
         </tr>
         <tr ng-repeat="entry in configVm.config.custom.entries track by $index">
           <td><input type="checkbox" ng-model="entry.enabled" ng-click="configVm.setConfig()"></td>
-          <td><input type="text" name="binPath-{{entry.id}}-CUSTOM" ng-model="entry.binPath" placeholder="path to miner bin" size="18"></td>
+          <td><input type="text" name="binPath-{{entry.id}}-CUSTOM" ng-model="entry.binPath" placeholder="path to miner bin" size="26"></td>
           <td><input type="text" name="cmdline-{{entry.id}}-CUSTOM" ng-model="entry.cmdline" placeholder="commandline for miner" size="42"></td>
           <td><input type="checkbox" ng-model="entry.writeMinerLog" ng-click="configVm.setConfig()"></td>
+          <td><input type="checkbox" ng-model="entry.shell" ng-click="configVm.setConfig()"></td>
           <td><button type="button" class="btn btn-warning" ng-click="configVm.delCustomMiner(entry.id)">remove entry</button></td>
         </tr>
         <tr style="border-top: 1px solid lightgrey;">
           <td><input type="checkbox" ng-model="configVm.newCustomMiner.enabled"></td>
-          <td><input type="text" name="binPath-newMiner-CUSTOM" ng-model="configVm.newCustomMiner.binPath" placeholder="path to miner bin" size="18"></td>
+          <td><input type="text" name="binPath-newMiner-CUSTOM" ng-model="configVm.newCustomMiner.binPath" placeholder="path to miner bin" size="26"></td>
           <td><input type="text" name="cmdline-newMiner-CUSTOM" ng-model="configVm.newCustomMiner.cmdline" placeholder="commandline for miner" size="42"></td>
           <td><input type="checkbox" ng-model="configVm.newCustomMiner.writeMinerLog"></td>
           <td><button type="button" class="btn btn-success" ng-click="configVm.addCustomMiner()">add entry</button></td>

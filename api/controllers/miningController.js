@@ -363,7 +363,13 @@ function startMiner(type) {
             if (entry.enabled){
               if (customminer[entry.id]===undefined || customminer[entry.id]===null){
                 stats.custom.running=true;
-                customminer[entry.id]=spawn(entry.binPath, entry.cmdline.split(" "));
+                if (entry.shell)
+                  customminer[entry.id]=spawn(entry.binPath, entry.cmdline.split(" "),{
+                    shell:true,
+                    detached:true
+                  });
+                else
+                  customminer[entry.id]=spawn(entry.binPath, entry.cmdline.split(" "));
                 console.log(colors.cyan("[CUSTOM] ")+colors.green("miner started"));
                 custom_miner_logs[entry.id] = rfs('customminer'+entry.id+'.log', {
                   size:     '50M',

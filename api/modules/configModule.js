@@ -82,6 +82,11 @@ var config = module.exports = {
               autostart:null,
               entries:[]
             };
+          }else{
+            for (var i=0;i<config.config.custom.entries.length;i++){
+              if (config.config.custom.entries[i].shell===undefined)
+                config.config.custom.entries[i].shell=false;
+            }
           }
           Object.keys(config.config.benchmarks).forEach(function (key) {
             if (config.algos[key]===undefined)
