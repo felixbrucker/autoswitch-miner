@@ -175,7 +175,8 @@ function validateSettings(type) {
 }
 
 function startMinerWrapper(type){
-  getProfitability(type);
+  if (type!=="custom")
+    getProfitability(type);
   setTimeout(function(){
     startMiner(type)
   },1000);
