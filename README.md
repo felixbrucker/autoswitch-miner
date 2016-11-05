@@ -1,5 +1,7 @@
 # autoswitch-miner
 
+CURRENTLY NOT MAINTAINED!
+
 auto profit switching monitoring software for cpu and gpu mining (nvidia)
 
 uses nicehash and zpool api via https://github.com/felixbrucker/profitability-service (soon to be integrated as git submodule)
