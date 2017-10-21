@@ -1,6 +1,6 @@
 # autoswitch-miner
 
-CURRENTLY NOT MAINTAINED!
+NOT MAINTAINED!
 
 auto profit switching monitoring software for cpu and gpu mining (nvidia)
 
